@@ -41,3 +41,5 @@ Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@inde
 #Route::get('/user',['as' =>'user.index', 'uses' => 'TbCadUsersController@index']);
 Route::resource('user', 'TbCadUsersController')->middleware('auth');
 Route::get('/query', ['as' =>'user.query', 'uses' => 'TbCadUsersController@query'])->middleware('auth');
+
+/**test */
