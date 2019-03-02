@@ -21,28 +21,20 @@
   @yield('css-view')
 </head>
     
-</head>
 
 <body class="bg-gradient-primary">
 
-  <div class="container">
+  @yield('conteudo-view')
 
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
+  <!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-      <div class="col-xl-10 col-lg-12 col-md-9">
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
-          <div class="card-body p-0">
-            @yield('conteudo-view')
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
 
   @yield('js-view')
 

@@ -20,7 +20,7 @@ class Controller extends BaseController
     public function homepage()
     {
       if(Auth::check())
-        return view('dashboard');
+        return view('dashboard.dashboard');
 
         return view('user.login');
     }
@@ -33,7 +33,7 @@ class Controller extends BaseController
     public function telalogin()
     {
       if(Auth::check())
-      return view('dashboard');
+      return view('dashboard.dashboard');
 
       return view('user.login');
     }

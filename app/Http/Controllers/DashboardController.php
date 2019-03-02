@@ -26,7 +26,7 @@ class DashboardController extends Controller
 
   public function index()
   {
-    return view('dashboard');
+    return view('dashboard.dashboard');
   }
 
 
@@ -42,7 +42,7 @@ class DashboardController extends Controller
 
     ]);
 
-    return $request['success'] ? view('dashboard') : view('user.login', [ 'error' =>  $request['error']]);
+    return $request['success'] ? view('dashboard.dashboard') : view('user.login', [ 'error' =>  $request['error']]);
 
 
   }

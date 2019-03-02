@@ -1,4 +1,4 @@
-	@extends('templates.head-login')
+	@extends('templates.master')
 
 
 	@section('css-view')
@@ -8,21 +8,21 @@
 	@section('js-view')
 	<!-- scrip recaptcha -->
 	<script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
-
-	<!-- Bootstrap core JavaScript-->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-	<!-- Core plugin JavaScript-->
-	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-	<!-- Custom scripts for all pages-->
-	<script src="js/sb-admin-2.min.js"></script>
-
 	@endsection
 
 
 	@section('conteudo-view')
+
+	<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+      <div class="col-xl-10 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+
 	<!-- Nested Row within Card Body -->
 	<div class="row">
 				<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
@@ -34,8 +34,8 @@
 
 					{!! Form::open(['class' =>'user','route' => 'user.login', 'method' => 'post']) !!}
 					
-							<div class="form-group">
-							{!! Form::Email('email', null, ['class' =>'form-control form-control-user', 'placeholder'=>'Digite seu Email', 'required', 'id'=>'exampleInputEmail', 'aria-describedby'=>'emailHelp'])!!}
+						<div class="form-group">
+						{!! Form::Email('email', null, ['class' =>'form-control form-control-user', 'placeholder'=>'Digite seu Email', 'required', 'id'=>'exampleInputEmail', 'aria-describedby'=>'emailHelp'])!!}
 						</div>
 						
 						<div class="form-group">
@@ -74,5 +74,14 @@
 					</div>
 				</div>
 				</div>
+
+				</div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
 
 	@endsection
