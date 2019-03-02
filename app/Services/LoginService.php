@@ -46,7 +46,7 @@ class LoginService
               'email'      => $request->get('usuario'),
               'password'   => $request->get('password')
             ];
-              $remember     = $request->get('remember');
+              $remember     = $request->get('customCheck');
 
 
 
