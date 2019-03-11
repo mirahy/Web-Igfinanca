@@ -35,6 +35,7 @@ class LoginService
   public function auth(Request $request)
   {
       $data = $request->all();
+      
 
       try
         {
@@ -48,20 +49,21 @@ class LoginService
             ];
               $remember     = $request->get('customCheck');
 
-
+            
 
             if( env("PASSWORD_HASH"))
             {
 
               $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
+              
               if(!$user)
                 throw new Exception("Email inválido");
 
               if ($user && Auth::attempt($data, $remember))
                 throw new Exception("Senha inválida");
 
-              #Auth::attempt($data, $remember);
-
+              Auth::attempt($data, $remember);
+        
 
             }
             else
@@ -84,7 +86,8 @@ class LoginService
                     'error'        => "Email ou senha inválidos",
                   ];
 
-              Auth::login($user);
+              Auth::login($user, true);
+              
 
             }
 

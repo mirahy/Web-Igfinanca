@@ -19,6 +19,7 @@ class Controller extends BaseController
     */
     public function homepage()
     {
+      
       if(Auth::check())
         return view('dashboard.dashboard');
 

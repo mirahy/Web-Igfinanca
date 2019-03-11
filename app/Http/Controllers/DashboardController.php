@@ -32,9 +32,9 @@ class DashboardController extends Controller
 
   public function auth(Request $request)
   {
-
+    
     $request = $this->service->auth($request);
-
+   
     session()->flash('success', [
        'success'   =>  $request['success'],
        'messages'  =>  $request['messages'],

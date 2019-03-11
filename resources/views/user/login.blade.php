@@ -32,7 +32,15 @@
 						<h1 class="h4 text-gray-900 mb-4">Bem vindo de volta!</h1>
 						</div >
 
+										
+
 					{!! Form::open(['class' =>'user','route' => 'user.login', 'method' => 'post']) !!}
+
+										@if(isset($error))
+                    <div class="form-group bnt-user"> 
+                    @include('templates.msg.danger-msg-login')
+                    </div>
+                    @endif
 					
 						<div class="form-group">
 						{!! Form::Email('email', null, ['class' =>'form-control form-control-user', 'placeholder'=>'Digite seu Email', 'required', 'id'=>'exampleInputEmail', 'aria-describedby'=>'emailHelp'])!!}
@@ -42,12 +50,12 @@
 						{!! Form::password('password',['class' =>'form-control form-control-user', 'placeholder'=>'Senha', 'required'])!!}
 						</div>
 						
-						<label  class="g-recaptcha form-group  " data-sitekey="6LfXo1gUAAAAAB2V2SVQCXpHZC4-i5SgQFQcUjAM" data-size="normal" style="transform:scale(0.93);transform-origin:0 0">
+						<label  class="g-recaptcha form-group " data-sitekey="6LfXo1gUAAAAAB2V2SVQCXpHZC4-i5SgQFQcUjAM" data-size="normal" style="transform:scale(0.93);transform-origin:0 0">
 						</label><!-- data-theme="dark" valida/acess.php -->
 
 						<div class="form-group">
 						<div class="custom-control custom-checkbox small">
-						{!! Form::checkbox('customCheck', 'false', false, array('class' => 'custom-control-input', 'id'=>'customCheck')) !!}
+						{!! Form::checkbox('customCheck', true, null, array('class' => 'custom-control-input', 'id'=>'customCheck')) !!}
 						{!! Form::label('customCheck', 'Lembre-me', array('class' => 'custom-control-label')) !!}
 						</div>
 						</div>
