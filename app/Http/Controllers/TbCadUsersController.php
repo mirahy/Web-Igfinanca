@@ -39,6 +39,19 @@ class TbCadUsersController extends Controller
         return view('user.index');
     }
 
+    public function register()
+    {
+
+        return view('user.register');
+    }
+
+    public function forgotPassword()
+    {
+
+        return view('user.forgot-password');
+    }
+
+
     Public function query(){
 
       $users = $this->repository->all();

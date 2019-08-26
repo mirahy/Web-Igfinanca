@@ -28,11 +28,23 @@ Route::get('/',['uses' => 'Controller@homepage']);
 * Routes to user auth
 *========================================================================
 */
-
 Route::get('/login',['uses' => 'Controller@telalogin']);
 Route::post('/login',['as' =>'user.login', 'uses' => 'DashboardController@auth']);
 Route::get('/logout',['as' =>'user.logout', 'uses' => 'DashboardController@logout']);
 Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth');
+
+/**
+* Routes to user register
+*========================================================================
+*/
+Route::get('/register',['uses' => 'TbCadUsersController@register']);
+
+
+/**
+* Routes to user forgot-password
+*========================================================================
+*/
+Route::get('/forgot-password',['uses' => 'TbCadUsersController@forgotPassword']);
 
 /**
 * Routes to dashboard nav users
