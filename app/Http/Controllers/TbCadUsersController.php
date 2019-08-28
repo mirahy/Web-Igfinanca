@@ -65,17 +65,17 @@ class TbCadUsersController extends Controller
 
     public function store(TbCadUserCreateRequest $request)
     {
-
-         $request = $this->service->store($request->all());
+        
+         $request = $this->service->store($request->all()); 
          $usuario = $request['success'] ? $request['data'] : null;
 
          session()->flash('success', [
             'success'   =>  $request['success'],
             'messages'  =>  $request['messages'],
-            'usuario'   => $usuario,
+            'usuario'   =>  $usuario,
          ]);
 
-         return view('user.index');
+         return view('user.register');
 
                             /*try {
 

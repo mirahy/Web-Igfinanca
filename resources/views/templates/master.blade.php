@@ -32,10 +32,10 @@
 
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ asset('/dashboard')}}">
-    <div class="sidebar-brand-icon rotate-n-15">
-      <i class="fas fa-laugh-wink"></i>
+    <div class="sidebar-brand-icon ">
+      <img src="img/logo-ico.ico" alt="Smiley face" height="60" width="60"> 
     </div>
-    <div class="sidebar-brand-text mx-3" id ="page-top">System Finance</div>
+    <div class="sidebar-brand-text " id ="page-top">System Finance</div>
   </a>
 
   <!-- Divider -->

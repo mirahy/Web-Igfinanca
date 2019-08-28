@@ -21,7 +21,7 @@
           <div class="card-body p-0">
 			<!-- Nested Row within Card Body -->
 			<div class="row">
-				<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+				<div class="col-lg-6 d-none d-flex align-items-center "><img src="img/logo-ico.ico" class="rounded mx-auto d-block"  > </div>
 					<div class="col-lg-6">
 						<div class="p-5">
 						<div class="text-center">
@@ -59,7 +59,7 @@
 										{!!Form::submit('Login',['class' =>'btn btn-primary btn-user btn-block']) !!}
 									
 										<hr>
-										@include('templates.forms.button',['input' => '<i class="fab fa-google fa-fw" disabled></i> REntre com o Google','attributes' => ['type' => 'submit', 'class' => 'btn btn-google btn-user btn-block ', 'disabled']])
+										@include('templates.forms.button',['input' => '<i class="fab fa-google fa-fw" disabled></i> Entre com o Google','attributes' => ['type' => 'submit', 'class' => 'btn btn-google btn-user btn-block ', 'disabled']])
 										 @include('templates.forms.button',['input' => '<i class="fab fa-facebook-f fa-fw" disabled></i> Entrar com o Facebook','attributes' => ['type' => 'submit', 'class' => 'btn btn-facebook btn-user btn-block', 'disabled']])
 										 <!-- Alterar botoes acima pelos links abaixo apos implementação dos registros socias
 										@include('templates.forms.btnLink',['href' => '#', 'class_a' => 'btn btn-google btn-user btn-block', 'class_i' => 'fab fa-google fa-fw', 'text' => 'Entre com o Google', 'role' => 'button', 'aria_disabled' => 'true'])
