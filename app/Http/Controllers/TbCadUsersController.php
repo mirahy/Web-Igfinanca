@@ -54,10 +54,10 @@ class TbCadUsersController extends Controller
 
     Public function query(){
 
-      $users = $this->repository->all();
+      //$users = $this->repository->all();
 
-      return view('user.query', [
-        'users'  => $users,
+      return view('user.edit-users', [
+        //'users'  => $users,
       ]);
 
     }

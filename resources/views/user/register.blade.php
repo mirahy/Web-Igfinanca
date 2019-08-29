@@ -37,20 +37,20 @@
                         @endif
                     
                        <div class="form-group">
-                          @include('templates.forms.input',['input' => 'name', 'attributes' => ['placeholder' => 'Nome Completo', 'required','class' => 'form-control form-control-user', 'id' => 'exampleFirstName']])
+                          @include('templates.forms.input',['input' => 'name', 'attributes' => ['placeholder' => 'Nome Completo', 'required','class' => 'form-control form-control-user', 'id' => 'user_Name']])
                       </div>
 
                       <div class="form-group">
-                        @include('templates.forms.email',['input' => 'email', 'attributes' => ['placeholder' => 'EMAIL', 'required', 'class' => 'form-control form-control-user', 'id' => 'exampleInputEmail']])
+                        @include('templates.forms.email',['input' => 'email', 'attributes' => ['placeholder' => 'EMAIL', 'required', 'class' => 'form-control form-control-user', 'id' => 'User_Email']])
                       </div>
 
                       <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
-                          @include('templates.forms.password',['input' => 'password', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'exampleInputPassword']])
+                          @include('templates.forms.password',['input' => 'password', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'user_tPassword']])
                         </div>
 
                         <div class="col-sm-6">
-                          @include('templates.forms.password',['input' => 'Repeatpassword', 'attributes' => ['placeholder' => 'Repita a senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'exampleRepeatPassword']])
+                          @include('templates.forms.password',['input' => 'Repeatpassword', 'attributes' => ['placeholder' => 'Repita a senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'user_Repeat_Password']])
                         </div>
                       </div>
 

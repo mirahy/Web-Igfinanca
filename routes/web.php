@@ -52,6 +52,6 @@ Route::get('/forgot-password',['uses' => 'TbCadUsersController@forgotPassword'])
 */
 #Route::get('/user',['as' =>'user.index', 'uses' => 'TbCadUsersController@index']);
 Route::resource('user', 'TbCadUsersController');
-Route::get('/query', ['as' =>'user.query', 'uses' => 'TbCadUsersController@query'])->middleware('auth');
+Route::get('/edit-users', ['as' =>'user.edit-users', 'uses' => 'TbCadUsersController@query'])->middleware('auth');
 
 /**test */
