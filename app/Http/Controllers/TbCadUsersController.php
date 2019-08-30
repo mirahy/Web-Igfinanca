@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Entities\TbCadUser;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\TbCadUserCreateRequest;
@@ -12,6 +13,7 @@ use App\Http\Requests\TbCadUserUpdateRequest;
 use App\Repositories\TbCadUserRepository;
 use App\Validators\TbCadUserValidator;
 use App\Services\TbCadUserService;
+use Yajra\Datatables\Datatables;
 
 /**
  * Class TbCadUsersController.
@@ -50,18 +52,30 @@ class TbCadUsersController extends Controller
 
         return view('user.forgot-password');
     }
+    
 
 
-    Public function query(){
+    Public function query(Request $request){
 
-      //$users = $this->repository->all();
+        if(request()->ajax()){
+            return Datatables::of(TbCadUser::query()->where('status', '1'))->blacklist(['action'])->make(true);
+        }
+        return view('user.edit-users');
 
-      return view('user.edit-users', [
-        //'users'  => $users,
-      ]);
 
     }
 
+    Public function query_inact(Request $request){
+
+        if(request()->ajax()){
+            return Datatables::of(TbCadUser::query()->where('status', '0'))->blacklist(['action'])->make(true);
+        }
+        return view('user.edit-users');
+
+
+    }
+
+    
 
     public function store(TbCadUserCreateRequest $request)
     {

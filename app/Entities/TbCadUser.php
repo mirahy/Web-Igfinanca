@@ -25,7 +25,7 @@ class TbCadUser extends Authenticatable
      */
      public     $timestamps   = true;
      protected  $table        = 'tb_cad_user';
-     protected  $fillable     = ['name','idtb_profile','idtb_base','birth','email','password','status','permission','token_access'];
+     protected  $fillable     = ['id','name','idtb_profile','idtb_base','birth','email','password','status','permission','token_access'];
      protected  $hidden       = ['password', 'rememberToken'];
 
      public function setPasswordAttribute($value)

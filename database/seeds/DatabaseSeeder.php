@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
 
           private function createUsers()
           {
-              $max = rand(10, 30);
+              $max = rand(100, 200);
               for($i=0; $i < $max; $i++):
                   $this->createUser($i);
               endfor;

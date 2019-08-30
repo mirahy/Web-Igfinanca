@@ -10,10 +10,77 @@
 
 @section('js-view')
 <script src="js/sweetalert2.all.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
 <script src="js/dataTables.bootstrap4.min.js"></script>
 <script src="js/datatables.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/edit-user.js"></script>
+
+<script>
+
+/** 
+* Exibe confirmação de exclusão ao clicar no botão excluir 
+* O metodo confirmation() é de um componente do bootstrap
+* chamado bootstrap confirmation
+**/
+$('table tbody').on('click','a[id^="person-delete"]', function (e) {
+    e.preventDefault();
+    $(this).confirmation('show');
+});
+
+
+/** 
+* Function tabela usuários ativos
+**/
+$(function() {
+    $('#dt-users').DataTable({
+        autoWidth:  false,
+        processing: true,
+        serverSide: true,
+        ajax: '{{ route('edit-users') }}',
+        columns: [
+            { data: 'name', name: 'name' },
+            { data: 'email', name: 'email' },
+            { data: 'idtb_profile', name: 'idtb_profile' },
+            { data: 'idtb_base', name: 'idtb_base' },
+            { data: 'status', name: 'status' },
+            {
+            "data": "action",
+            "render": function(data, type, row, meta){
+                return '<a href="'+ $('link[rel="base"]').attr('href') + '/editar/' + row.id +'" class="btn btn-xs btn-info" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a href="'+ $('link[rel="base"]').attr('href') + '/excluir/' + row.id +'" id="person-'+ row.id +'" class="btn btn-xs btn-danger" data-toggle="confirmation" data-btn-ok-label="Sim" data-btn-ok-class="btn-success" data-btn-ok-icon-class="material-icons" data-btn-ok-icon-content="" data-btn-cancel-label="Não" data-btn-cancel-class="btn-danger" data-btn-cancel-icon-class="material-icons" data-btn-cancel-icon-content="" data-title="Tem certeza que deseja excluir o cadastro de '+ row.name +'?" data-content="Esta ação não poderá ser desfeita." title="Excluir Pessoa"> <i class="fa fa-trash"></i></a>';
+            }
+        }
+        ],
+    });
+});
+
+
+/** 
+* Function tabela usuários inativos
+**/
+$(function() {
+    $('#dt_users_inact').DataTable({
+        autoWidth:  false,
+        processing: true,
+        serverSide: true,
+        ajax: '{{ route('edit-users-inact') }}',
+        columns: [
+            { data: 'name', name: 'name' },
+            { data: 'email', name: 'email' },
+            { data: 'idtb_profile', name: 'idtb_profile' },
+            { data: 'idtb_base', name: 'idtb_base' },
+            { data: 'status', name: 'status' },
+            {
+            "data": "action",
+            "render": function(data, type, row, meta){
+                return '<a href="'+ $('link[rel="base"]').attr('href') + '/editar/' + row.id +'" class="btn btn-xs btn-info" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a href="'+ $('link[rel="base"]').attr('href') + '/excluir/' + row.id +'" id="person-'+ row.id +'" class="btn btn-xs btn-danger" data-toggle="confirmation" data-btn-ok-label="Sim" data-btn-ok-class="btn-success" data-btn-ok-icon-class="material-icons" data-btn-ok-icon-content="" data-btn-cancel-label="Não" data-btn-cancel-class="btn-danger" data-btn-cancel-icon-class="material-icons" data-btn-cancel-icon-content="" data-title="Tem certeza que deseja excluir o cadastro de '+ row.name +'?" data-content="Esta ação não poderá ser desfeita." title="Excluir Pessoa"> <i class="fa fa-trash"></i></a>';
+            }
+        }
+        ],
+    });
+});
+</script>
+
 @endsection
 
 @section('conteudo-view')
@@ -37,13 +104,13 @@
                 <div class="container-fluid">
                 <h2 class="text-center"><strong>Gerenciar Usuários Ativos</strong></h2>
                 <a id="btn_add_user" class="btn btn-primary"><i class="fas fa-plus ">&nbsp Adicionar Usuário</i></a>
-                <table id="dt_users" class="table table striped table-bordered">
+                <table id="dt-users" class="table table striped table-bordered">
                     <thead>
                         <tr class="tableheader">
                             <th>Nome</th>
                             <th>Email</th>
                             <th>Perfil</th>
-                            <th>base</th>
+                            <th>Base</th>
                             <th>Status</th>
                             <th>Ações</th>
                         </tr>
@@ -57,7 +124,7 @@
             <div class="container-fluid">
                 <h2 class="text-center"><strong>Gerenciar Usuários Inativos</strong></h2>
                 <a id="btn_add_user_inactive" class="btn btn-primary"><i class="fas fa-plus">&nbsp Adicionar Usuário</i></a>
-                <table id="dt_users" class="table table striped table-bordered">
+                <table id="dt_users_inact" class="table table striped table-bordered">
                     <thead>
                         <tr class="tableheader">
                             <th>Nome</th>
@@ -92,7 +159,7 @@
             </button>
         </div>
         
-        {!! Form::open(['class' =>'user','route' => 'user.store', 'method' => 'post']) !!}
+        {!! Form::open(['class' =>'user', 'method' => 'post']) !!}
 
         <div class="modal-body">
 
