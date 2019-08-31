@@ -31,7 +31,7 @@ Route::get('/',['uses' => 'Controller@homepage']);
 Route::get('/login',['uses' => 'Controller@telalogin']);
 Route::post('/login',['as' =>'user.login', 'uses' => 'DashboardController@auth']);
 Route::get('/logout',['as' =>'user.logout', 'uses' => 'DashboardController@logout']);
-Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth');
+Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth.unique.user');
 
 /**
 * Routes to user register

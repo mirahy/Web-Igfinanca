@@ -40,17 +40,23 @@ class LoginService
       try
         {
 
-
+            //validando campos
             $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
-
+            //setando email e password em suas variaveis
             $data=[
               'email'      => $request->get('usuario'),
               'password'   => $request->get('password')
             ];
-              $remember     = $request->get('customCheck');
+            // setando o valor de do chekc lembre-me
+            if($request->get('customCheck')){
+              $remember     = 'true';
 
+            }else{
+              $remember     = 'false';
+            }
             
-
+            
+            //estrutura do login
             if( env("PASSWORD_HASH"))
             {
 
@@ -86,10 +92,12 @@ class LoginService
                     'error'        => "Email ou senha inválidos",
                   ];
 
-              Auth::login($user, true);
+              Auth::login($user, $remember);
               
 
             }
+
+            
 
                 return [
                   'success'     => true,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Entities\TbCadUser;
 use Illuminate\Http\Request;
 use App\Validators\TbCadUserValidator;
@@ -34,13 +35,14 @@ class DashboardController extends Controller
   {
     
     $request = $this->service->auth($request);
-   
+    
     session()->flash('success', [
-       'success'   =>  $request['success'],
-       'messages'  =>  $request['messages'],
-       'error'    =>  $request['error'],
+       'success'        =>  $request['success'],
+       'messages'       =>  $request['messages'],
+       'error'          =>  $request['error'],
 
     ]);
+
 
     return $request['success'] ? view('dashboard.dashboard') : view('user.login', [ 'error' =>  $request['error']]);
 

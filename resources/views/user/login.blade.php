@@ -32,9 +32,15 @@
 									{!! Form::open(['class' =>'user','route' => 'user.login', 'method' => 'post']) !!}
 
 										@if(isset($error))
-										<div class="form-group bnt-user"> 
+											<div class="form-group bnt-user"> 
 										@include('templates.msg.danger-msg-login')
-										</div>
+											</div>
+										@endif
+										
+										@if (session()->has('message'))
+											<div class="alert alert-warning alert-dismissible">
+												{{ session('message') }}
+											</div>
 										@endif
 									
 										<div class="form-group">
