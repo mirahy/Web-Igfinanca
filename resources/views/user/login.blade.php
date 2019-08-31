@@ -8,6 +8,7 @@
 	@section('js-view')
 	<!-- scrip recaptcha -->
 	<script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
+	<script src="js/util.js"></script>
 	@endsection
 
 
@@ -55,9 +56,14 @@
 										{!! Form::label('customCheck', 'Lembre-me', array('class' => 'custom-control-label')) !!}
 										</div>
 										</div>
-
-										{!!Form::submit('Login',['class' =>'btn btn-primary btn-user btn-block']) !!}
-									
+										<div class="row">
+										<div class="col-lg-12">
+										<div class="form-group">
+										{!!Form::submit('Login',['class' =>'btn btn-primary btn-user btn-block', 'id' => 'btn_login']) !!}
+										</div>
+										<span class="help-block"></span>
+										</div>
+										</div>
 										<hr>
 										@include('templates.forms.button',['input' => '<i class="fab fa-google fa-fw" disabled></i> Entre com o Google','attributes' => ['type' => 'submit', 'class' => 'btn btn-google btn-user btn-block ', 'disabled']])
 										 @include('templates.forms.button',['input' => '<i class="fab fa-facebook-f fa-fw" disabled></i> Entrar com o Facebook','attributes' => ['type' => 'submit', 'class' => 'btn btn-facebook btn-user btn-block', 'disabled']])

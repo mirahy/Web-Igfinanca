@@ -34,6 +34,7 @@ class TbCadUserService
               return [
                 'success'     => true,
                 'messages'    => 'Usuário(a) '.$usuario['name'].' cadastrado com sucesso!',
+                'erro'        => 'false',
                 'data'        => $usuario,
               ];
 

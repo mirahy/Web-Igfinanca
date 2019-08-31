@@ -14,6 +14,7 @@ use App\Repositories\TbCadUserRepository;
 use App\Validators\TbCadUserValidator;
 use App\Services\TbCadUserService;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class TbCadUsersController.
@@ -79,17 +80,26 @@ class TbCadUsersController extends Controller
 
     public function store(TbCadUserCreateRequest $request)
     {
-        
+       
          $request = $this->service->store($request->all()); 
          $usuario = $request['success'] ? $request['data'] : null;
-
+         
          session()->flash('success', [
             'success'   =>  $request['success'],
             'messages'  =>  $request['messages'],
+            'erro'      =>   $request['erro'],
             'usuario'   =>  $usuario,
          ]);
+        
+         if(!isset(Auth::user()->name)){  
+            return view('user.register');
+         }else{
+            
+            return view('user.edit-users');
+         }
+                
 
-         return view('user.register');
+                
 
                             /*try {
 
@@ -140,6 +150,27 @@ class TbCadUsersController extends Controller
 
         return view('tbCadUsers.show', compact('tbCadUser'));
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  ""
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showAll()
+    {
+        $tbCadUser = $this->repository->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'data' => $tbCadUser,
+            ]);
+        }
+
+        return view('tbCadUsers.show', compact('tbCadUser'));
+    }
+
 
     /**
      * Show the form for editing the specified resource.
