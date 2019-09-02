@@ -1,5 +1,7 @@
-<div class="form-group row">
-    <div class="col-lg-12">
-         {!! Form::text($input, $value ?? null,  $attributes) !!}
-    </div>
+<div class="col-lg-12">
+    <label class ="col-lg-4 control-label">{{$label ?? null}}</label>
+        <div class="form-group">
+            {!! Form::text($input, $value ?? null,  $attributes) !!}
+        </div>
+        <span class="help-block"></span>
 </div>

@@ -19,42 +19,38 @@
       <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
         <div class="row">
-          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-5 d-none d-flex align-items-center "><img src="img/logo-ico.ico" class="rounded mx-auto d-block"  > </div>
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Crie a sua conta aqui!!</h1>
               </div>
               
-              {!! Form::open(['class' =>'user','route' => 'user.login', 'method' => 'post']) !!}
+              {!! Form::open(['class' =>'user','route' => 'user.store', 'method' => 'post']) !!}
 
-										@if(isset($error))
-										<div class="form-group bnt-user"> 
-										@include('templates.msg.danger-msg-login')
-										</div>
-                    @endif
+                        @if(!session()->exists('success'))
+                        <!--não exibe msg.-->
+                        @elseif(session('success')['success'])
+                          @include('templates.msg.success-msg')
+                        @else
+                          @include('templates.msg.danger-msg')
+                        @endif
                     
-                      <div class="form-group row">
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                          @include('templates.forms.input',['input' => 'name', 'attributes' => ['placeholder' => 'Primeiro Nome', 'required','class' => 'form-control form-control-user', 'id' => 'exampleFirstName']])
-                        </div>
-                        
-                        <div class="col-sm-6">
-                          @include('templates.forms.input',['input' => 'lasteName', 'attributes' => ['placeholder' => 'Sobrenome', 'required','class' => 'form-control form-control-user', 'id' => 'exampleLastName']])
-                        </div>
+                       <div class="form-group">
+                          @include('templates.forms.input',['input' => 'name', 'attributes' => ['placeholder' => 'Nome Completo', 'required','class' => 'form-control form-control-user', 'id' => 'user_Name']])
                       </div>
 
                       <div class="form-group">
-                        @include('templates.forms.email',['input' => 'email', 'attributes' => ['placeholder' => 'EMAIL', 'required', 'class' => 'form-control form-control-user', 'id' => 'exampleInputEmail']])
+                        @include('templates.forms.email',['input' => 'email', 'attributes' => ['placeholder' => 'EMAIL', 'required', 'class' => 'form-control form-control-user', 'id' => 'User_Email']])
                       </div>
 
                       <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
-                          @include('templates.forms.password',['input' => 'password', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'exampleInputPassword']])
+                          @include('templates.forms.password',['input' => 'password', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'user_tPassword']])
                         </div>
 
                         <div class="col-sm-6">
-                          @include('templates.forms.password',['input' => 'password', 'attributes' => ['placeholder' => 'Repita a senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'exampleRepeatPassword']])
+                          @include('templates.forms.password',['input' => 'Repeatpassword', 'attributes' => ['placeholder' => 'Repita a senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'user_Repeat_Password']])
                         </div>
                       </div>
 

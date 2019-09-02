@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Entities\TbCadUser;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\TbCadUserCreateRequest;
@@ -12,6 +13,8 @@ use App\Http\Requests\TbCadUserUpdateRequest;
 use App\Repositories\TbCadUserRepository;
 use App\Validators\TbCadUserValidator;
 use App\Services\TbCadUserService;
+use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class TbCadUsersController.
@@ -50,32 +53,53 @@ class TbCadUsersController extends Controller
 
         return view('user.forgot-password');
     }
+    
 
 
-    Public function query(){
+    Public function query(Request $request){
 
-      $users = $this->repository->all();
+        if(request()->ajax()){
+            return Datatables::of(TbCadUser::query()->where('status', '1'))->blacklist(['action'])->make(true);
+        }
+        return view('user.edit-users');
 
-      return view('user.query', [
-        'users'  => $users,
-      ]);
 
     }
 
+    Public function query_inact(Request $request){
+
+        if(request()->ajax()){
+            return Datatables::of(TbCadUser::query()->where('status', '0'))->blacklist(['action'])->make(true);
+        }
+        return view('user.edit-users');
+
+
+    }
+
+    
 
     public function store(TbCadUserCreateRequest $request)
     {
-
-         $request = $this->service->store($request->all());
+       
+         $request = $this->service->store($request->all()); 
          $usuario = $request['success'] ? $request['data'] : null;
-
+         
          session()->flash('success', [
             'success'   =>  $request['success'],
             'messages'  =>  $request['messages'],
-            'usuario'   => $usuario,
+            'erro'      =>   $request['erro'],
+            'usuario'   =>  $usuario,
          ]);
+        
+         if(!isset(Auth::user()->name)){  
+            return view('user.register');
+         }else{
+            
+            return view('user.edit-users');
+         }
+                
 
-         return view('user.index');
+                
 
                             /*try {
 
@@ -126,6 +150,27 @@ class TbCadUsersController extends Controller
 
         return view('tbCadUsers.show', compact('tbCadUser'));
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  ""
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showAll()
+    {
+        $tbCadUser = $this->repository->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'data' => $tbCadUser,
+            ]);
+        }
+
+        return view('tbCadUsers.show', compact('tbCadUser'));
+    }
+
 
     /**
      * Show the form for editing the specified resource.

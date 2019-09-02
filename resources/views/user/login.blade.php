@@ -8,6 +8,8 @@
 	@section('js-view')
 	<!-- scrip recaptcha -->
 	<script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
+	<script src="js/util.js"></script>
+	<script src="js/login.js"></script>
 	@endsection
 
 
@@ -21,45 +23,50 @@
           <div class="card-body p-0">
 			<!-- Nested Row within Card Body -->
 			<div class="row">
-				<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+				<div class="col-lg-6 d-none d-flex align-items-center "><img src="img/logo-ico.ico" class="rounded mx-auto d-block"  > </div>
 					<div class="col-lg-6">
 						<div class="p-5">
 						<div class="text-center">
 							<h1 class="h4 text-gray-900 mb-4">Bem vindo de volta!</h1>
 								</div >
 
-									{!! Form::open(['class' =>'user','route' => 'user.login', 'method' => 'post']) !!}
+									{!! Form::open(['class' =>'user', 'method' => 'post', 'id' => 'login_form']) !!}
 
-										@if(isset($error))
-										<div class="form-group bnt-user"> 
-										@include('templates.msg.danger-msg-login')
+										<div class="col-sm-12 d-none">
+											<div class=" ">
+												<label id="message"> </label>
+											</div>
+												<span class="help-block"></span>
 										</div>
-										@endif
-									
-										<div class="form-group">
-										{!! Form::Email('email', null, ['class' =>'form-control form-control-user', 'placeholder'=>'Digite seu Email', 'required', 'id'=>'exampleInputEmail', 'aria-describedby'=>'emailHelp'])!!}
-										</div>
+
+										@include('templates.forms.email',['input' => 'email', 'attributes' => ['placeholder' => 'Email', 'required','class' => 'form-control form-control-user ', 'id' => 'email', 'name' => 'email',  'maxlength' => '100']])
 										
+										@include('templates.forms.password',['input' => 'password', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'password', 'name' => 'password']])
 										<div class="form-group">
-										{!! Form::password('password',['class' =>'form-control form-control-user', 'placeholder'=>'Senha', 'required'])!!}
+											<div class="col-sm-12 ">
+												<label  id="g-recaptcha" class="g-recaptcha " data-sitekey="6LfXo1gUAAAAAB2V2SVQCXpHZC4-i5SgQFQcUjAM" data-size="normal" style="transform:scale(0.93);transform-origin:0 0">
+												</label><!-- data-theme="dark" valida/acess.php -->
+											</div>
+											<span class="help-block"></span>
 										</div>
-										
 										<div class="form-group">
-										<label  class="g-recaptcha " data-sitekey="6LfXo1gUAAAAAB2V2SVQCXpHZC4-i5SgQFQcUjAM" data-size="normal" style="transform:scale(0.93);transform-origin:0 0">
-										</label><!-- data-theme="dark" valida/acess.php -->
+											<div class="col-sm-12 ">
+												<div class="custom-control custom-checkbox small">
+													{!! Form::checkbox('customCheck', true, null, array('class' => 'custom-control-input', 'id'=>'customCheck')) !!}
+													{!! Form::label('customCheck', 'Lembre-me', array('class' => 'custom-control-label')) !!}
+												</div>
+											</div>
 										</div>
-
 										<div class="form-group">
-										<div class="custom-control custom-checkbox small">
-										{!! Form::checkbox('customCheck', true, null, array('class' => 'custom-control-input', 'id'=>'customCheck')) !!}
-										{!! Form::label('customCheck', 'Lembre-me', array('class' => 'custom-control-label')) !!}
+											<div class="col-lg-12">
+												<div class="form-group">
+													{!!Form::submit('Login',['class' =>'btn btn-primary btn-user btn-block', 'id' => 'btn_login']) !!}
+												</div>
+												<span class="help-block"></span>
+											</div>
 										</div>
-										</div>
-
-										{!!Form::submit('Login',['class' =>'btn btn-primary btn-user btn-block']) !!}
-									
 										<hr>
-										@include('templates.forms.button',['input' => '<i class="fab fa-google fa-fw" disabled></i> REntre com o Google','attributes' => ['type' => 'submit', 'class' => 'btn btn-google btn-user btn-block ', 'disabled']])
+										@include('templates.forms.button',['input' => '<i class="fab fa-google fa-fw" disabled></i> Entre com o Google','attributes' => ['type' => 'submit', 'class' => 'btn btn-google btn-user btn-block ', 'disabled']])
 										 @include('templates.forms.button',['input' => '<i class="fab fa-facebook-f fa-fw" disabled></i> Entrar com o Facebook','attributes' => ['type' => 'submit', 'class' => 'btn btn-facebook btn-user btn-block', 'disabled']])
 										 <!-- Alterar botoes acima pelos links abaixo apos implementação dos registros socias
 										@include('templates.forms.btnLink',['href' => '#', 'class_a' => 'btn btn-google btn-user btn-block', 'class_i' => 'fab fa-google fa-fw', 'text' => 'Entre com o Google', 'role' => 'button', 'aria_disabled' => 'true'])

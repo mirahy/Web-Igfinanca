@@ -19,9 +19,10 @@ class TbCadUserValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-          'name'            => 'required',
-          'idtb_profile'    => 'required',
-          'idtb_base'       => 'required',
+          'name'            => 'required|min:10',
+          'email'           => 'required|email|min:10',
+          'password'        => 'required|min:8',
+          'Repeatpassword'  => 'required|same:password',
         ],
         ValidatorInterface::RULE_UPDATE => [],
     ];

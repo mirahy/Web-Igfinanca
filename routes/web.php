@@ -19,11 +19,6 @@
 
 Route::get('/',['uses' => 'Controller@homepage']);
 
-#Route::get('/', function () {
-#    return view('welcome');
-#});
-
-
 /**
 * Routes to user auth
 *========================================================================
@@ -31,7 +26,7 @@ Route::get('/',['uses' => 'Controller@homepage']);
 Route::get('/login',['uses' => 'Controller@telalogin']);
 Route::post('/login',['as' =>'user.login', 'uses' => 'DashboardController@auth']);
 Route::get('/logout',['as' =>'user.logout', 'uses' => 'DashboardController@logout']);
-Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth');
+Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth')->middleware('auth.unique.user');
 
 /**
 * Routes to user register
@@ -51,7 +46,11 @@ Route::get('/forgot-password',['uses' => 'TbCadUsersController@forgotPassword'])
 *========================================================================
 */
 #Route::get('/user',['as' =>'user.index', 'uses' => 'TbCadUsersController@index']);
-Route::resource('user', 'TbCadUsersController')->middleware('auth');
-Route::get('/query', ['as' =>'user.query', 'uses' => 'TbCadUsersController@query'])->middleware('auth');
+Route::resource('user', 'TbCadUsersController');
+Route::get('/edit-users', ['as' =>'edit-users', 'uses' => 'TbCadUsersController@query'])->middleware('auth');
+Route::get('/edit-users-inact', ['as' =>'edit-users-inact', 'uses' => 'TbCadUsersController@query_inact'])->middleware('auth');
+Route::get('/user-all', ['as' =>'user-all', 'uses' => 'TbCadUsersController@showAll'])->middleware('auth');
+
+
 
 /**test */

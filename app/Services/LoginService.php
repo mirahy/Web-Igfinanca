@@ -40,17 +40,23 @@ class LoginService
       try
         {
 
-
+            //validando campos
             $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
-
+            //setando email e password em suas variaveis
             $data=[
               'email'      => $request->get('usuario'),
               'password'   => $request->get('password')
             ];
-              $remember     = $request->get('customCheck');
+            // setando o valor de do chekc lembre-me
+            if($request->get('customCheck')){
+              $remember     = 'true';
 
+            }else{
+              $remember     = 'false';
+            }
             
-
+            
+            //estrutura do login
             if( env("PASSWORD_HASH"))
             {
 
@@ -73,39 +79,41 @@ class LoginService
               if(!$user)
               return [
                     'success'     => false,
-                    'messages'    => false,
+                    'messages'    => ["Email e/ou senha inválidos"],
                     'data'        => $user,
-                    'error'        => "Email ou senha inválidos",
+                    'type'        => ["email","password"],                 
                   ];
 
               if($user->password != $request->get('password'))
                 return [
                     'success'     => false,
-                    'messages'    => false,
+                    'messages'    => ["Email e/ou senha inválidos"],
                     'data'        => $user,
-                    'error'        => "Email ou senha inválidos",
+                    'type'        => ["email","password"],  
                   ];
 
-              Auth::login($user, true);
+              Auth::login($user, $remember);
               
 
             }
 
+            
+
                 return [
                   'success'     => true,
-                  'messages'    => 'Ok',
+                  'messages'    => ['Ok'],
                   'data'        => $user,
-                  'error'        => null,
+                  'type'        => [null],  
                 ];
 
         }
         catch (Exception $e)
         {
           switch (get_class($e)) {
-            case QueryException::class      : return['success' => false, 'messages' => 'Preencher campos!', 'error'  => $e->getMessage()];
-            case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag(), 'error'  => 'Preencha o captcha!'];
-            case Exception::class           : return['success' => false, 'messages' => 'Preencher campos!', 'error'  => $e->getMessage()];
-            default                         : return['success' => false, 'messages' => 'Preencher campos!', 'error'  => $e->getMessage()];
+            case QueryException::class      : return['success' => false, 'messages' => 'Preencher campos!'];
+            case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+            case Exception::class           : return['success' => false, 'messages' => 'Preencher campos!'];
+            default                         : return['success' => false, 'messages' => 'Preencher campos!'];
           }
         }
 

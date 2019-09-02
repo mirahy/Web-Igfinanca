@@ -17,6 +17,7 @@ class LoginValidator extends LaravelValidator
      *
      * @var array
      */
+    
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
           'email'                      => 'required|min:10|email',
@@ -25,5 +26,16 @@ class LoginValidator extends LaravelValidator
 
         ],
         ValidatorInterface::RULE_UPDATE => [],
+      ];
+
+      protected $messages = [
+        'email.required' => 'Email e/ou senha inválidos!',
+        'email.min'  => 'Email e/ou senha inválidos!',
+        'email.email' => 'Email e/ou senha inválidos!',
+        'password.required' => 'Email e/ou senha inválidos!',
+        'password.min' => 'Email e/ou senha inválidos!',
+        'g-recaptcha-response.required' => 'O campo recaptcha é obrigatório!',
+        
     ];
+    
 }

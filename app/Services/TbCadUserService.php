@@ -33,15 +33,15 @@ class TbCadUserService
 
               return [
                 'success'     => true,
-                'messages'    => 'Usuário '.$usuario['name'].' cadastrado com sucesso!',
+                'messages'    => 'Usuário(a) '.$usuario['name'].' cadastrado com sucesso!',
+                'erro'        => 'false',
                 'data'        => $usuario,
               ];
 
 
         } catch (Exception $e) {
 
-
-              switch (get_class($e)) {
+              switch (get_class($e)) {               
                 case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
                 case ValidatorException::class  : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessageBag()];
                 case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
