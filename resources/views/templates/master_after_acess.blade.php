@@ -18,6 +18,10 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="css/style.css" rel="stylesheet">
+
   @yield('css-view')
 
 </head>
@@ -41,6 +45,9 @@
 
 	<!-- Custom scripts for all pages-->
 	<script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Url base-->
+  <script src="js/url.js"></script>
 
   @yield('js-view')
 

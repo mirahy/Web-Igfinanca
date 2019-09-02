@@ -1,5 +1,6 @@
 // Base url do site
 baseUrl = getBaseUrl();
+
 $(function(){
 
     $("#btn_add_user").click(function(){
@@ -24,14 +25,14 @@ $(function(){
 
     })
 
-   /** 
-        * tabela usuários ativos
-        **/
-       $('#dt_users').DataTable({
+    /** 
+    * tabela usuários ativos
+    **/
+    $('#dt_users').DataTable({
         autoWidth:  false,
         processing: true,
         //serverSide: true,
-        ajax: baseUrl + ':8000/edit-users',
+        ajax: baseUrl + 'edit-users',
         rowReorder: {
             selector: 'td:nth-child(2)'
         },
@@ -61,7 +62,7 @@ $(function(){
         autoWidth:  false,
         processing: true,
         //serverSide: true,
-        ajax: baseUrl + ':8000/edit-users-inact',
+        ajax: baseUrl + 'edit-users-inact',
         rowReorder: {
             selector: 'td:nth-child(2)'
         },
@@ -77,7 +78,7 @@ $(function(){
             {
             "data": "action",
             "render": function(data, type, row, meta){
-                return '<a id_user="'+row.id+'" class="btn btn-xs btn-primary" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a  id_user="'+row.id+'" class="btn btn-xs btn-danger" data-toggle="confirmation" data-btn-ok-label="Sim" data-btn-ok-class="btn-success" data-btn-ok-icon-class="material-icons" data-btn-ok-icon-content="" data-btn-cancel-label="Não" data-btn-cancel-class="btn-danger" data-btn-cancel-icon-class="material-icons" data-btn-cancel-icon-content="" data-title="Tem certeza que deseja excluir o cadastro de '+ row.name +'?" data-content="Esta ação não poderá ser desfeita." title="Excluir Pessoa"> <i class="fa fa-trash"></i></a>';
+                return '<a id_user="'+row.id+'" class="btn btn-xs btn-primary" id="btn_edit_user_inact" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a  id_user="'+row.id+'" class="btn btn-xs btn-danger" data-toggle="confirmation" data-btn-ok-label="Sim" data-btn-ok-class="btn-success" data-btn-ok-icon-class="material-icons" data-btn-ok-icon-content="" data-btn-cancel-label="Não" data-btn-cancel-class="btn-danger" data-btn-cancel-icon-class="material-icons" data-btn-cancel-icon-content="" data-title="Tem certeza que deseja excluir o cadastro de '+ row.name +'?" data-content="Esta ação não poderá ser desfeita." title="Excluir Pessoa"> <i class="fa fa-trash"></i></a>';
             }
         }
         ],
@@ -85,5 +86,17 @@ $(function(){
         // active_btn_user();
         }
     });
+
+    // $("#user_form").submit(function(){
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: '{{route("user.store")}}',
+    //         dataType:
+    //     })
+        
+    //     return false;
+
+    // })
 
 })

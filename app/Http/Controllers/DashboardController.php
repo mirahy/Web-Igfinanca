@@ -33,20 +33,31 @@ class DashboardController extends Controller
 
   public function auth(Request $request)
   {
+
+    $json  = array();
+    $json["status"] = 1;
+    $json["error_list"] = array();;
     
     $request = $this->service->auth($request);
     
     session()->flash('success', [
        'success'        =>  $request['success'],
        'messages'       =>  $request['messages'],
-       'error'          =>  $request['error'],
-
+  
     ]);
 
+    if(!$request['success']){
+      $json["status"] = 0;
+        foreach($request['messages'] as $msg){
+            $json["error_list"]["#message"] = $msg; 
+        } 
+            $json["error_list"]["#email"] = "";
+          
+            $json["error_list"]["#password"] = ""; 
+      }      
 
-    return $request['success'] ? view('dashboard.dashboard') : view('user.login', [ 'error' =>  $request['error']]);
 
-
+      echo json_encode($json);
   }
 
 

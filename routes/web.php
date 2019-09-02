@@ -19,11 +19,6 @@
 
 Route::get('/',['uses' => 'Controller@homepage']);
 
-#Route::get('/', function () {
-#    return view('welcome');
-#});
-
-
 /**
 * Routes to user auth
 *========================================================================
@@ -31,7 +26,7 @@ Route::get('/',['uses' => 'Controller@homepage']);
 Route::get('/login',['uses' => 'Controller@telalogin']);
 Route::post('/login',['as' =>'user.login', 'uses' => 'DashboardController@auth']);
 Route::get('/logout',['as' =>'user.logout', 'uses' => 'DashboardController@logout']);
-Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth.unique.user');
+Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth')->middleware('auth.unique.user');
 
 /**
 * Routes to user register

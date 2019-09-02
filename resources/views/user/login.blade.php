@@ -9,6 +9,7 @@
 	<!-- scrip recaptcha -->
 	<script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
 	<script src="js/util.js"></script>
+	<script src="js/login.js"></script>
 	@endsection
 
 
@@ -29,46 +30,40 @@
 							<h1 class="h4 text-gray-900 mb-4">Bem vindo de volta!</h1>
 								</div >
 
-									{!! Form::open(['class' =>'user','route' => 'user.login', 'method' => 'post']) !!}
+									{!! Form::open(['class' =>'user', 'method' => 'post', 'id' => 'login_form']) !!}
 
-										@if(isset($error))
-											<div class="form-group bnt-user"> 
-										@include('templates.msg.danger-msg-login')
+										<div class="col-sm-12 d-none">
+											<div class=" ">
+												<label id="message"> </label>
 											</div>
-										@endif
-										
-										@if (session()->has('message'))
-											<div class="alert alert-warning alert-dismissible">
-												{{ session('message') }}
-											</div>
-										@endif
-									
-										<div class="form-group">
-										{!! Form::Email('email', null, ['class' =>'form-control form-control-user', 'placeholder'=>'Digite seu Email', 'required', 'id'=>'exampleInputEmail', 'aria-describedby'=>'emailHelp'])!!}
-										</div>
-										
-										<div class="form-group">
-										{!! Form::password('password',['class' =>'form-control form-control-user', 'placeholder'=>'Senha', 'required'])!!}
-										</div>
-										
-										<div class="form-group">
-										<label  class="g-recaptcha " data-sitekey="6LfXo1gUAAAAAB2V2SVQCXpHZC4-i5SgQFQcUjAM" data-size="normal" style="transform:scale(0.93);transform-origin:0 0">
-										</label><!-- data-theme="dark" valida/acess.php -->
+												<span class="help-block"></span>
 										</div>
 
+										@include('templates.forms.email',['input' => 'email', 'attributes' => ['placeholder' => 'Email', 'required','class' => 'form-control form-control-user ', 'id' => 'email', 'name' => 'email',  'maxlength' => '100']])
+										
+										@include('templates.forms.password',['input' => 'password', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'password', 'name' => 'password']])
 										<div class="form-group">
-										<div class="custom-control custom-checkbox small">
-										{!! Form::checkbox('customCheck', true, null, array('class' => 'custom-control-input', 'id'=>'customCheck')) !!}
-										{!! Form::label('customCheck', 'Lembre-me', array('class' => 'custom-control-label')) !!}
+											<div class="col-sm-12 ">
+												<label  id="g-recaptcha" class="g-recaptcha " data-sitekey="6LfXo1gUAAAAAB2V2SVQCXpHZC4-i5SgQFQcUjAM" data-size="normal" style="transform:scale(0.93);transform-origin:0 0">
+												</label><!-- data-theme="dark" valida/acess.php -->
+											</div>
+											<span class="help-block"></span>
 										</div>
-										</div>
-										<div class="row">
-										<div class="col-lg-12">
 										<div class="form-group">
-										{!!Form::submit('Login',['class' =>'btn btn-primary btn-user btn-block', 'id' => 'btn_login']) !!}
+											<div class="col-sm-12 ">
+												<div class="custom-control custom-checkbox small">
+													{!! Form::checkbox('customCheck', true, null, array('class' => 'custom-control-input', 'id'=>'customCheck')) !!}
+													{!! Form::label('customCheck', 'Lembre-me', array('class' => 'custom-control-label')) !!}
+												</div>
+											</div>
 										</div>
-										<span class="help-block"></span>
-										</div>
+										<div class="form-group">
+											<div class="col-lg-12">
+												<div class="form-group">
+													{!!Form::submit('Login',['class' =>'btn btn-primary btn-user btn-block', 'id' => 'btn_login']) !!}
+												</div>
+												<span class="help-block"></span>
+											</div>
 										</div>
 										<hr>
 										@include('templates.forms.button',['input' => '<i class="fab fa-google fa-fw" disabled></i> Entre com o Google','attributes' => ['type' => 'submit', 'class' => 'btn btn-google btn-user btn-block ', 'disabled']])

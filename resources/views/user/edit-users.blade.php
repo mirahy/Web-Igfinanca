@@ -17,7 +17,6 @@ var APP_URL = {!! json_encode(url('/')) !!}
 <script src="js/dataTables.bootstrap4.min.js"></script>
 <script src="js/datatables.min.js"></script>
 <script src="js/bootstrap.js"></script>
-<script src="js/url.js"></script>
 <script src="js/util.js"></script>
 <script src="js/edit-user.js"></script>
 <script>
@@ -124,13 +123,13 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
             </button>
         </div>
         
-        {!! Form::open(['class' =>'user', 'method' => 'post', 'route' => 'user.store' ,'id' => 'user_form']) !!}
+        {!! Form::open(['class' =>'user', 'id' => 'user_form']) !!}
 
         <div class="modal-body">
 
             
             
-                 @include('templates.forms.input',['input' => 'id', 'attributes' => [ 'name' => 'user_id', 'hidden', 'id' => 'user_id']])
+                    @include('templates.forms.input',['input' => 'id', 'attributes' => [ 'name' => 'user_id', 'hidden', 'id' => 'user_id']])
                  
                     @include('templates.forms.input',['input' => 'text','label' => 'Nome Completo', 'attributes' => ['placeholder' => 'Nome Completo', 'required','class' => 'form-control form-control-user', 'id' => 'name', 'name' => 'name',  'maxlength' => '100']])
 
@@ -149,8 +148,10 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
 
         </div>
             <div class="modal-footer">
+                
                 @include('templates.forms.button',['input' => '<i class="fa fa-save fa-fw"></i> Salvar','attributes' => ['type' => 'submit', 'class' => 'btn btn-primary', 'id' => 'btn_save_user']])
                 @include('templates.forms.button',['input' => '<i class="fas fa-times fa-fw"></i> Fechar','attributes' => ['type' => 'button', 'class' => 'btn btn-secondary', 'data-dismiss' => 'modal']])
+                
                 <!--<button type="button" class="btn btn-primary">Save changes</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
             </div>
