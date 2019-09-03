@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
                 'birth'         => '1989-12-06',
-                'email'         => 'mirahy@admin.com.br',
+                'email'         => 'mirahy@adminseew.com.br',
                 'password'      =>  env("PASSWORD_HASH") ? bcrypt('12345') : '12345',
                 'status'        => '1',
                 'permission'    => '2'
@@ -45,9 +45,9 @@ class DatabaseSeeder extends Seeder
 
           private function createUsers()
           {
-              $max = rand(100, 200);
+              $max = rand(400, 600);
               for($i=0; $i < $max; $i++):
-                  $this->createUser($i);
+                  $this->createUser($i+$max);
               endfor;
               $this->command->info($max . ' demo users created');
           }

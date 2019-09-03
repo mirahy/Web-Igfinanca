@@ -97,8 +97,6 @@ class LoginService
 
             }
 
-            
-
                 return [
                   'success'     => true,
                   'messages'    => ['Ok'],

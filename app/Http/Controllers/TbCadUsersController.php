@@ -78,25 +78,49 @@ class TbCadUsersController extends Controller
 
     
 
-    public function store(TbCadUserCreateRequest $request)
+    public function keep(Request $request)
     {
+
+        // dd($request->all());
+
+        $json  = array();
+        $json["status"] = 1;
+        $json["error_list"] = array();
+        
+        if(!$request["id"]){
+            $request = $this->service->store($request->all()); 
+            $user = $request['success'] ? $request['data'] : null;
+
+        }else{
+            $request = $this->service->update($request->all()); 
+            $user = $request['success'] ? $request['data'] : null;
+
+        }
        
-         $request = $this->service->store($request->all()); 
-         $usuario = $request['success'] ? $request['data'] : null;
          
          session()->flash('success', [
             'success'   =>  $request['success'],
             'messages'  =>  $request['messages'],
-            'erro'      =>   $request['erro'],
-            'usuario'   =>  $usuario,
+            'usuario'   =>  $user,
          ]);
+         
+         if(!$request['success']){
+            $i=0;
+            $json["status"] = 0;
+              foreach($request['messages'] as $msg){
+                  $json["error_list"]["#".$request['type'][$i]] = $msg;
+                  $i++;
+              } 
+            }      
+      
+            echo json_encode($json);
         
-         if(!isset(Auth::user()->name)){  
-            return view('user.register');
-         }else{
+        //  if(!isset(Auth::user()->name)){  
+        //     return view('user.register');
+        //  }else{
             
-            return view('user.edit-users');
-         }
+        //     return view('user.edit-users');
+        //  }
                 
 
                 

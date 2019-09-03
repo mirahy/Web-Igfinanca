@@ -6,6 +6,7 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/dataTables.bootstrap4.min.css" rel="stylesheet">
 <link href="css/datatables.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
 @endsection
 
 @section('js-view')
@@ -111,55 +112,55 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
 
     </div>
     <!-- /.container-fluid -->
-
+    <!-- Modal users -->
     <div id="modal_user" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
 
-        <div class="modal-header">
-            <h5 class="modal-title">Usuário</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Usuário</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
         
-        {!! Form::open(['class' =>'user', 'id' => 'user_form']) !!}
+                    {!! Form::open(['class' =>'user', 'id' => 'user_form']) !!}
 
-        <div class="modal-body">
+                        <div class="modal-body">
 
             
             
-                    @include('templates.forms.input',['input' => 'id', 'attributes' => [ 'name' => 'user_id', 'hidden', 'id' => 'user_id']])
-                 
-                    @include('templates.forms.input',['input' => 'text','label' => 'Nome Completo', 'attributes' => ['placeholder' => 'Nome Completo', 'required','class' => 'form-control form-control-user', 'id' => 'name', 'name' => 'name',  'maxlength' => '100']])
-
-                    @include('templates.forms.email',['input' => 'email', 'label' => 'Email', 'attributes' => ['placeholder' => 'Email', 'required','class' => 'form-control form-control-user', 'id' => 'email', 'name' => 'email',  'maxlength' => '100']])
-
-                    @include('templates.forms.input',['input' => 'text', 'label' => 'Perfil', 'attributes' => ['placeholder' => 'Perfil', 'required', 'class' => 'form-control form-control-user', 'id' => 'idtb_profile', 'name' => 'idtb_profile',  'maxlength' => '100']])
-
-                    @include('templates.forms.input',['input' => 'text', 'label' => 'Base', 'attributes' => ['placeholder' => 'Base', 'required','class' => 'form-control form-control-user', 'id' => 'idtb_base', 'name' => 'idtb_base',  'maxlength' => '100']])
-
-                    @include('templates.forms.input',['input' => 'text', 'label' => 'Status', 'attributes' => ['placeholder' => 'Status', 'required','class' => 'form-control form-control-user', 'id' => 'status', 'name' => 'status',  'maxlength' => '100']])
-                    
-                    @include('templates.forms.password',['input' => 'password', 'label' => 'Senha', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'password', 'name' => 'password']])
+                            @include('templates.forms.input',['input' => 'text','value' => '0', 'attributes' => [ 'name' => 'id', 'hidden', 'id' => 'id']])
                         
-                    @include('templates.forms.password',['input' => 'Repeatpassword', 'label' => 'Repita a senha', 'attributes' => ['placeholder' => 'Repita a senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'user_Repeat_Password', 'name' => 'Repeatpassword']])
-                        
+                            @include('templates.forms.input',['input' => 'text','label' => 'Nome Completo', 'attributes' => ['placeholder' => 'Nome Completo','class' => 'form-control form-control-user', 'id' => 'name', 'name' => 'name',  'maxlength' => '100']])
 
-        </div>
-            <div class="modal-footer">
+                            @include('templates.forms.email',['input' => 'email', 'label' => 'Email', 'attributes' => ['placeholder' => 'Email', 'class' => 'form-control form-control-user', 'id' => 'email', 'name' => 'email',  'maxlength' => '100']])
+
+                            @include('templates.forms.input',['input' => 'text', 'label' => 'Perfil', 'attributes' => ['placeholder' => 'Perfil',  'class' => 'form-control form-control-user', 'id' => 'idtb_profile', 'name' => 'idtb_profile',  'maxlength' => '100']])
+
+                            @include('templates.forms.input',['input' => 'text', 'label' => 'Base', 'attributes' => ['placeholder' => 'Base', 'class' => 'form-control form-control-user', 'id' => 'idtb_base', 'name' => 'idtb_base',  'maxlength' => '100']])
+
+                            @include('templates.forms.input',['input' => 'text', 'label' => 'Status', 'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status', 'name' => 'status',  'maxlength' => '100']])
+                            
+                            @include('templates.forms.password',['input' => 'password', 'label' => 'Senha', 'attributes' => ['placeholder' => 'Senha',  'class' => 'form-control form-control-user', 'id' => 'password', 'name' => 'password']])
+                                
+                            @include('templates.forms.password',['input' => 'Repeatpassword', 'label' => 'Repita a senha', 'attributes' => ['placeholder' => 'Repita a senha',  'class' => 'form-control form-control-user', 'id' => 'Repeatpassword', 'name' => 'Repeatpassword']])
+                                
+
+                        </div>
+                         <div class="modal-footer">
                 
-                @include('templates.forms.button',['input' => '<i class="fa fa-save fa-fw"></i> Salvar','attributes' => ['type' => 'submit', 'class' => 'btn btn-primary', 'id' => 'btn_save_user']])
-                @include('templates.forms.button',['input' => '<i class="fas fa-times fa-fw"></i> Fechar','attributes' => ['type' => 'button', 'class' => 'btn btn-secondary', 'data-dismiss' => 'modal']])
-                
-                <!--<button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                            @include('templates.forms.button',['input' => '<i class="fa fa-save fa-fw"></i> Salvar','attributes' => ['type' => 'submit', 'class' => 'btn btn-primary', 'id' => 'btn_save_user']])
+                            @include('templates.forms.button',['input' => '<i class="fas fa-times fa-fw"></i> Fechar','attributes' => ['type' => 'button', 'class' => 'btn btn-secondary', 'data-dismiss' => 'modal']])
+                            
+                            <!--<button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                        </div>
+           
+
+                    {!! Form::close() !!}
             </div>
         </div>
-
-        {!! Form::close() !!}
-
     </div>
-    </div>
-
+    <!-- /Modal users -->
 @endsection

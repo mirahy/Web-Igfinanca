@@ -17,6 +17,7 @@ $(function(){
         $("#modal_user").modal();
 
     })
+
     $("#btn_edit_user").click(function(){
         clearErrors();
         $("#user_form")[0].reset();
@@ -24,6 +25,7 @@ $(function(){
         $("#modal_user").modal();
 
     })
+
 
     /** 
     * tabela usuários ativos
@@ -87,16 +89,30 @@ $(function(){
         }
     });
 
-    // $("#user_form").submit(function(){
+    $("#user_form").submit(function(){
 
-    //     $.ajax({
-    //         type: "POST",
-    //         url: '{{route("user.store")}}',
-    //         dataType:
-    //     })
+        $.ajax({
+            type: "POST",
+            url: "keep",
+            dataType: "json",
+            data: $(this).serialize(),
+            beforeSend: function(){
+                clearErrors();
+                $("#btn_save_user").parent().siblings(".help-block").html(loadingImg("Verificando..."))
+            },
+            success: function(response){
+                clearErrors();
+                if(response["status"]){
+                    $("#modal_user").modal('hide');
+                }else{
+                    showErrors(response["error_list"]);
+                }
+            }
+        })
         
-    //     return false;
+        return false;
 
-    // })
+    });
 
+    
 })
