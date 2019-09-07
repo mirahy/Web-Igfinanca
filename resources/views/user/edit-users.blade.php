@@ -68,14 +68,14 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
                 <table id="dt_users" class="table table striped table-bordered">
                     <thead>
                         <tr class="tableheader">
-                            <th>Nome</th>
-                            <th>Email</th>
+                            <th class="dt-center" >Nome</th>
+                            <th class="dt-center" >Email</th>
                             <th>Perfil</th>
                             <th>Base</th>
                             <th>Status</th>
                             <th>Criado</th>
                             <th>Editado</th>
-                            <th>Ações</th>
+                            <th class="dt-center no-sort">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,7 +112,7 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
 
     </div>
     <!-- /.container-fluid -->
-    <!-- Modal users -->
+    <!-- Modal users Create -->
     <div id="modal_user" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -162,5 +162,54 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
             </div>
         </div>
     </div>
-    <!-- /Modal users -->
+    <!-- /Modal users create -->
+
+    <!-- Modal edit Create -->
+    <div id="modal_user_edit" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Usuário</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+        
+                    {!! Form::open(['class' =>'user', 'id' => 'user_form_edit']) !!}
+
+                        <div class="modal-body">
+
+            
+            
+                            @include('templates.forms.input',['input' => 'text','value' => '0', 'attributes' => [ 'name' => 'id', 'hidden', 'id' => 'id_edit']])
+                        
+                            @include('templates.forms.input',['input' => 'text','label' => 'Nome Completo', 'attributes' => ['placeholder' => 'Nome Completo','class' => 'form-control form-control-user', 'id' => 'name_edit', 'name' => 'name',  'maxlength' => '100']])
+
+                            @include('templates.forms.email',['input' => 'email', 'label' => 'Email', 'attributes' => ['placeholder' => 'Email', 'class' => 'form-control form-control-user', 'id' => 'email_edit', 'name' => 'email',  'maxlength' => '100']])
+
+                            @include('templates.forms.input',['input' => 'text', 'label' => 'Perfil', 'attributes' => ['placeholder' => 'Perfil',  'class' => 'form-control form-control-user', 'id' => 'idtb_profile_edit', 'name' => 'idtb_profile',  'maxlength' => '100']])
+
+                            @include('templates.forms.input',['input' => 'text', 'label' => 'Base', 'attributes' => ['placeholder' => 'Base', 'class' => 'form-control form-control-user', 'id' => 'idtb_base_edit', 'name' => 'idtb_base',  'maxlength' => '100']])
+
+                            @include('templates.forms.input',['input' => 'text', 'label' => 'Status', 'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status_edit', 'name' => 'status',  'maxlength' => '100']])
+                            
+                                
+
+                        </div>
+                         <div class="modal-footer">
+                
+                            @include('templates.forms.button',['input' => '<i class="fa fa-save fa-fw"></i> Editar','attributes' => ['type' => 'submit', 'class' => 'btn btn-primary', 'id' => 'btn_edit_user']])
+                            @include('templates.forms.button',['input' => '<i class="fas fa-times fa-fw"></i> Fechar','attributes' => ['type' => 'button', 'class' => 'btn btn-secondary', 'data-dismiss' => 'modal']])
+                            
+                            <!--<button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                        </div>
+           
+
+                    {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+<!-- /Modal edit users -->
 @endsection

@@ -44,8 +44,8 @@ class TbCadUserService
               switch (get_class($e)) {               
                 case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
-                case Exception::class           : return['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
-                default                         : return['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
+                case Exception::class           : return['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
+                default                         : return['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
               }
 
         }
@@ -54,17 +54,18 @@ class TbCadUserService
 
 
 
-      public function update($data){
+      public function update($data)
+      {
         try {
 
-              $id = $data['user_id'];
+              $id = $data['id'];
 
-              $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_UPDATE);
-              $user = $this->repository->where($id)->update($data);
+              $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+              $user = $this->repository->update($data, $id);
 
               return [
                 'success'     => true,
-                'messages'    => ['Usuário(a) '.$usuario['name'].' cadastrado com sucesso!'],
+                'messages'    => ['Usuário(a) '.$user['name'].' atualizado com sucesso!'],
                 'data'        => $user,
                 'type'        => [""],
               ];
@@ -73,28 +74,26 @@ class TbCadUserService
         } catch (Exception $e) {
 
               switch (get_class($e)) {               
-                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
+                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
-                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
-                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
+                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
               }
 
         }
-  }
+      }
 
 
-      public function delete($data){
+      public function delete($id)
+      {
 
         try {
 
-              $id = $data['user_id'];
-
-              $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_UPDATE);
-              $user = $this->repository->where($id)->delete();
-
+              
+              $user = $this->repository->delete($id);
               return [
                 'success'     => true,
-                'messages'    => ['Usuário(a) '.$usuario['name'].' cadastrado com sucesso!'],
+                'messages'    => ['Usuário(a) '.$user['name'].' removido com sucesso!'],
                 'data'        => $user,
                 'type'        => [""],
               ];
@@ -103,14 +102,42 @@ class TbCadUserService
         } catch (Exception $e) {
 
               switch (get_class($e)) {               
-                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
+                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
-                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
-                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
+                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
               }
 
         }
             
+      }
+
+      public function find_Id($id)
+      {
+
+        try {
+
+         $user = $this->repository->find($id)->toArray();
+
+          return [
+            'success'     => true,
+            'messages'    => null,
+            'data'        => $user,
+            'type'        => null,
+          ];
+
+
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => null];
+                case Exception::class           : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+                default                         : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+              }
+
+        }
+
       }
 
 }

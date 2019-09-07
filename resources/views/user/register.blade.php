@@ -26,7 +26,7 @@
                 <h1 class="h4 text-gray-900 mb-4">Crie a sua conta aqui!!</h1>
               </div>
               
-              {!! Form::open(['class' =>'user','route' => 'user.store', 'method' => 'post']) !!}
+              {!! Form::open(['class' =>'user','route' => 'keep', 'method' => 'post']) !!}
 
                         @if(!session()->exists('success'))
                         <!--não exibe msg.-->

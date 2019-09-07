@@ -29,7 +29,6 @@ class TbCadUsersController extends Controller
 
     public function __construct(TbCadUserRepository $repository, TbCadUserService $service)
     {
-
         $this->repository    = $repository;
         $this->service       = $service;
 
@@ -38,19 +37,16 @@ class TbCadUsersController extends Controller
 
     public function index()
     {
-
         return view('user.index');
     }
 
     public function register()
     {
-
         return view('user.register');
     }
 
     public function forgotPassword()
     {
-
         return view('user.forgot-password');
     }
     
@@ -62,8 +58,6 @@ class TbCadUsersController extends Controller
             return Datatables::of(TbCadUser::query()->where('status', '1'))->blacklist(['action'])->make(true);
         }
         return view('user.edit-users');
-
-
     }
 
     Public function query_inact(Request $request){
@@ -73,7 +67,6 @@ class TbCadUsersController extends Controller
         }
         return view('user.edit-users');
 
-
     }
 
     
@@ -81,198 +74,105 @@ class TbCadUsersController extends Controller
     public function keep(Request $request)
     {
 
-        // dd($request->all());
-
         $json  = array();
         $json["status"] = 1;
         $json["error_list"] = array();
         
         if(!$request["id"]){
+            
             $request = $this->service->store($request->all()); 
             $user = $request['success'] ? $request['data'] : null;
 
+            session()->flash('success', [
+                'success'   =>  $request['success'],
+                'messages'  =>  $request['messages'],
+                'usuario'   =>  $user,
+             ]);
+  
+             if(!$request['success']){
+                $i=0;
+                $json["status"] = 0;
+                  foreach($request['messages'] as $msg){
+                      $json["error_list"]["#".$request['type'][$i]] = $msg;
+                      $i++;
+                  } 
+                } 
+                
+
         }else{
+
             $request = $this->service->update($request->all()); 
             $user = $request['success'] ? $request['data'] : null;
 
+            session()->flash('success', [
+                'success'   =>  $request['success'],
+                'messages'  =>  $request['messages'],
+                'usuario'   =>  $user,
+             ]);
+             
+             if(!$request['success']){
+                $i=0;
+                $json["status"] = 0;
+                  foreach($request['messages'] as $msg){
+                      $json["error_list"]["#".$request['type'][$i]."_edit"] = $msg;
+                      $i++;
+                  } 
+                }      
+            
         }
        
          
-         session()->flash('success', [
+         
+             echo json_encode($json);
+
+    }
+
+    
+
+    public function show_user(Request $request)
+    {
+        $json  = array();
+        $json["status"] = 1;
+        $json["imput"] = array();
+
+
+        $request = $this->service->find_Id($request["id"]); 
+        $user = $request['success'] ? $request['data'] : null;
+        $json["imput"]['id'] = $user['id'];
+        $json["imput"]['name'] = $user['name'];
+        $json["imput"]['email'] = $user['email'];
+        $json["imput"]['idtb_profile'] = $user['idtb_profile'];
+        $json["imput"]['idtb_base'] = $user['idtb_base'];
+        $json["imput"]['status'] = $user['status'];
+
+        echo json_encode($json);
+
+    }
+
+
+    public function destroy(Request $request)
+    {
+        $json  = array();
+        $json["status"] = 1;
+        
+        $request = $this->service->delete($request["id"]); 
+        $user = $request['success'] ? $request['data'] : null;
+
+        session()->flash('success', [
             'success'   =>  $request['success'],
             'messages'  =>  $request['messages'],
             'usuario'   =>  $user,
-         ]);
-         
-         if(!$request['success']){
+        ]);
+           
+        if(!$request['success']){
             $i=0;
             $json["status"] = 0;
-              foreach($request['messages'] as $msg){
-                  $json["error_list"]["#".$request['type'][$i]] = $msg;
-                  $i++;
-              } 
-            }      
-      
-            echo json_encode($json);
-        
-        //  if(!isset(Auth::user()->name)){  
-        //     return view('user.register');
-        //  }else{
+            foreach($request['messages'] as $msg){
+            $json["error_list"]["#".$request['type'][$i]."_edit"] = $msg;
+            $i++;
+            } 
+        }
             
-        //     return view('user.edit-users');
-        //  }
-                
-
-                
-
-                            /*try {
-
-                                $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-                                $tbCadUser = $this->repository->create($request->all());
-
-                                $response = [
-                                    'message' => 'TbCadUser created.',
-                                    'data'    => $tbCadUser->toArray(),
-                                ];
-
-                                if ($request->wantsJson()) {
-
-                                    return response()->json($response);
-                                }
-
-                                return redirect()->back()->with('message', $response['message']);
-                            } catch (ValidatorException $e) {
-                                if ($request->wantsJson()) {
-                                    return response()->json([
-                                        'error'   => true,
-                                        'message' => $e->getMessageBag()
-                                    ]);
-                                }
-
-                                return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-                            }*/
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $tbCadUser = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $tbCadUser,
-            ]);
-        }
-
-        return view('tbCadUsers.show', compact('tbCadUser'));
-    }
-    /**
-     * Display the specified resource.
-     *
-     * @param  ""
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showAll()
-    {
-        $tbCadUser = $this->repository->all();
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $tbCadUser,
-            ]);
-        }
-
-        return view('tbCadUsers.show', compact('tbCadUser'));
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $tbCadUser = $this->repository->find($id);
-
-        return view('tbCadUsers.edit', compact('tbCadUser'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  TbCadUserUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function update(TbCadUserUpdateRequest $request, $id)
-    {
-        try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $tbCadUser = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'TbCadUser updated.',
-                'data'    => $tbCadUser->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'TbCadUser deleted.',
-                'deleted' => $deleted,
-            ]);
-        }
-
-        return redirect()->back()->with('message', 'TbCadUser deleted.');
+        echo json_encode($json);
     }
 }

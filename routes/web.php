@@ -49,8 +49,10 @@ Route::get('/forgot-password',['uses' => 'TbCadUsersController@forgotPassword'])
 Route::resource('user', 'TbCadUsersController');
 Route::get('/edit-users', ['as' =>'edit-users', 'uses' => 'TbCadUsersController@query'])->middleware('auth');
 Route::get('/edit-users-inact', ['as' =>'edit-users-inact', 'uses' => 'TbCadUsersController@query_inact'])->middleware('auth');
-Route::post('/keep', ['as' =>'keep', 'uses' => 'TbCadUsersController@keep'])->middleware('auth');
-
+Route::post('/keep', ['as' =>'keep', 'uses' => 'TbCadUsersController@keep']);
+Route::post('/show-user', ['as' =>'show-user', 'uses' => 'TbCadUsersController@show_user'])->middleware('auth');
+Route::post('/destroy', ['as' =>'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('auth');
+Route::get('/destroy/{id}', ['as' =>'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('auth');
 
 
 /**test */
