@@ -3,5 +3,5 @@
         <div class="form-group">
             {!! Form::text($input, $value ?? null,  $attributes) !!}
         </div>
-        <span class="help-block"></span>
+    <span class="help-block"></span>
 </div>

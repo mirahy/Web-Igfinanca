@@ -1,5 +1,9 @@
 // Base url do site
 baseUrl = getBaseUrl();
+
+USUARIO_ATIVO = 1;
+
+
 // Traduçõa para portugues do DataTable
 const DATATABLE_PTBR = {
     "sEmptyTable": "Nenhum registro encontrado",
@@ -27,7 +31,6 @@ const DATATABLE_PTBR = {
 
 //Limpar class e tag span com mensagem de erro
 function clearErrors(){
-    $(".d-none").removeClass("d-none");
     $(".is-invalid").removeClass("is-invalid");
     $(".danger-feedback").removeClass("danger-feedback");
     $(".help-block").html("");

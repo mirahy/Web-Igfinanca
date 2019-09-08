@@ -1,8 +1,7 @@
-<div class="form-group row">
-    <label class="{{ $class ?? null }}">
-        <div class="col-lg-12">
-            <span>{{ $label ?? $input ?? "ERRO" }}</span>
-            {!! Form::date($input, \Carbon\Carbon::now(), $attributes) !!}
-    </label>
-</div>
+<div class="col-lg-12">
+    <label class ="col-lg-4 control-label">{{$label ?? null}}</label>
+        <div class="form-group">
+            {!! Form::date($date, \Carbon\Carbon::now(), $attributes) !!}
+        </div>
+    <span class="help-block"></span>
 </div>

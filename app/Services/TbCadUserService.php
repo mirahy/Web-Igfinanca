@@ -8,6 +8,7 @@ use App\Repositories\TbCadUserRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
+use DB;
 class TbCadUserService
 {
 
@@ -29,11 +30,11 @@ class TbCadUserService
               $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
               $user = $this->repository->create($data);
 
-
+              $name = explode(" ",$user['name']);
 
               return [
                 'success'     => true,
-                'messages'    => ['Usuário(a) '.$user['name'].' cadastrado com sucesso!'],
+                'messages'    => [$name[0]],
                 'data'        => $user,
                 'type'        => ["id"],
               ];
@@ -63,9 +64,11 @@ class TbCadUserService
               $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
               $user = $this->repository->update($data, $id);
 
+              $name = explode(" ",$user['name']);
+
               return [
                 'success'     => true,
-                'messages'    => ['Usuário(a) '.$user['name'].' atualizado com sucesso!'],
+                'messages'    => [$name[0]],
                 'data'        => $user,
                 'type'        => [""],
               ];
@@ -91,9 +94,12 @@ class TbCadUserService
 
               
               $user = $this->repository->delete($id);
+
+              $name = explode(" ",$user['name']);
+
               return [
                 'success'     => true,
-                'messages'    => ['Usuário(a) '.$user['name'].' removido com sucesso!'],
+                'messages'    => [$name[0]],
                 'data'        => $user,
                 'type'        => [""],
               ];
@@ -138,6 +144,11 @@ class TbCadUserService
 
         }
 
+      }
+
+      public function find_All(){
+            $data = $this->repository->with('base')->with('Profile')->get();
+            return  json_encode($data);
       }
 
 }

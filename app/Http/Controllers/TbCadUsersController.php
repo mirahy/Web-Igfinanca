@@ -15,6 +15,8 @@ use App\Validators\TbCadUserValidator;
 use App\Services\TbCadUserService;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\TbBaseRepository;
+use App\Repositories\TbProfileRepository;
 
 /**
  * Class TbCadUsersController.
@@ -23,14 +25,17 @@ use Illuminate\Support\Facades\Auth;
  */
 class TbCadUsersController extends Controller
 {
-
+    protected $TbProfileRepository;
+    protected $TbBaseRepository;
     protected $repository;
     protected $service;
 
-    public function __construct(TbCadUserRepository $repository, TbCadUserService $service)
+    public function __construct(TbCadUserRepository $repository, TbCadUserService $service, TbBaseRepository $TbBaseRepository, TbProfileRepository $TbProfileRepository)
     {
-        $this->repository    = $repository;
-        $this->service       = $service;
+        $this->TbProfileRepository  = $TbProfileRepository;
+        $this->TbBaseRepository     = $TbBaseRepository;
+        $this->repository           = $repository;
+        $this->service              = $service;
 
     }
 
@@ -55,16 +60,37 @@ class TbCadUsersController extends Controller
     Public function query(Request $request){
 
         if(request()->ajax()){
-            return Datatables::of(TbCadUser::query()->where('status', '1'))->blacklist(['action'])->make(true);
+           
+            return Datatables::of(TbCadUser::query()
+                                    ->with('base')
+                                    ->with('Profile')
+                                    ->where('status', '1'))
+                                    ->blacklist(['action'])
+                                    ->make(true);
         }
-        return view('user.edit-users');
+        
+        $perfil_list  = $this->TbProfileRepository->selectBoxList();
+        $base_list    = $this->TbBaseRepository->selectBoxList();
+
+        return view('user.edit-users',[
+            'perfil_list'  => $perfil_list,
+            'base_list'    => $base_list,
+        ]);
+
     }
 
     Public function query_inact(Request $request){
 
         if(request()->ajax()){
-            return Datatables::of(TbCadUser::query()->where('status', '0'))->blacklist(['action'])->make(true);
+            return Datatables::of(TbCadUser::query()
+                                    ->with('base')
+                                    ->with('Profile')
+                                    ->where('status', '0'))
+                                    ->blacklist(['action'])
+                                    ->make(true);
         }
+
+        
         return view('user.edit-users');
 
     }
@@ -77,8 +103,11 @@ class TbCadUsersController extends Controller
         $json  = array();
         $json["status"] = 1;
         $json["error_list"] = array();
+        $json["success"] = array();
         
         if(!$request["id"]){
+
+            
             
             $request = $this->service->store($request->all()); 
             $user = $request['success'] ? $request['data'] : null;
@@ -88,7 +117,7 @@ class TbCadUsersController extends Controller
                 'messages'  =>  $request['messages'],
                 'usuario'   =>  $user,
              ]);
-  
+
              if(!$request['success']){
                 $i=0;
                 $json["status"] = 0;
@@ -96,10 +125,14 @@ class TbCadUsersController extends Controller
                       $json["error_list"]["#".$request['type'][$i]] = $msg;
                       $i++;
                   } 
-                } 
-                
+                } else{
+                    $json["success"] = $request['messages'];
+
+                }
+            
 
         }else{
+            
 
             $request = $this->service->update($request->all()); 
             $user = $request['success'] ? $request['data'] : null;
@@ -174,5 +207,21 @@ class TbCadUsersController extends Controller
         }
             
         echo json_encode($json);
+    }
+
+    public function select(){
+
+
+        $perfil_list = \App\Entities\TbProfile::pluck('name', 'idtb_profile')->All();
+        $base_list = \App\Entities\TbBase::pluck('name', 'idtb_base')->All();
+        //dd($perfil_list);
+        return ([
+            $perfil_list,
+            $base_list,
+        ]);
+
+        //dd(json_encode($json));
+
+        //echo json_encode($json);
     }
 }

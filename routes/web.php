@@ -52,7 +52,7 @@ Route::get('/edit-users-inact', ['as' =>'edit-users-inact', 'uses' => 'TbCadUser
 Route::post('/keep', ['as' =>'keep', 'uses' => 'TbCadUsersController@keep']);
 Route::post('/show-user', ['as' =>'show-user', 'uses' => 'TbCadUsersController@show_user'])->middleware('auth');
 Route::post('/destroy', ['as' =>'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('auth');
-Route::get('/destroy/{id}', ['as' =>'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('auth');
+Route::get('/select', ['as' =>'select', 'uses' => 'TbCadUsersController@select'])->middleware('auth');
 
 
 /**test */

@@ -1,8 +1,8 @@
-<div class="form-group row">
-    <label class="{{ $class ?? null }}">
-        <div class="col-lg-12">
-            <span>{{ $label ?? $imput ?? "ERRO" }}</span>
-            {!! Form::select($id_item, $itens, $selected, $classinput) !!}
-    </label>
+<div class="col-lg-12">
+    <label class ="col-lg-4 control-label">{{$label ?? null}}</label>
+        <div class="form-group ">
+        {!! Form::select($select, $data ?? [] , null, $attributes) !!}
+        </div>
+        <span class="help-block"></span>
 </div>
-</div>
+

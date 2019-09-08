@@ -45,7 +45,7 @@
   <!-- Nav Item - Dashboard -->
   <li class="nav-item active">
     <a class="nav-link" href="{{ asset('/dashboard')}}">
-      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <i class="fas fa-fw fa-tachometer-alt fa-lg"></i>
       <span>Painel</span></a>
   </li>
 
@@ -60,18 +60,18 @@
   <!-- Nav Item - Pages Collapse Menu -->
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-      <i class="fas  fa-users-cog fa-2x"></i>
+      <i class="fas  fa-users-cog fa-lg"></i>
       <span>Gerenciar Usuários</span>
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Opções:</h6>
         <a class="collapse-item" href="{{ asset('/edit-users')}}">
-          <i class="fas fa-users"></i>&nbsp
+          <i class="fas fa-users fa-lg"></i>&nbsp
          <span>Usuários</span>
         </a>
         <a class="collapse-item" href="#">
-          <i class="fas fa-lock"></i>&nbsp&nbsp
+          <i class="fas fa-lock fa-lg"></i>&nbsp&nbsp
           <span>Senhas</span>
         </a>
       </div>
@@ -81,16 +81,15 @@
   <!-- Nav Item - Utilities Collapse Menu -->
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-      <i class="fas fa-fw fa-wrench"></i>
-      <span>Utilities</span>
+      <i class="fas fa-table fa-lg"></i>
+      <span>Tabelas</span>
     </a>
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Custom Utilities:</h6>
-        <a class="collapse-item" href="utilities-color.html">Colors</a>
-        <a class="collapse-item" href="utilities-border.html">Borders</a>
-        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-        <a class="collapse-item" href="utilities-other.html">Other</a>
+        <h6 class="collapse-header">Gerenciar Tabelas:</h6>
+        <a class="collapse-item" href="#">Base</a>
+        <a class="collapse-item" href="#">Fechamento</a>
+        <a class="collapse-item" href="#">Perfil</a>
       </div>
     </div>
   </li>
@@ -100,42 +99,74 @@
 
   <!-- Heading -->
   <div class="sidebar-heading">
-    Addons
+    Tesouraria
   </div>
 
-  <!-- Nav Item - Pages Collapse Menu -->
+  <!-- Nav Item - launch -->
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-      <i class="fas fa-fw fa-folder"></i>
-      <span>Pages</span>
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages1" aria-expanded="true" aria-controls="collapsePages1">
+      <i class="fas fa-calculator fa-lg"></i>
+      <span>Lançamentos</span>
     </a>
-    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+    <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Login Screens:</h6>
-        <a class="collapse-item" href="login.html">Login</a>
-        <a class="collapse-item" href="register.html">Register</a>
-        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+        <h6 class="collapse-header">Entrada:</h6>
+        <a class="collapse-item" href="#">Dízimo</a>
+        <a class="collapse-item" href="#">Ofertas</a>
+        <a class="collapse-item" href="#">Entrada fora do Mês</a>
         <div class="collapse-divider"></div>
-        <h6 class="collapse-header">Other Pages:</h6>
-        <a class="collapse-item" href="404.html">404 Page</a>
-        <a class="collapse-item" href="blank.html">Blank Page</a>
+        <h6 class="collapse-header">Saída:</h6>
+        <a class="collapse-item" href="#">Saídas</a>
+        <a class="collapse-item" href="#">Saída fora do Mês</a>
+        <h6 class="collapse-header">Consulta:</h6>
+        <a class="collapse-item" href="#">Dízimos</a>
+        <a class="collapse-item" href="#">Ofertas</a>
+        <a class="collapse-item" href="#">Saídas</a>
+      </div>
+    </div>
+  </li>
+
+   <!-- Nav Item - Aproved -->
+   <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true" aria-controls="collapsePages2">
+      <i class="fas fa-check fa-lg"></i>
+      <span>Aprovações</span>
+    </a>
+    <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Aprovar:</h6>
+        <a class="collapse-item" href="#">Dízimos</a>
+        <a class="collapse-item" href="#">Ofertas</a>
+        <a class="collapse-item" href="#">Saídas</a>
+        <a class="collapse-item" href="#">Fechamentos</a>
       </div>
     </div>
   </li>
 
   <!-- Nav Item - Charts -->
   <li class="nav-item">
-    <a class="nav-link" href="charts.html">
-      <i class="fas fa-fw fa-chart-area"></i>
-      <span>Charts</span></a>
+    <a class="nav-link" href="#">
+    <i class="fas fa-file-signature fa-lg"></i>
+      <span>Fechamentos</span></a>
   </li>
 
-  <!-- Nav Item - Tables -->
+  <!-- Nav Item - Relatories -->
   <li class="nav-item">
-    <a class="nav-link" href="tables.html">
-      <i class="fas fa-fw fa-table"></i>
-      <span>Tables</span></a>
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages3" aria-expanded="true" aria-controls="collapsePages3">
+      <i class="fas fa-file-alt fa-lg"></i>
+      <span>Relatórios</span>
+    </a>
+    <div id="collapsePages3" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Gerar Realatórios:</h6>
+        <a class="collapse-item" href="#">Dízimos</a>
+        <a class="collapse-item" href="#">Ofertas</a>
+        <a class="collapse-item" href="#">Saídas</a>
+        <a class="collapse-item" href="#">Fechamentos</a>
+      </div>
+    </div>
   </li>
+
 
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
@@ -314,20 +345,20 @@
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
             <a class="dropdown-item" href="#">
               <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-              Profile
+              Perfil
             </a>
             <a class="dropdown-item" href="#">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Settings
+              Configurações
             </a>
             <a class="dropdown-item" href="#">
               <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-              Activity Log
+              Logs de Atividades
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
               <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-              Logout
+              Sair
             </a>
           </div>
         </li>
@@ -347,7 +378,7 @@
   <footer class="sticky-footer bg-white">
     <div class="container my-auto">
       <div class="copyright text-center my-auto">
-        <span>Copyright &copy; Your Website 2019</span>
+        <span>Copyright &copy; ADB Tesouraria  2019</span>
       </div>
     </div>
   </footer>
@@ -374,10 +405,10 @@
         <span aria-hidden="true">×</span>
       </button>
     </div>
-    <div class="modal-body">Selecione "Logout" abaixo se você estiver pronto para terminar sua sessão atual.</div>
+    <div class="modal-body">Selecione "Sair" abaixo se você estiver pronto para terminar sua sessão atual.</div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" type="button" data-dismiss="modal" >Cancel</button>
-      <a class="btn btn-primary" href="{{ asset('/logout')}}">Logout</a>
+      <button class="btn btn-secondary" type="button" data-dismiss="modal" >Voltar</button>
+      <a class="btn btn-primary" href="{{ asset('/logout')}}">Sair</a>
     </div>
   </div>
 </div>

@@ -5,7 +5,6 @@
 @section('css-view')
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/dataTables.bootstrap4.min.css" rel="stylesheet">
-<link href="css/datatables.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
 @endsection
 
@@ -15,8 +14,8 @@ var APP_URL = {!! json_encode(url('/')) !!}
 </script>
 <script src="js/sweetalert2.all.min.js"></script>
 <script src="js/jquery.dataTables.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
 <script src="js/dataTables.bootstrap4.min.js"></script>
-<script src="js/datatables.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/util.js"></script>
 <script src="js/edit-user.js"></script>
@@ -63,46 +62,49 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
         <div class="tab-content">
             <div id="tab_users_active" class="tab-pane active">
                 <div class="container-fluid">
-                <h2 class="text-center"><strong>Usuários Ativos</strong></h2>
-                <a id="btn_add_user" class="btn btn-primary my-1"><i class="fas fa-plus ">&nbsp Adicionar Usuário</i></a>
-                <table id="dt_users" class="table table striped table-bordered">
-                    <thead>
-                        <tr class="tableheader">
-                            <th class="dt-center" >Nome</th>
-                            <th class="dt-center" >Email</th>
-                            <th>Perfil</th>
-                            <th>Base</th>
-                            <th>Status</th>
-                            <th>Criado</th>
-                            <th>Editado</th>
-                            <th class="dt-center no-sort">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                    <h2 class="text-center"><strong>Usuários Ativos</strong></h2>
+                        <a id="btn_add_user" class="btn btn-primary my-1"><i class="fas fa-plus ">&nbsp Adicionar Usuário</i></a>
+                            <table id="dt_users" class="table table-striped table-bordered table-hover table-responsive display nowrap" >
+                                <thead>
+                                    <tr >
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Perfil</th>
+                                        <th>Base</th>
+                                        <th data-orderable="false" >Status</th>
+                                        <th>Data Nascimento</th>
+                                        <th>Criado</th>
+                                        <th>Editado</th>
+                                        <th data-orderable="false" >Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                 </div>
             </div>
+
             <div id="tab_users_inactive" class="tab-pane ">
-            <div class="container-fluid">
-                <h2 class="text-center"><strong>Usuários Inativos</strong></h2>
-                <a id="btn_add_user_inactive" class="btn btn-primary my-1"><i class="fas fa-plus">&nbsp Adicionar Usuário</i></a>
-                <table id="dt_users_inact" class="table table striped table-bordered">
-                    <thead>
-                        <tr class="tableheader">
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Perfil</th>
-                            <th>base</th>
-                            <th>Status</th>
-                            <th>Criado</th>
-                            <th>Editado</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div class="container-fluid">
+                    <h2 class="text-center"><strong>Usuários Inativos</strong></h2>
+                        <a id="btn_add_user_inactive" class="btn btn-primary my-1"><i class="fas fa-plus">&nbsp Adicionar Usuário</i></a>
+                            <table id="dt_users_inact" class="table table-striped table-bordered table-hover table-responsive display nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Perfil</th>
+                                        <th>base</th>
+                                        <th data-orderable="false" >Status</th>
+                                        <th>Data Nascimento</th>
+                                        <th>Criado</th>
+                                        <th>Editado</th>
+                                        <th data-orderable="false" >Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                 </div>
             
             </div>
@@ -123,7 +125,7 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-        
+                
                     {!! Form::open(['class' =>'user', 'id' => 'user_form']) !!}
 
                         <div class="modal-body">
@@ -136,11 +138,13 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
 
                             @include('templates.forms.email',['input' => 'email', 'label' => 'Email', 'attributes' => ['placeholder' => 'Email', 'class' => 'form-control form-control-user', 'id' => 'email', 'name' => 'email',  'maxlength' => '100']])
 
-                            @include('templates.forms.input',['input' => 'text', 'label' => 'Perfil', 'attributes' => ['placeholder' => 'Perfil',  'class' => 'form-control form-control-user', 'id' => 'idtb_profile', 'name' => 'idtb_profile',  'maxlength' => '100']])
+                            @include('templates.forms.select',['select' => 'Perfil', 'label' => 'Perfil', 'data' => $perfil_list, 'attributes' => [ 'class' => 'form-control form-control-user', 'id' => 'idtb_profile', 'name' => 'idtb_profile']])
 
-                            @include('templates.forms.input',['input' => 'text', 'label' => 'Base', 'attributes' => ['placeholder' => 'Base', 'class' => 'form-control form-control-user', 'id' => 'idtb_base', 'name' => 'idtb_base',  'maxlength' => '100']])
+                            @include('templates.forms.select',['select' => 'Base', 'label' => 'Base', 'data' => $base_list, 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'idtb_base', 'name' => 'idtb_base']])
 
-                            @include('templates.forms.input',['input' => 'text', 'label' => 'Status', 'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status', 'name' => 'status',  'maxlength' => '100']])
+                            @include('templates.forms.select',['select' => 'Status', 'label' => 'Status', 'data' => ['1' => 'Ativo', '0' => 'Inativo'],'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status', 'name' => 'status']])
+                            
+                            @include('templates.forms.date',['date' => 'birth', 'label' => 'Data Nascimento','attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user col-lg-5', 'id' => 'birth', 'name' => 'birth']])
                             
                             @include('templates.forms.password',['input' => 'password', 'label' => 'Senha', 'attributes' => ['placeholder' => 'Senha',  'class' => 'form-control form-control-user', 'id' => 'password', 'name' => 'password']])
                                 
@@ -188,11 +192,13 @@ $('table tbody').on('click','a[id^="person-delete"]', function (e) {
 
                             @include('templates.forms.email',['input' => 'email', 'label' => 'Email', 'attributes' => ['placeholder' => 'Email', 'class' => 'form-control form-control-user', 'id' => 'email_edit', 'name' => 'email',  'maxlength' => '100']])
 
-                            @include('templates.forms.input',['input' => 'text', 'label' => 'Perfil', 'attributes' => ['placeholder' => 'Perfil',  'class' => 'form-control form-control-user', 'id' => 'idtb_profile_edit', 'name' => 'idtb_profile',  'maxlength' => '100']])
+                            @include('templates.forms.select',['select' => 'Perfil', 'label' => 'Perfil', 'data' => $perfil_list, 'attributes' => [ 'class' => 'form-control form-control-user', 'id' => 'idtb_profile_edit', 'name' => 'idtb_profile']])
 
-                            @include('templates.forms.input',['input' => 'text', 'label' => 'Base', 'attributes' => ['placeholder' => 'Base', 'class' => 'form-control form-control-user', 'id' => 'idtb_base_edit', 'name' => 'idtb_base',  'maxlength' => '100']])
+                            @include('templates.forms.select',['select' => 'Base', 'label' => 'Base', 'data' => $base_list, 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'idtb_base_edit', 'name' => 'idtb_base']])
 
-                            @include('templates.forms.input',['input' => 'text', 'label' => 'Status', 'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status_edit', 'name' => 'status',  'maxlength' => '100']])
+                            @include('templates.forms.select',['select' => 'Status', 'label' => 'Status', 'data' => ['1' => 'Ativo', '0' => 'Inativo'],'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status_edit', 'name' => 'status']])
+
+                            @include('templates.forms.date',['date' => 'birth', 'label' => 'Data Nascimento','attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user col-lg-5', 'id' => 'birth_edit', 'name' => 'birth']])
                             
                                 
 
