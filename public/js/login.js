@@ -11,12 +11,12 @@ $(function(){
             dataType: "json",
             data: $(this).serialize(),
             beforeSend: function(){
-                clearErrors();
+                clearErrorsLogin();
                 $("#btn_login").parent().siblings(".help-block").html(loadingImg("Verificando..."))
             },
             success: function(json){
                 if(json["status"] == 1){
-                    clearErrors();
+                    clearErrorsLogin();
                     $("#btn_login").parent().siblings(".help-block").html(loadingImg("Logando..."));
                     window.location = baseUrl + "dashboard";
                 }else{

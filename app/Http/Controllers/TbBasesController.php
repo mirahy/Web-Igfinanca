@@ -48,17 +48,9 @@ class TbBasesController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $tbBases = $this->repository->all();
+        
 
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $tbBases,
-            ]);
-        }
-
-        return view('tbBases.index', compact('tbBases'));
+        return view('launch.launchs', compact('tbBases'));
     }
 
     /**

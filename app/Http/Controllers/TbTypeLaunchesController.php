@@ -5,89 +5,82 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Entities\TbLaunch;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\TbLaunchCreateRequest;
-use App\Http\Requests\TbLaunchUpdateRequest;
-use App\Repositories\TbLaunchRepository;
-use App\Validators\TbLaunchValidator;
-use Yajra\Datatables\Datatables;
+use App\Http\Requests\TbTypeLaunchCreateRequest;
+use App\Http\Requests\TbTypeLaunchUpdateRequest;
+use App\Repositories\TbTypeLaunchRepository;
+use App\Validators\TbTypeLaunchValidator;
 
 /**
- * Class TbLaunchesController.
+ * Class TbTypeLaunchesController.
  *
  * @package namespace App\Http\Controllers;
  */
-class TbLaunchesController extends Controller
+class TbTypeLaunchesController extends Controller
 {
-    
-    protected $repository; 
+    /**
+     * @var TbTypeLaunchRepository
+     */
+    protected $repository;
+
+    /**
+     * @var TbTypeLaunchValidator
+     */
     protected $validator;
 
-   
-    public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator)
+    /**
+     * TbTypeLaunchesController constructor.
+     *
+     * @param TbTypeLaunchRepository $repository
+     * @param TbTypeLaunchValidator $validator
+     */
+    public function __construct(TbTypeLaunchRepository $repository, TbTypeLaunchValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
-    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        
+        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
+        $tbTypeLaunches = $this->repository->all();
 
-        return view('launch.launchs', compact('tbLaunches'));
-    }
+        if (request()->wantsJson()) {
 
-    Public function query_dizimos(Request $request){
-
-        // dd(Datatables::of(TbLaunch::query()
-        // ->with('user')
-        // ->with('launch')
-        // ->where('idtb_type_launch', '1'))
-        // ->blacklist(['action'])
-        // ->make(true));
-        
-        if(request()->ajax()){
-           
-            return Datatables::of(TbLaunch::query()
-                                    ->with('user')
-                                    ->with('launch')
-                                    ->where('idtb_type_launch', '1'))
-                                    ->blacklist(['action'])
-                                    ->make(true);
-        }
-           
-
-    }
-
-    Public function query_ofertas(Request $request){
-
-
-        if(request()->ajax()){
-            return Datatables::of(TbLaunch::query()
-                                    ->with('user')
-                                    ->with('launch')
-                                    ->where('idtb_type_launch', '2'))
-                                    ->blacklist(['action'])
-                                    ->make(true);
+            return response()->json([
+                'data' => $tbTypeLaunches,
+            ]);
         }
 
+        return view('tbTypeLaunches.index', compact('tbTypeLaunches'));
     }
 
-
-    public function store(TbLaunchCreateRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  TbTypeLaunchCreateRequest $request
+     *
+     * @return \Illuminate\Http\Response
+     *
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function store(TbTypeLaunchCreateRequest $request)
     {
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $tbLaunch = $this->repository->create($request->all());
+            $tbTypeLaunch = $this->repository->create($request->all());
 
             $response = [
-                'message' => 'TbLaunch created.',
-                'data'    => $tbLaunch->toArray(),
+                'message' => 'TbTypeLaunch created.',
+                'data'    => $tbTypeLaunch->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -117,16 +110,16 @@ class TbLaunchesController extends Controller
      */
     public function show($id)
     {
-        $tbLaunch = $this->repository->find($id);
+        $tbTypeLaunch = $this->repository->find($id);
 
         if (request()->wantsJson()) {
 
             return response()->json([
-                'data' => $tbLaunch,
+                'data' => $tbTypeLaunch,
             ]);
         }
 
-        return view('tbLaunches.show', compact('tbLaunch'));
+        return view('tbTypeLaunches.show', compact('tbTypeLaunch'));
     }
 
     /**
@@ -138,32 +131,32 @@ class TbLaunchesController extends Controller
      */
     public function edit($id)
     {
-        $tbLaunch = $this->repository->find($id);
+        $tbTypeLaunch = $this->repository->find($id);
 
-        return view('tbLaunches.edit', compact('tbLaunch'));
+        return view('tbTypeLaunches.edit', compact('tbTypeLaunch'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  TbLaunchUpdateRequest $request
+     * @param  TbTypeLaunchUpdateRequest $request
      * @param  string            $id
      *
      * @return Response
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(TbLaunchUpdateRequest $request, $id)
+    public function update(TbTypeLaunchUpdateRequest $request, $id)
     {
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $tbLaunch = $this->repository->update($request->all(), $id);
+            $tbTypeLaunch = $this->repository->update($request->all(), $id);
 
             $response = [
-                'message' => 'TbLaunch updated.',
-                'data'    => $tbLaunch->toArray(),
+                'message' => 'TbTypeLaunch updated.',
+                'data'    => $tbTypeLaunch->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -201,11 +194,11 @@ class TbLaunchesController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json([
-                'message' => 'TbLaunch deleted.',
+                'message' => 'TbTypeLaunch deleted.',
                 'deleted' => $deleted,
             ]);
         }
 
-        return redirect()->back()->with('message', 'TbLaunch deleted.');
+        return redirect()->back()->with('message', 'TbTypeLaunch deleted.');
     }
 }

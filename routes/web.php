@@ -55,4 +55,14 @@ Route::post('/destroy', ['as' =>'destroy', 'uses' => 'TbCadUsersController@destr
 Route::get('/select', ['as' =>'select', 'uses' => 'TbCadUsersController@select'])->middleware('auth');
 
 
+/**
+* Routes to dashboard nav users
+*========================================================================
+*/
+Route::resource('aunch', 'TbLaunchesController');
+Route::get('/launchs-e', ['as' =>'launchs-e', 'uses' => 'TbLaunchesController@index'])->middleware('auth');
+Route::get('/query-dizimos', ['as' =>'query-dizimos', 'uses' => 'TbLaunchesController@query_dizimos'])->middleware('auth');
+Route::get('/query-ofertas', ['as' =>'query-ofertas', 'uses' => 'TbLaunchesController@query_ofertas'])->middleware('auth');
+
+
 /**test */

@@ -111,17 +111,15 @@
     <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Entrada:</h6>
-        <a class="collapse-item" href="#">Dízimo</a>
-        <a class="collapse-item" href="#">Ofertas</a>
-        <a class="collapse-item" href="#">Entrada fora do Mês</a>
+        <a class="collapse-item" href="{{ asset('/launchs-e')}}">Entradas</a>
+        <a class="collapse-item" href="{{ asset('/launchs-efm')}}">Entrada fora do Mês</a>
         <div class="collapse-divider"></div>
         <h6 class="collapse-header">Saída:</h6>
-        <a class="collapse-item" href="#">Saídas</a>
-        <a class="collapse-item" href="#">Saída fora do Mês</a>
+        <a class="collapse-item" href="{{ asset('/launch-s')}}">Saídas</a>
+        <a class="collapse-item" href="{{ asset('/launch-sfm')}}">Saída fora do Mês</a>
         <h6 class="collapse-header">Consulta:</h6>
-        <a class="collapse-item" href="#">Dízimos</a>
-        <a class="collapse-item" href="#">Ofertas</a>
-        <a class="collapse-item" href="#">Saídas</a>
+        <a class="collapse-item" href="{{ asset('/launch-ce')}}">Entradas</a>
+        <a class="collapse-item" href="{{ asset('/launch-cs')}}">Saídas</a>
       </div>
     </div>
   </li>

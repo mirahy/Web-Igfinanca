@@ -1,8 +1,6 @@
 // Base url do site
 baseUrl = getBaseUrl();
 
-USUARIO_ATIVO = 1;
-
 
 // Traduçõa para portugues do DataTable
 const DATATABLE_PTBR = {
@@ -35,6 +33,15 @@ function clearErrors(){
     $(".danger-feedback").removeClass("danger-feedback");
     $(".help-block").html("");
    }
+//Limpar class e tag span com mensagem de erro tela login
+   function clearErrorsLogin(){
+    $(".d-none").removeClass("d-none");
+    $(".is-invalid").removeClass("is-invalid");
+    $(".danger-feedback").removeClass("danger-feedback");
+    $(".help-block").html("");
+   }
+
+   
 //Exibir erros
 function showErrors(error_list){
     clearErrors();

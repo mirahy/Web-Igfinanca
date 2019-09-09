@@ -1,5 +1,5 @@
-// Base url do site
-baseUrl = getBaseUrl();
+USUARIO_INATIVO = 0;
+USUARIO_ATIVO = 1;
 
 $(function(){
     // botao adicionar usuario tabela usuario ativos
