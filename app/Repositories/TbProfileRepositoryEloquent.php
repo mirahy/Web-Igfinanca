@@ -15,6 +15,10 @@ use App\Validators\TbProfileValidator;
  */
 class TbProfileRepositoryEloquent extends BaseRepository implements TbProfileRepository
 {
+    public function selectBoxList(string $descrição = 'name', string $chave = 'idtb_profile'){
+
+        return $this->model->pluck($descrição, $chave);
+    }
     /**
      * Specify Model class name
      *

@@ -6,20 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-/**
- * Class TbLaunch.
- *
- * @package namespace App\Entities;
- */
+
 class TbLaunch extends Model implements Transformable
 {
     use TransformableTrait;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [];
+   
+     public     $timestamps   = true;
+     protected  $table        = 'tb_launch';
+     protected  $fillable     = ['id','id_user','value','operation_date','reference_month','reference_year','idtb_operation','status','idtb_type_launch','idtb_base', 'idtb_closing', 'status', 'created_at', 'updated_at'];
+     
+
+     public function user(){
+            return $this->belongsTo(TbCadUser::class, 'id_user', 'id');
+
+     }
+
+     public function launch(){
+            return $this->belongsTo(TbTypeLaunch::class, 'idtb_type_launch', 'id');
+        
+    }
 
 }

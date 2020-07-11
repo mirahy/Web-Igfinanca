@@ -15,6 +15,10 @@ use App\Validators\TbCadUserValidator;
  */
 class TbCadUserRepositoryEloquent extends BaseRepository implements TbCadUserRepository
 {
+    public function selectBoxList(string $descrição = 'name', string $chave = 'id'){
+
+        return $this->model->pluck($descrição, $chave);
+    }
     /**
      * Specify Model class name
      *

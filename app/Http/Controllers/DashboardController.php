@@ -36,7 +36,7 @@ class DashboardController extends Controller
 
     $json  = array();
     $json["status"] = 1;
-    $json["error_list"] = array();;
+    $json["error_list"] = array();
     
     $request = $this->service->auth($request);
     

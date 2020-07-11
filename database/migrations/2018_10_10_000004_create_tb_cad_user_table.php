@@ -25,8 +25,8 @@ class CreateTbCadUserTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name', 100);
-            $table->integer('idtb_profile');
-            $table->integer('idtb_base');
+            $table->unsignedInteger('idtb_profile');
+            $table->unsignedInteger('idtb_base');
             $table->date('birth')->nullable()->default(null);
             $table->string('email', 100)->nullable();
             $table->string('password', 254)->nullable();

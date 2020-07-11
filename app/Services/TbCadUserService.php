@@ -8,6 +8,7 @@ use App\Repositories\TbCadUserRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
+use DB;
 class TbCadUserService
 {
 
@@ -27,25 +28,25 @@ class TbCadUserService
         try {
 
               $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
-              $usuario = $this->repository->create($data);
+              $user = $this->repository->create($data);
 
-
+              $name = explode(" ",$user['name']);
 
               return [
                 'success'     => true,
-                'messages'    => 'Usuário(a) '.$usuario['name'].' cadastrado com sucesso!',
-                'erro'        => 'false',
-                'data'        => $usuario,
+                'messages'    => [$name[0]],
+                'data'        => $user,
+                'type'        => ["id"],
               ];
 
 
         } catch (Exception $e) {
 
               switch (get_class($e)) {               
-                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
-                case ValidatorException::class  : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessageBag()];
-                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
-                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'erro'  => $e->getMessage()];
+                case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                case Exception::class           : return['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
+                default                         : return['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
               }
 
         }
@@ -54,7 +55,100 @@ class TbCadUserService
 
 
 
-      public function update(){}
-      public function delete(){}
+      public function update($data)
+      {
+        try {
+
+              $id = $data['id'];
+
+              $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+              $user = $this->repository->update($data, $id);
+
+              $name = explode(" ",$user['name']);
+
+              return [
+                'success'     => true,
+                'messages'    => [$name[0]],
+                'data'        => $user,
+                'type'        => [""],
+              ];
+
+
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+              }
+
+        }
+      }
+
+
+      public function delete($id)
+      {
+
+        try {
+
+              
+              $user = $this->repository->delete($id);
+
+              $name = explode(" ",$user['name']);
+
+              return [
+                'success'     => true,
+                'messages'    => [$name[0]],
+                'data'        => $user,
+                'type'        => [""],
+              ];
+
+
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+              }
+
+        }
+            
+      }
+
+      public function find_Id($id)
+      {
+
+        try {
+
+         $user = $this->repository->find($id)->toArray();
+
+          return [
+            'success'     => true,
+            'messages'    => null,
+            'data'        => $user,
+            'type'        => null,
+          ];
+
+
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => null];
+                case Exception::class           : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+                default                         : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+              }
+
+        }
+
+      }
+
+      public function find_All(){
+            $data = $this->repository->with('base')->with('Profile')->get();
+            return  json_encode($data);
+      }
 
 }

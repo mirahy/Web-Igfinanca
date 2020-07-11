@@ -49,8 +49,20 @@ Route::get('/forgot-password',['uses' => 'TbCadUsersController@forgotPassword'])
 Route::resource('user', 'TbCadUsersController');
 Route::get('/edit-users', ['as' =>'edit-users', 'uses' => 'TbCadUsersController@query'])->middleware('auth');
 Route::get('/edit-users-inact', ['as' =>'edit-users-inact', 'uses' => 'TbCadUsersController@query_inact'])->middleware('auth');
-Route::get('/user-all', ['as' =>'user-all', 'uses' => 'TbCadUsersController@showAll'])->middleware('auth');
+Route::post('/keep', ['as' =>'keep', 'uses' => 'TbCadUsersController@keep']);
+Route::post('/show-user', ['as' =>'show-user', 'uses' => 'TbCadUsersController@show_user'])->middleware('auth');
+Route::post('/destroy', ['as' =>'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('auth');
+Route::get('/select', ['as' =>'select', 'uses' => 'TbCadUsersController@select'])->middleware('auth');
 
+
+/**
+* Routes to dashboard nav users
+*========================================================================
+*/
+Route::resource('aunch', 'TbLaunchesController');
+Route::get('/launchs-e', ['as' =>'launchs-e', 'uses' => 'TbLaunchesController@index'])->middleware('auth');
+Route::get('/query-dizimos', ['as' =>'query-dizimos', 'uses' => 'TbLaunchesController@query_dizimos'])->middleware('auth');
+Route::get('/query-ofertas', ['as' =>'query-ofertas', 'uses' => 'TbLaunchesController@query_ofertas'])->middleware('auth');
 
 
 /**test */

@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Entities\TbLaunch;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\TbLaunchCreateRequest;
 use App\Http\Requests\TbLaunchUpdateRequest;
 use App\Repositories\TbLaunchRepository;
 use App\Validators\TbLaunchValidator;
+use Yajra\Datatables\Datatables;
+
+
+const CONSTANT_MES = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZENBRO'];
 
 /**
  * Class TbLaunchesController.
@@ -19,57 +24,70 @@ use App\Validators\TbLaunchValidator;
  */
 class TbLaunchesController extends Controller
 {
-    /**
-     * @var TbLaunchRepository
-     */
-    protected $repository;
-
-    /**
-     * @var TbLaunchValidator
-     */
+    
+    protected $repository; 
     protected $validator;
+    
 
-    /**
-     * TbLaunchesController constructor.
-     *
-     * @param TbLaunchRepository $repository
-     * @param TbLaunchValidator $validator
-     */
+   
     public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $tbLaunches = $this->repository->all();
+        
 
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $tbLaunches,
-            ]);
-        }
-
-        return view('tbLaunches.index', compact('tbLaunches'));
+        return view('launch.launchs', [
+            'year'         => date("Y"),
+            'operation'    => 0,
+            'type_launch'  => 0,
+            'base'         => 0,
+            'closing'      => 0,
+            'data'         => CONSTANT_MES,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  TbLaunchCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+    Public function query_dizimos(Request $request){
+
+        // dd(Datatables::of(TbLaunch::query()
+        // ->with('user')
+        // ->with('launch')
+        // ->where('idtb_type_launch', '1'))
+        // ->blacklist(['action'])
+        // ->make(true));
+        
+        if(request()->ajax()){
+           
+            return Datatables::of(TbLaunch::query()
+                                    ->with('user')
+                                    ->with('launch')
+                                    ->where('idtb_type_launch', '1'))
+                                    ->blacklist(['action'])
+                                    ->make(true);
+        }
+           
+
+    }
+
+    Public function query_ofertas(Request $request){
+
+
+        if(request()->ajax()){
+            return Datatables::of(TbLaunch::query()
+                                    ->with('user')
+                                    ->with('launch')
+                                    ->where('idtb_type_launch', '2'))
+                                    ->blacklist(['action'])
+                                    ->make(true);
+        }
+
+    }
+
+
     public function store(TbLaunchCreateRequest $request)
     {
         try {

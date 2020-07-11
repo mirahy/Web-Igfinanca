@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
          private  function createAdmin()
         {
               TbCadUser::create([
-                'name'          => 'Mirahy',
+                'name'          => 'Mirahy Fonseca',
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
                 'birth'         => '1989-12-06',
@@ -45,9 +45,9 @@ class DatabaseSeeder extends Seeder
 
           private function createUsers()
           {
-              $max = rand(100, 200);
+              $max = rand(10, 30);
               for($i=0; $i < $max; $i++):
-                  $this->createUser($i);
+                  $this->createUser($i+$max);
               endfor;
               $this->command->info($max . ' demo users created');
           }
@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
           private function createUser($index)
           {   
               return TbCadUser::create([
-                  'name'          => 'Mirahy'. $index,
+                  'name'          => 'Mirahy Branco Fonseca'. $index,
                   'idtb_profile'  => 1,
                   'idtb_base'     => 1,
                   'birth'         => '1989-12-06',

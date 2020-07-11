@@ -33,6 +33,16 @@ class TbCadUser extends Authenticatable
        $this->attributes['password'] = env("PASSWORD_HASH") ? bcrypt($value) : $value;
      }
 
+     public function base(){
+
+        return $this->belongsTo(TbBase::class, 'idtb_base', 'idtb_base');
+     }
+
+     public function Profile(){
+
+        return $this->belongsTo(TbProfile::class, 'idtb_profile', 'idtb_profile');
+     }
+
      public function accesses()
       {
           // Não esqueça de usar a classe Access: use App\Models\Access;

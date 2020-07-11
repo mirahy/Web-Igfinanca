@@ -24,15 +24,16 @@ class CreateTbLaunchTable extends Migration
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('idtb_launch');
-            $table->string('operation', 45);
-            $table->string('type_launch', 45);
             $table->string('origin', 100);
             $table->date('opreration_date');
             $table->string('reference_month', 20);
             $table->string('reference_year', 4);
             $table->decimal('value');
-            $table->integer('idtb_base');
-            $table->integer('idtb_closing')->nullable()->default(null);
+            $table->integer('idtb_operation')->unsigned();
+            $table->integer('idtb_type_launch')->unsigned();
+            $table->integer('idtb_base')->unsigned();
+            $table->integer('idtb_closing')->unsigned();
+            
 
             $table->timestamps();
             $table->softDeletes();

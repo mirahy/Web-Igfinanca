@@ -15,6 +15,10 @@ use App\Validators\TbBaseValidator;
  */
 class TbBaseRepositoryEloquent extends BaseRepository implements TbBaseRepository
 {
+    public function selectBoxList(string $descrição = 'name', string $chave = 'idtb_base'){
+
+        return $this->model->pluck($descrição, $chave);
+    }
     /**
      * Specify Model class name
      *
