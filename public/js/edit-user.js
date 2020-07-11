@@ -98,7 +98,7 @@ $(function(){
                 })
             });
 
-            // botao excluir usuários
+        //     // botao excluir usuários
         $(".btn_del_user").click(function(){
             course_id = $(this);
             Swal.fire({
@@ -204,7 +204,7 @@ $(function(){
             {
                 "data": "action",
                 "render": function(data, type, row, meta){
-                    return '<a id_user="'+row.id+'" class="btn btn-xs btn-primary btn_edit_user" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a id_user="'+row.id+'" class="btn btn-xs btn-danger btn_del_user" id="btn_del_user" > <i class="fa fa-trash"></i></a>';
+                    return '<a id_user="'+row.id+'" class="btn btn-xs btn-primary btn_edit_user_inact" id="btn_edit_user_inact" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a id_user="'+row.id+'" class="btn btn-xs btn-danger btn_del_user" id="btn_del_user" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     {targets: "no-sort", orderable: false},

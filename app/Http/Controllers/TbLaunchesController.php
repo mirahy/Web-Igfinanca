@@ -14,6 +14,9 @@ use App\Repositories\TbLaunchRepository;
 use App\Validators\TbLaunchValidator;
 use Yajra\Datatables\Datatables;
 
+
+const CONSTANT_MES = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZENBRO'];
+
 /**
  * Class TbLaunchesController.
  *
@@ -24,6 +27,7 @@ class TbLaunchesController extends Controller
     
     protected $repository; 
     protected $validator;
+    
 
    
     public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator)
@@ -37,7 +41,14 @@ class TbLaunchesController extends Controller
     {
         
 
-        return view('launch.launchs', compact('tbLaunches'));
+        return view('launch.launchs', [
+            'year'         => date("Y"),
+            'operation'    => 0,
+            'type_launch'  => 0,
+            'base'         => 0,
+            'closing'      => 0,
+            'data'         => CONSTANT_MES,
+        ]);
     }
 
     Public function query_dizimos(Request $request){

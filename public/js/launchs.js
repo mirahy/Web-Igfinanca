@@ -1,6 +1,7 @@
-LANCAMENTO_PENDETE = 0;
-LANCAMENTO_APROVADO = 1;
+LANCAMENTO_PENDETE   = 0;
+LANCAMENTO_APROVADO  = 1;
 LANCAMENTO_REPROVADO = 2;
+
 CONSTANT_MES = [
                 'MES', 
                 'JANEIRO', 
@@ -17,15 +18,25 @@ CONSTANT_MES = [
                 'DEZENBRO'
                 ];
 
+OPERATION_OUTPUT = 0;
+OPERATION_INPUT  = 1;
 
 $(function(){
 
-    // botao adicionar usuario tabela usuario ativos
+    // botao laçamentos dizimos
     $("#btn_add_launch_d").click(function(){
-        clearErrors();
-        $("#launch_form")[0].reset();
-        //$("#img")[0].attr("src", "");
-        $("#modal_launch").modal();
+        $.ajax({
+                success: function(response){
+                        clearErrors();
+                        $("#launch_form")[0].reset();
+                        $("#idtb_operation").val(1);
+                        $("#idtb_type_launch").val(1);
+                        $("#idtb_base").val(1);
+                        $("#idtb_closing").val(1);
+                        //$("#img")[0].attr("src", "");
+                        $("#modal_launch").modal();
+                }   
+        })
     });
 
 
