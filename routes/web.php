@@ -56,13 +56,15 @@ Route::get('/select', ['as' =>'select', 'uses' => 'TbCadUsersController@select']
 
 
 /**
-* Routes to dashboard nav users
+* Routes to dashboard nav lauchs
 *========================================================================
 */
-Route::resource('aunch', 'TbLaunchesController');
-Route::get('/launchs-e', ['as' =>'launchs-e', 'uses' => 'TbLaunchesController@index'])->middleware('auth');
-Route::get('/query-dizimos', ['as' =>'query-dizimos', 'uses' => 'TbLaunchesController@query_dizimos'])->middleware('auth');
-Route::get('/query-ofertas', ['as' =>'query-ofertas', 'uses' => 'TbLaunchesController@query_ofertas'])->middleware('auth');
+Route::resource('aunch', 'TbLaunchController');
+Route::get('/launchs-e', ['as' =>'launchs-e', 'uses' => 'TbLaunchController@index'])->middleware('auth');
+Route::get('/query-dizimos', ['as' =>'query-dizimos', 'uses' => 'TbLaunchController@query_dizimos'])->middleware('auth');
+Route::get('/query-ofertas', ['as' =>'query-ofertas', 'uses' => 'TbLaunchController@query_ofertas'])->middleware('auth');
+Route::post('/keep-lauch', ['as' =>'keep-lauch', 'uses' => 'TbLaunchController@keep']);
+Route::post('/destroy-launch', ['as' =>'destroy-launch', 'uses' => 'TbLaunchController@destroy'])->middleware('auth');
 
 
 /**test */

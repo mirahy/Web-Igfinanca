@@ -71,7 +71,7 @@ class TbCadUsersController extends Controller
         
         $perfil_list  = $this->TbProfileRepository->selectBoxList();
         $base_list    = $this->TbBaseRepository->selectBoxList();
-
+        
         return view('user.edit-users',[
             'perfil_list'  => $perfil_list,
             'base_list'    => $base_list,
@@ -100,18 +100,21 @@ class TbCadUsersController extends Controller
     public function keep(Request $request)
     {
 
+        
+
         $json  = array();
         $json["status"] = 1;
         $json["error_list"] = array();
         $json["success"] = array();
         
+
         if(!$request["id"]){
 
             
             
             $request = $this->service->store($request->all()); 
             $user = $request['success'] ? $request['data'] : null;
-
+            
             session()->flash('success', [
                 'success'   =>  $request['success'],
                 'messages'  =>  $request['messages'],
