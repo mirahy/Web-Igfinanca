@@ -15,7 +15,7 @@ use App\Validators\TbLaunchValidator;
 use Yajra\Datatables\Datatables;
 use App\Services\TbLaunchService;
 
-const CONSTANT_MES = ['SELECIONE','JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZENBRO'];
+const CONSTANT_MES = ['','JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZENBRO'];
 
 /**
  * Class TbLaunchesController.

@@ -42,10 +42,10 @@
                             <table id="dt_launch" class="table table-striped table-bordered table-hover table-responsive display nowrap" >
                                 <thead>
                                     <tr >
-                                        <th>Tipo de Lançamento</th>
+                                        <th>Tipo</th>
                                         <th>Nome</th>
                                         <th>Valor</th>
-                                        <th>Data Coleta</th>
+                                        <th>Coleta</th>
                                         <th data-orderable="false" >Mês Referência</th>
                                         <th data-orderable="false" >Ano Referência</th>
                                         <th>Status</th>
@@ -67,10 +67,10 @@
                             <table id="dt_launch_o" class="table table-striped table-bordered table-hover table-responsive display nowrap">
                                 <thead>
                                     <tr>
-                                        <th>Tipo de Lançamento</th>
+                                        <th>Tipo</th>
                                         <th>Nome</th>
                                         <th>Valor</th>
-                                        <th>Data Coleta</th>
+                                        <th>Coleta</th>
                                         <th data-orderable="false" >Mês Referência</th>
                                         <th data-orderable="false" >Ano Referência</th>
                                         <th>Status</th>
