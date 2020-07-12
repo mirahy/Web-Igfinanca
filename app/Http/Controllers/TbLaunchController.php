@@ -13,40 +13,41 @@ use App\Http\Requests\TbLaunchUpdateRequest;
 use App\Repositories\TbLaunchRepository;
 use App\Validators\TbLaunchValidator;
 use Yajra\Datatables\Datatables;
+use App\Services\TbLaunchService;
 
-
-const CONSTANT_MES = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZENBRO'];
+const CONSTANT_MES = ['SELECIONE','JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZENBRO'];
 
 /**
  * Class TbLaunchesController.
  *
  * @package namespace App\Http\Controllers;
  */
-class TbLaunchesController extends Controller
+class TbLaunchController extends Controller
 {
     
     protected $repository; 
-    protected $validator;
+    protected $service;
     
 
    
-    public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator)
+    public function __construct(TbLaunchRepository $repository, TbLaunchService $service)
     {
-        $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->repository  = $repository;
+        $this->service  = $service;
     }
 
     
     public function index()
     {
         
-
         return view('launch.launchs', [
             'year'         => date("Y"),
             'operation'    => 0,
             'type_launch'  => 0,
             'base'         => 0,
             'closing'      => 0,
+            'status'       => 0,
+            'id_user'      => 0,
             'data'         => CONSTANT_MES,
         ]);
     }
@@ -88,35 +89,67 @@ class TbLaunchesController extends Controller
     }
 
 
-    public function store(TbLaunchCreateRequest $request)
+    public function keep(Request $request)
     {
-        try {
+        $json  = array();
+        $json["status"] = 1;
+        $json["error_list"] = array();
+        $json["success"] = array();
+        
+        
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+        if(!$request["id"]){
 
-            $tbLaunch = $this->repository->create($request->all());
+            
+            
+            $request = $this->service->store($request->all()); 
+            $launch = $request['success'] ? $request['data'] : null;
 
-            $response = [
-                'message' => 'TbLaunch created.',
-                'data'    => $tbLaunch->toArray(),
-            ];
+            session()->flash('success', [
+                'success'   =>  $request['success'],
+                'messages'  =>  $request['messages'],
+                'launch'   =>  $launch,
+             ]);
 
-            if ($request->wantsJson()) {
+             if(!$request['success']){
+                $i=0;
+                $json["status"] = 0;
+                  foreach($request['messages'] as $msg){
+                      $json["error_list"]["#".$request['type'][$i]] = $msg;
+                      $i++;
+                  } 
+                } else{
+                    $json["success"] = $request['messages'];
 
-                return response()->json($response);
-            }
+                }
+            
 
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
+        }else{
+            
 
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            $request = $this->service->update($request->all()); 
+            $launch = $request['success'] ? $request['data'] : null;
+
+            session()->flash('success', [
+                'success'   =>  $request['success'],
+                'messages'  =>  $request['messages'],
+                'launch'   =>  $launch,
+             ]);
+             
+             if(!$request['success']){
+                $i=0;
+                $json["status"] = 0;
+                  foreach($request['messages'] as $msg){
+                      $json["error_list"]["#".$request['type'][$i]."_edit"] = $msg;
+                      $i++;
+                  } 
+                }      
+            
         }
+       
+         
+         
+             echo json_encode($json);
     }
 
     /**

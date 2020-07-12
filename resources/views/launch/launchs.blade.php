@@ -91,7 +91,7 @@
 
     </div>
     <!-- /.container-fluid -->
-    <!-- Modal dízimos -->
+    <!-- Modal lançamentos -->
     <div id="modal_launch" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -110,6 +110,7 @@
             
                             <!-- Imputs hidden -->
                             @include('templates.forms.input',['input' => 'text','value' => '0', 'class' => 'd-none', 'attributes' => [ 'name' => 'idtb_launch', 'hidden', 'id' => 'idtb_launch']])
+                            @include('templates.forms.input',['input' => 'text','value' => '$id_user', 'class' => 'd-none', 'attributes' => [ 'name' => 'id_user', 'hidden', 'id' => 'id_user']])
 
                             @include('templates.forms.input',['input' => 'text','value' => $year, 'class' => 'd-none', 'attributes' => [ 'name' => 'reference_year', 'hidden', 'id' => 'reference_year']])
 
@@ -121,10 +122,12 @@
 
                             @include('templates.forms.input',['input' => 'text','value' => $closing, 'class' => 'd-none', 'attributes' => [ 'name' => 'idtb_closing', 'hidden', 'id' => 'idtb_closing']])
 
+                            @include('templates.forms.input',['input' => 'text','value' => $status, 'class' => 'd-none', 'attributes' => [ 'name' => 'status', 'hidden', 'id' => 'status']])
+
                             
                             <!-- \ Imputs hidden -->
 
-                            @include('templates.forms.input',['input' => 'text','label' => 'Nome ', 'attributes' => ['placeholder' => 'Nome','class' => 'form-control form-control-user', 'id' => 'id_user', 'name' => 'id_user',  'maxlength' => '100']])
+                            @include('templates.forms.input',['input' => 'text','label' => 'Nome ', 'attributes' => ['placeholder' => 'Nome','class' => 'form-control form-control-user', 'id' => 'name', 'name' => 'name',  'maxlength' => '100']])
 
                             @include('templates.forms.number',['input' => 'number', 'label' => 'Valor', 'attributes' => ['placeholder' => 'Valor', 'class' => 'form-control form-control-user', 'id' => 'value', 'name' => 'value',  'maxlength' => '100']])
 
@@ -137,7 +140,7 @@
                         </div>
                          <div class="modal-footer">
                 
-                            @include('templates.forms.button',['input' => '<i class="fa fa-save fa-fw"></i> Salvar','attributes' => ['type' => 'submit', 'class' => 'btn btn-primary', 'id' => 'btn_save_user']])
+                            @include('templates.forms.button',['input' => '<i class="fa fa-save fa-fw"></i> Lançar','attributes' => ['type' => 'submit', 'class' => 'btn btn-primary', 'id' => 'btn_save_launch']])
                             @include('templates.forms.button',['input' => '<i class="fas fa-times fa-fw"></i> Fechar','attributes' => ['type' => 'button', 'class' => 'btn btn-secondary', 'data-dismiss' => 'modal']])
                             
                             <!--<button type="button" class="btn btn-primary">Save changes</button>

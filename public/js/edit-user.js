@@ -76,8 +76,9 @@ $(function(){
         });
     }
 
-    // botao editar usuários inativos
+    
     function btn_edit_user_inact(){
+        // botao editar usuários inativos
         $(".btn_edit_user_inact").click(function(){
                 $.ajax({
                     headers: {
@@ -98,7 +99,7 @@ $(function(){
                 })
             });
 
-        //     // botao excluir usuários
+        // botao excluir usuários inativos
         $(".btn_del_user").click(function(){
             course_id = $(this);
             Swal.fire({
