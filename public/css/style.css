@@ -36,3 +36,16 @@
     margin: 0 auto;
 } */
 
+.ui-autocomplete {
+    max-height: 100px !important;
+    overflow-y: auto !important;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden !important;
+    z-index: 9999 !important;
+  }
+  /* IE 6 doesn't support max-height
+   * we use height instead, but this forces the menu to always be this tall
+   */
+  * html .ui-autocomplete {
+    height: 100px !important;
+  }

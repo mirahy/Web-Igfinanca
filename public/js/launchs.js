@@ -33,7 +33,9 @@ $(function(){
                         $("#idtb_type_launch").val(1);
                         $("#idtb_base").val(1);
                         $("#idtb_closing").val(1);
-                        $("#id_user").val(2);
+                        $("#id_user").val(0);
+                        $("#name").show();
+                        $("#name").parent().siblings(".control-label").show();
                         //$("#img")[0].attr("src", "");
                         $("#modal_launch").modal();
                 }   
@@ -50,12 +52,24 @@ $(function(){
                         $("#idtb_type_launch").val(2);
                         $("#idtb_base").val(1);
                         $("#idtb_closing").val(1);
-                        $("#id_user").val(41);
+                        $("#id_user").val(0);
+                        $("#name").val('Oferta').hide();
+                        $("#name").parent().siblings(".control-label").hide();
                         //$("#img")[0].attr("src", "");
                         $("#modal_launch").modal();
                 }   
         })
     });
+
+    // função pesquisa autocomplete nome usuários
+    $(function(){
+
+        $("#name").autocomplete({
+
+            source : baseUrl + 'autocomplete'
+        });
+    });
+    
 
     function btn_edit_launch_d(){
 
@@ -278,4 +292,4 @@ $(function(){
 
 
 
-})
+});

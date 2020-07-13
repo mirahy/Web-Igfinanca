@@ -227,4 +227,22 @@ class TbCadUsersController extends Controller
 
         //echo json_encode($json);
     }
+
+    public function autocomplete(Request $request){
+
+        $json  = array();   
+
+        $request = $this->service->find_Autocomplete($request['term']);
+
+        if($request){
+            $i=0;
+            foreach($request as $msg){
+            $json[$i] = $msg['name'];
+
+            $i++;
+            } 
+        }
+
+        return $json;
+    }
 }

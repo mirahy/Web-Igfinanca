@@ -3,8 +3,9 @@
 
 
 @section('css-view')
-<link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/jquery-ui.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
 @endsection
 
@@ -16,9 +17,12 @@
 <script src="js/bootstrap.js"></script>
 <script src="js/util.js"></script>
 <script src="js/launchs.js"></script>
+<script src="js/jquery-ui.js"></script>
 @endsection
 
 @section('conteudo-view')
+
+
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
@@ -127,7 +131,7 @@
                             
                             <!-- \ Imputs hidden -->
 
-                            @include('templates.forms.input',['input' => 'text','label' => 'Nome ', 'attributes' => ['placeholder' => 'Nome','class' => 'form-control form-control-user', 'id' => 'name', 'name' => 'name',  'maxlength' => '100']])
+                            @include('templates.forms.input',['input' => 'text','label' => 'Nome ', 'attributes' => ['placeholder' => 'Nome','class' => 'form-control form-control-user ui-widget ', 'id' => 'name', 'name' => 'name',  'maxlength' => '100']])
 
                             @include('templates.forms.number',['input' => 'number', 'label' => 'Valor', 'attributes' => ['placeholder' => 'Valor', 'class' => 'form-control form-control-user', 'id' => 'value', 'name' => 'value',  'maxlength' => '100']])
 

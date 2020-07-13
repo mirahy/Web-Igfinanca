@@ -63,8 +63,9 @@ Route::resource('aunch', 'TbLaunchController');
 Route::get('/launchs-e', ['as' =>'launchs-e', 'uses' => 'TbLaunchController@index'])->middleware('auth');
 Route::get('/query-dizimos', ['as' =>'query-dizimos', 'uses' => 'TbLaunchController@query_dizimos'])->middleware('auth');
 Route::get('/query-ofertas', ['as' =>'query-ofertas', 'uses' => 'TbLaunchController@query_ofertas'])->middleware('auth');
-Route::post('/keep-lauch', ['as' =>'keep-lauch', 'uses' => 'TbLaunchController@keep']);
+Route::post('/keep-lauch', ['as' =>'keep-lauch', 'uses' => 'TbLaunchController@keep'])->middleware('auth');
 Route::post('/destroy-launch', ['as' =>'destroy-launch', 'uses' => 'TbLaunchController@destroy'])->middleware('auth');
+Route::get('/autocomplete', ['as' =>'autocomplete', 'uses' => 'TbCadUsersController@autocomplete'])->middleware('auth');
 
 
 /**test */
