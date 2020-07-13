@@ -95,12 +95,11 @@ class TbLaunchController extends Controller
         $json["status"] = 1;
         $json["error_list"] = array();
         $json["success"] = array();
-        
-        
+
+        $id = $this->service->find_IdUser($request['name'])->toArray();
+        $request['id_user'] = $id[0]['id'];
 
         if(!$request["id"]){
-
-            
             
             $request = $this->service->store($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;

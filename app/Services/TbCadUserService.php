@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Exception;
+use App\Entities\TbCadUser;
 use App\Validators\TbCadUserValidator;
 use App\Repositories\TbCadUserRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -150,5 +151,13 @@ class TbCadUserService
             $data = $this->repository->with('base')->with('Profile')->get();
             return  json_encode($data);
       }
+
+      public function find_Autocomplete($term){
+
+        $data =  TbCadUser::where([['name', 'LIKE', '%' . $term. '%'],['status','=','1'],['deleted_at','=', null]])->get();
+        
+        return  $data;
+  }
+
 
 }

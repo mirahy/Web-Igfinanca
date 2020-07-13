@@ -19,7 +19,7 @@ class TbCadUserValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-          'name'            => 'required|min:10',
+          'name'            => 'required|min:10|unique:tb_cad_user,name',
           'email'           => 'required|email|min:10|unique:tb_cad_user,email',
           'password'        => 'required|min:8',
           'Repeatpassword'  => 'required|same:password',
@@ -27,7 +27,7 @@ class TbCadUserValidator extends LaravelValidator
 
         
         ValidatorInterface::RULE_UPDATE => [
-          'name'            => 'required|min:10',
+          'name'            => 'required|min:10unique:tb_cad_user,name',
           'email'           => 'required|email|min:10|unique:tb_cad_user,email',
         ],
     ];
@@ -35,6 +35,7 @@ class TbCadUserValidator extends LaravelValidator
     protected $messages = [
       'name.required'             => 'Nome deve ser informado!',
       'name.min'                  => 'Nome deve conter no minimo 10 carácteres!',
+      'name.unique'              => 'Nome já registrado!',
       'email.required'            => 'Email deve ser informado!',
       'email.min'                 => 'Email deve conter no minimo 10 carácteres!',
       'email.unique'              => 'Email já registrado!',

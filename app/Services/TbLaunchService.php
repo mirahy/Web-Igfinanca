@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Exception;
+use App\Entities\TbCadUser;
 use App\Validators\TbLaunchValidator;
 use App\Repositories\TbLaunchRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -53,6 +54,14 @@ class TbLaunchService
         }
 
       }
+
+
+      public function find_IdUser($name){
+        
+        $data =  TbCadUser::where('name', 'LIKE', '%' . $name. '%')->get();
+        
+        return  $data;
+  }
 
 
 
