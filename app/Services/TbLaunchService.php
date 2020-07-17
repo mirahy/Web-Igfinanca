@@ -32,11 +32,11 @@ class TbLaunchService
 
               $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
               $launch = $this->repository->create($data);
-
+              $msg = $launch['value'];
 
               return [
                 'success'     => true,
-                'messages'    => [$launch['value']],
+                'messages'    => [$msg." adicionado"],
                 'data'        => $launch,
                 'type'        => ["id"],
               ];
@@ -56,14 +56,102 @@ class TbLaunchService
       }
 
 
-      public function find_IdUser($name){
+      public function update($data)
+      {
+        try {
+
+              $id = $data['id'];
+
+              $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+              $launch = $this->repository->update($data, $id);
+              $msg = $launch['value'];
+
+              return [
+                'success'     => true,
+                'messages'    => [$msg." editado"],
+                'data'        => $launch,
+                'type'        => [""],
+              ];
+
+
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+              }
+
+        }
+      }
+
+      public function delete($id)
+      {
+
+        try {
+
+              
+              $launch = $this->repository->delete($id);
+              
+          
+              return [
+                'success'     => true,
+                'messages'    => ["excluído"],
+                'data'        => $launch,
+                'type'        => [""],
+              ];
+
+
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+              }
+
+        }
+            
+      }
+
+
+      public function find_IdUser($name)
+      {
         
         $data =  TbCadUser::where('name', 'LIKE', '%' . $name. '%')->get();
         
         return  $data;
-  }
+      }
+
+      public function find_Id($id)
+      {
+
+        try {
+
+        $launch = $this->repository->with('user')->find($id)->toArray();
+          
+          return [
+            'success'     => true,
+            'messages'    => null,
+            'data'        => $launch,
+            'type'        => null,
+          ];
 
 
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => null];
+                case Exception::class           : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+                default                         : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+              }
+
+        }
+
+      }
 
 
 

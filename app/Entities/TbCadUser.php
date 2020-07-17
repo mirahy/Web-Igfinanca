@@ -38,9 +38,14 @@ class TbCadUser extends Authenticatable
         return $this->belongsTo(TbBase::class, 'idtb_base', 'idtb_base');
      }
 
-     public function Profile(){
+     public function profile(){
 
         return $this->belongsTo(TbProfile::class, 'idtb_profile', 'idtb_profile');
+     }
+
+     public function launch(){
+
+        return $this->belongsTo(Tblaunch::class, 'id_user', 'id');
      }
 
      public function accesses()
