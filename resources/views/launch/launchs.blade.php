@@ -113,7 +113,8 @@
 
             
                             <!-- Imputs hidden -->
-                            @include('templates.forms.input',['input' => 'text','value' => '0', 'class' => 'd-none', 'attributes' => [ 'name' => 'idtb_launch', 'hidden', 'id' => 'idtb_launch']])
+                            @include('templates.forms.input',['input' => 'text','value' => '0', 'class' => 'd-none', 'attributes' => [ 'name' => 'id', 'hidden', 'id' => 'id']])
+                            
                             @include('templates.forms.input',['input' => 'text','value' => '$id_user', 'class' => 'd-none', 'attributes' => [ 'name' => 'id_user', 'hidden', 'id' => 'id_user']])
 
                             @include('templates.forms.input',['input' => 'text','value' => $year, 'class' => 'd-none', 'attributes' => [ 'name' => 'reference_year', 'hidden', 'id' => 'reference_year']])

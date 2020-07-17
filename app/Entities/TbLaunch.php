@@ -22,9 +22,19 @@ class TbLaunch extends Model implements Transformable
 
      }
 
-     public function launch(){
+     public function type_launch(){
             return $this->belongsTo(TbTypeLaunch::class, 'idtb_type_launch', 'id');
         
+    }
+
+    public function operation(){
+       return $this->belongsTo(TbTypeLaunch::class, 'idtb_operation', 'id');
+   
+    }
+
+    public function base(){
+       return $this->belongsTo(TbTypeLaunch::class, 'idtb_base', 'idtb_base');
+   
     }
 
 }

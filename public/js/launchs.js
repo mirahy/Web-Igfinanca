@@ -61,6 +61,83 @@ $(function(){
         })
     });
 
+    
+
+    // botao editar dizimos
+    function btn_edit_launch(){
+
+        $(".btn_edit_launch").click(function(){
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: "POST",
+                    url: "show-launch",
+                    dataType: "json",
+                    data: {"id":$(this).attr("idtb_launch")},
+                    success: function(response){
+                        
+                        clearErrors();
+                        $("#launch_form")[0].reset();
+                            $.each(response["imput"], function(id, value){
+
+                                $("#"+id).val(value)
+                            });
+                            if(response["imput"]['idtb_type_launch'] == 1){
+                                $("#name").parent().siblings(".control-label").show();
+                                $("#name").show();
+
+                            }else{
+                                $("#name").parent().siblings(".control-label").hide();
+                                $("#name").val('Oferta').hide();
+
+                            }
+                            
+                            
+                            $("#modal_launch").modal();
+                    }
+                   
+                })
+    
+        });
+
+        // botao excluir lançamentos
+        $(".btn_del_launch").click(function(){
+            course_id = $(this);
+            Swal.fire({
+                title: "Atenção!",
+                text: "Deseja deletar este Lançamento?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "Sim",
+                cancelButtonText: "Não",
+            }).then((result)=>{
+                if(result.value){
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: "POST",
+                        url: "destroy-launch",
+                        dataType: "json",
+                        data: {"id": course_id.attr("idtb_launch")},
+                        success: function(response){
+                            console.log(response);
+                                $msg = "Lançamento "+ response["success"] +"  com sucesso!";
+                                Swal.fire("Sucesso!", $msg, "success");
+                                dt_launch.ajax.reload();
+                                dt_launch_o.ajax.reload();
+                        }
+                    })
+                }
+            })
+        });
+
+         
+    }
+
+
     // função pesquisa autocomplete nome usuários
     $(function(){
 
@@ -70,85 +147,6 @@ $(function(){
         });
     });
     
-
-    function btn_edit_launch_d(){
-
-
-         // botao excluir dízimos
-    $(".btn_del_launch").click(function(){
-        course_id = $(this);
-        Swal.fire({
-            title: "Atenção!",
-            text: "Deseja deletar este lançamento?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#dc3545",
-            confirmButtonText: "Sim",
-            cancelButtonText: "Não",
-        }).then((result)=>{
-            if(result.value){
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "POST",
-                    url: "destroy",
-                    dataType: "json",
-                    data: {"id": course_id.attr("id_user")},
-                    success: function(response){
-                        console.log(response);
-                            $msg = "Lançamento "+ response["success"] +" removido com sucesso!";
-                            Swal.fire("Sucesso!", $msg, "success");
-                            dt_launch.ajax.reload();
-                            dt_launch_o.ajax.reload();
-                    }
-                })
-            }
-        })
-    });
-
-
-
-    }
-
-    function btn_edit_launch_o(){
-
-
-         // botao excluir ofertas
-    $(".btn_del_launch").click(function(){
-        course_id = $(this);
-        Swal.fire({
-            title: "Atenção!",
-            text: "Deseja deletar este lançamento?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#dc3545",
-            confirmButtonText: "Sim",
-            cancelButtonText: "Não",
-        }).then((result)=>{
-            if(result.value){
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "POST",
-                    url: "destroy",
-                    dataType: "json",
-                    data: {"id": course_id.attr("id_user")},
-                    success: function(response){
-                        console.log(response);
-                            $msg = "Lançamento "+ response["success"] +" removido com sucesso!";
-                            Swal.fire("Sucesso!", $msg, "success");
-                            dt_launch.ajax.reload();
-                            dt_launch_o.ajax.reload();
-                    }
-                })
-            }
-        })
-    });
-
-
-    }
 
    
 
@@ -164,7 +162,7 @@ $(function(){
                     // "serverSide": true,
                     "ajax": baseUrl + 'query-dizimos',
                     "columns": [
-                        { data: 'launch.name', name: 'launch.name' },
+                        { data: 'type_launch.name', name: 'launch.name' },
                         { data: 'user.name', name: 'user.name' },
                         { data: 'value', name: 'value' },
                         { data: 'operation_date', name: 'operation_date' },
@@ -192,7 +190,7 @@ $(function(){
                         {
                             "data": "action",
                             "render": function(data, type, row, meta){
-                                return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch_d" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                                return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
                             },
                             columnDefs: [
                                 {targets: "no-sort", orderable: false},
@@ -200,9 +198,9 @@ $(function(){
                             ]
                     }
                     ],
-                    // "drawCallback": function(){
-                    //     btn_edit_user();
-                    // }
+                    "drawCallback": function(){
+                        btn_edit_launch();
+                    }
    });
 
   /** 
@@ -215,7 +213,7 @@ $(function(){
                     // "serverSide": true,
                     "ajax": baseUrl + 'query-ofertas',
                     "columns": [
-                        { data: 'launch.name', name: 'launch.name' },
+                        { data: 'type_launch.name', name: 'launch.name' },
                         { data: 'user.name', name: 'user.name' },
                         { data: 'value', name: 'value' },
                         { data: 'operation_date', name: 'operation_date' },
@@ -243,7 +241,7 @@ $(function(){
                         {
                             "data": "action",
                             "render": function(data, type, row, meta){
-                                return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch_o" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                                return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
                             },
                             columnDefs: [
                                 {targets: "no-sort", orderable: false},
@@ -251,13 +249,13 @@ $(function(){
                             ]
                     }
                     ],
-                    // "drawCallback": function(){
-                    //     btn_edit_user();
-                    // }
+                     "drawCallback": function(){
+                         btn_edit_launch();
+                     }
     });
 
 
-    //Click lançar modal Lançamentos
+    //Click lançar/editar modal Lançamentos
     $("#launch_form").submit(function(){
        
         $.ajax({
@@ -273,7 +271,7 @@ $(function(){
             success: function(response){
                 clearErrors();
                 if(response["status"]){
-                    $msg = "Lançamento "+ response["success"] +" adicionado com sucesso!";
+                    $msg = "Lançamento "+ response["success"] +"  com sucesso!";
                     Swal.fire("Sucesso!", $msg, "success");
                     $("#modal_launch").modal('hide');
                     dt_launch.ajax.reload();
@@ -287,6 +285,7 @@ $(function(){
      return false;
 
     });
+
 
 
 
