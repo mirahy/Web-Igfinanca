@@ -110,13 +110,9 @@
     </a>
     <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Entrada:</h6>
+        <h6 class="collapse-header">Lançamentos:</h6>
         <a class="collapse-item" href="{{ asset('/launchs-e')}}">Entradas</a>
-        <a class="collapse-item" href="{{ asset('/launchs-efm')}}">Entrada fora do Mês</a>
-        <div class="collapse-divider"></div>
-        <h6 class="collapse-header">Saída:</h6>
-        <a class="collapse-item" href="{{ asset('/launch-s')}}">Saídas</a>
-        <a class="collapse-item" href="{{ asset('/launch-sfm')}}">Saída fora do Mês</a>
+        <a class="collapse-item" href="{{ asset('/launchs-s')}}">Saídas</a>
         <h6 class="collapse-header">Consulta:</h6>
         <a class="collapse-item" href="{{ asset('/launch-ce')}}">Entradas</a>
         <a class="collapse-item" href="{{ asset('/launch-cs')}}">Saídas</a>

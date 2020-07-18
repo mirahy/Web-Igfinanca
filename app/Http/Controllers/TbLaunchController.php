@@ -40,7 +40,22 @@ class TbLaunchController extends Controller
     public function index()
     {
         
-        return view('launch.launchs', [
+        return view('launch.launchs_e', [
+            'year'         => date("Y"),
+            'operation'    => 0,
+            'type_launch'  => 0,
+            'base'         => 0,
+            'closing'      => 0,
+            'status'       => 0,
+            'id_user'      => 0,
+            'data'         => CONSTANT_MES,
+        ]);
+    }
+
+    public function index_s()
+    {
+        
+        return view('launch.launchs_s', [
             'year'         => date("Y"),
             'operation'    => 0,
             'type_launch'  => 0,
@@ -53,13 +68,6 @@ class TbLaunchController extends Controller
     }
 
     Public function query_dizimos(Request $request){
-
-        // dd(Datatables::of(TbLaunch::query()
-        // ->with('user')
-        // ->with('launch')
-        // ->where('idtb_type_launch', '1'))
-        // ->blacklist(['action'])
-        // ->make(true));
         
         if(request()->ajax()){
            
@@ -82,6 +90,34 @@ class TbLaunchController extends Controller
                                     ->with('user')
                                     ->with('type_launch')
                                     ->where('idtb_type_launch', '2'))
+                                    ->blacklist(['action'])
+                                    ->make(true);
+        }
+
+    }
+
+    Public function query_buy(Request $request){
+
+
+        if(request()->ajax()){
+            return Datatables::of(TbLaunch::query()
+                                    ->with('user')
+                                    ->with('type_launch')
+                                    ->where('idtb_type_launch', '3'))
+                                    ->blacklist(['action'])
+                                    ->make(true);
+        }
+
+    }
+
+    Public function query_service(Request $request){
+
+
+        if(request()->ajax()){
+            return Datatables::of(TbLaunch::query()
+                                    ->with('user')
+                                    ->with('type_launch')
+                                    ->where('idtb_type_launch', '4'))
                                     ->blacklist(['action'])
                                     ->make(true);
         }
