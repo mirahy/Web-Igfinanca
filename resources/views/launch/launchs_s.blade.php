@@ -43,7 +43,7 @@
                 <div class="container-fluid">
                     <h2 class="text-center"><strong>Compras</strong></h2>
                         <a id="btn_add_launch_buy" class="btn btn-primary my-1"><i class="fas fa-plus ">&nbsp Lançar Compras</i></a>
-                            <table id="dt_launch_buy" class="table table-striped table-bordered table-hover table-responsive display nowrap" >
+                            <table id="dt_launch_buy" class="table table-striped  table-hover table-responsive display nowrap" >
                                 <thead>
                                     <tr >
                                         <th>Tipo</th>
@@ -60,6 +60,12 @@
                                 </thead>
                                 <tbody>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="9" style="text-align:right">Total:</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
                             </table>
                 </div>
             </div>
@@ -68,7 +74,7 @@
                 <div class="container-fluid">
                     <h2 class="text-center"><strong>Serviços</strong></h2>
                         <a id="btn_add_launch_service" class="btn btn-primary my-1"><i class="fas fa-plus">&nbsp Lançar Serviços</i></a>
-                            <table id="dt_launch_service" class="table table-striped table-bordered table-hover table-responsive display nowrap">
+                            <table id="dt_launch_service" class="table table-striped  table-hover table-responsive display nowrap">
                                 <thead>
                                     <tr>
                                         <th>Tipo</th>
@@ -85,6 +91,12 @@
                                 </thead>
                                 <tbody>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="9" style="text-align:right">Total:</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
                             </table>
                 </div>
             
@@ -134,7 +146,7 @@
 
                             @include('templates.forms.input',['input' => 'text','label' => 'Nome ', 'attributes' => ['placeholder' => 'Nome','class' => 'form-control form-control-user ui-widget ', 'id' => 'name', 'name' => 'name',  'maxlength' => '100']])
 
-                            @include('templates.forms.number',['input' => 'number', 'label' => 'Valor', 'attributes' => ['placeholder' => 'Valor', 'class' => 'form-control form-control-user', 'id' => 'value', 'name' => 'value',  'maxlength' => '100']])
+                            @include('templates.forms.number',['input' => 'number', 'label' => 'Valor', 'attributes' => ['placeholder' => 'Valor', 'class' => 'form-control form-control-user', 'id' => 'value', 'name' => 'value',  'maxlength' => '100', 'step' => '0.01']])
 
                             @include('templates.forms.select',['select' => 'mes', 'label' => 'Mês Referência', 'data' => $data ,'attributes' => ['placeholder' => 'Mês Referência', 'class' => 'form-control form-control-user', 'id' => 'reference_month', 'name' => 'reference_month']])
                             

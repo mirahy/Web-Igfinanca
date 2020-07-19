@@ -268,7 +268,9 @@ $(function(){
                     "columns": [
                         { data: 'type_launch.name', name: 'launch.name' },
                         { data: 'user.name', name: 'user.name' },
-                        { data: 'value', name: 'value' },
+                        { data: 'value', name: 'value',
+                          render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
+                         },
                         { data: 'operation_date', name: 'operation_date' },
                         {"data": "reference_month",
                             "render": function(data, type, row, meta){
@@ -304,6 +306,41 @@ $(function(){
                     ],
                     "drawCallback": function(){
                         btn_edit_launch();
+                    },
+
+                    "footerCallback": function ( row, data, start, end, display ) {
+                        var api = this.api(), data;
+             
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function ( i ) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '')*1 :
+                                typeof i === 'number' ?
+                                    i : 0;
+                        };
+             
+                        // Total over all pages
+                        total = api
+                            .column( 2 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+             
+                        // Total over this page
+                        pageTotal = api
+                            .column( 2, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+             
+                        // Update footer
+                        $( api.column( 9 ).footer() ).html(
+                            'R$'+pageTotal +' ( R$'+ total +' total)'
+                        );
+
+                        
                     }
    });
 
@@ -319,7 +356,9 @@ $(function(){
                     "columns": [
                         { data: 'type_launch.name', name: 'launch.name' },
                         { data: 'user.name', name: 'user.name' },
-                        { data: 'value', name: 'value' },
+                        { data: 'value', name: 'value',
+                        render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
+                        },
                         { data: 'operation_date', name: 'operation_date' },
                         {"data": "reference_month",
                             "render": function(data, type, row, meta){
@@ -355,7 +394,40 @@ $(function(){
                     ],
                      "drawCallback": function(){
                          btn_edit_launch();
-                     }
+                     },
+
+                     "footerCallback": function ( row, data, start, end, display ) {
+                        var api = this.api(), data;
+             
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function ( i ) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '')*1 :
+                                typeof i === 'number' ?
+                                    i : 0;
+                        };
+             
+                        // Total over all pages
+                        total = api
+                            .column( 2 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+             
+                        // Total over this page
+                        pageTotal = api
+                            .column( 2, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+             
+                        // Update footer
+                        $( api.column( 9 ).footer() ).html(
+                            'R$'+pageTotal +' ( R$'+ total +' total)'
+                        );
+                    }
     });
 
 
@@ -371,7 +443,9 @@ $(function(){
             "columns": [
                 { data: 'type_launch.name', name: 'launch.name' },
                 { data: 'user.name', name: 'user.name' },
-                { data: 'value', name: 'value' },
+                { data: 'value', name: 'value',
+                  render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
+                 },
                 { data: 'operation_date', name: 'operation_date' },
                 {"data": "reference_month",
                     "render": function(data, type, row, meta){
@@ -407,6 +481,39 @@ $(function(){
             ],
             "drawCallback": function(){
                 btn_edit_launch_s();
+            },
+
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                // Remove the formatting to get integer data for summation
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+     
+                // Total over all pages
+                total = api
+                    .column( 2 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+     
+                // Total over this page
+                pageTotal = api
+                    .column( 2, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+     
+                // Update footer
+                $( api.column( 9 ).footer() ).html(
+                    'R$'+pageTotal +' ( R$'+ total +' total)'
+                );
             }
         });
 
@@ -422,7 +529,9 @@ $(function(){
         "columns": [
             { data: 'type_launch.name', name: 'launch.name' },
             { data: 'user.name', name: 'user.name' },
-            { data: 'value', name: 'value' },
+            { data: 'value', name: 'value',
+              render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
+             },
             { data: 'operation_date', name: 'operation_date' },
             {"data": "reference_month",
                 "render": function(data, type, row, meta){
@@ -458,6 +567,39 @@ $(function(){
         ],
         "drawCallback": function(){
             btn_edit_launch_s();
+        },
+
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column( 2 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 2, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 9 ).footer() ).html(
+                'R$'+pageTotal +' ( R$'+ total +' total)'
+            );
         }
     });
 
