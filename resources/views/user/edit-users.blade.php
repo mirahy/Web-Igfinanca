@@ -31,6 +31,7 @@
 
         <ul class="nav nav-tabs">
             <li class="nav-item active"><a class="nav-link active" href="#tab_users_active" role="tab"  data-toggle="tab">Usuários Ativos</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_users_pending" role="tab"  data-toggle="tab">Usuários Pendentes</a></li>
             <li class="nav-item"><a class="nav-link" href="#tab_users_inactive" role="tab"  data-toggle="tab">Usuários Inativos</a></li>
         </ul>
 
@@ -59,17 +60,42 @@
                 </div>
             </div>
 
+            <div id="tab_users_pending" class="tab-pane ">
+                <div class="container-fluid">
+                    <h2 class="text-center"><strong>Usuários Pendente</strong></h2>
+                        <a id="btn_add_user_i" class="btn btn-primary my-1"><i class="fas fa-plus">&nbsp Adicionar Usuário</i></a>
+                            <table id="dt_users_pending" class="table table-striped table-bordered table-hover table-responsive display nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Perfil</th>
+                                        <th>Base</th>
+                                        <th data-orderable="false" >Status</th>
+                                        <th>Data Nascimento</th>
+                                        <th>Criado</th>
+                                        <th>Editado</th>
+                                        <th data-orderable="false" >Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                </div>
+            
+            </div>
+
             <div id="tab_users_inactive" class="tab-pane ">
                 <div class="container-fluid">
                     <h2 class="text-center"><strong>Usuários Inativos</strong></h2>
-                        <a id="btn_add_user_inactive" class="btn btn-primary my-1"><i class="fas fa-plus">&nbsp Adicionar Usuário</i></a>
+                        <a id="btn_add_user_p" class="btn btn-primary my-1"><i class="fas fa-plus">&nbsp Adicionar Usuário</i></a>
                             <table id="dt_users_inact" class="table table-striped table-bordered table-hover table-responsive display nowrap">
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
                                         <th>Email</th>
                                         <th>Perfil</th>
-                                        <th>base</th>
+                                        <th>Base</th>
                                         <th data-orderable="false" >Status</th>
                                         <th>Data Nascimento</th>
                                         <th>Criado</th>
@@ -117,7 +143,7 @@
 
                             @include('templates.forms.select',['select' => 'Base', 'label' => 'Base', 'data' => $base_list, 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'idtb_base', 'name' => 'idtb_base']])
 
-                            @include('templates.forms.select',['select' => 'Status', 'label' => 'Status', 'data' => ['1' => 'Ativo', '0' => 'Inativo'],'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status', 'name' => 'status']])
+                            @include('templates.forms.select',['select' => 'Status', 'label' => 'Status', 'data' => [ '1' => 'Ativo', '2' => 'Pendente', '0' => 'Inativo'],'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status', 'name' => 'status']])
                             
                             @include('templates.forms.date',['date' => 'birth', 'label' => 'Data Nascimento','attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user col-lg-5', 'id' => 'birth', 'name' => 'birth']])
                             
@@ -171,7 +197,7 @@
 
                             @include('templates.forms.select',['select' => 'Base', 'label' => 'Base', 'data' => $base_list, 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'idtb_base_edit', 'name' => 'idtb_base']])
 
-                            @include('templates.forms.select',['select' => 'Status', 'label' => 'Status', 'data' => ['1' => 'Ativo', '0' => 'Inativo'],'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status_edit', 'name' => 'status']])
+                            @include('templates.forms.select',['select' => 'Status', 'label' => 'Status', 'data' => [ '1' => 'Ativo', '2' => 'Pendente', '0' => 'Inativo'],'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' => 'status_edit', 'name' => 'status']])
 
                             @include('templates.forms.date',['date' => 'birth', 'label' => 'Data Nascimento','attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user col-lg-5', 'id' => 'birth_edit', 'name' => 'birth']])
                             

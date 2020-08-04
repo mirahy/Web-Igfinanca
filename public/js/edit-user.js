@@ -1,7 +1,9 @@
 USUARIO_INATIVO = 0;
 USUARIO_ATIVO = 1;
+USUARIO_PENDENTE = 2;
 
 $(function(){
+
     // botao adicionar usuario tabela usuario ativos
     $("#btn_add_user").click(function(){
         clearErrors();
@@ -10,14 +12,26 @@ $(function(){
         $("#modal_user").modal();
     });
 
-    // botao adicionar usuario tabela usuarios inativos
-    $("#btn_add_user_inactive").click(function(){
-        clearErrors();
-        $("#user_form")[0].reset();
-        //$("#img")[0].attr("src", "");
-        $("#modal_user").modal();
+   
+        // botao adicionar usuario tabela usuario inativos
+        $("#btn_add_user_i").click(function(){
+            clearErrors();
+            $("#user_form")[0].reset();
+            //$("#img")[0].attr("src", "");
+            $("#modal_user").modal();
+       
+        });
+       
+            // botao adicionar usuario tabela usuario pendentes
+            $("#btn_add_user_p").click(function(){
+                clearErrors();
+                $("#user_form")[0].reset();
+                //$("#img")[0].attr("src", "");
+                $("#modal_user").modal();
+            });
 
-    });
+        
+
 
     // botao editar usuários ativos
     function btn_edit_user(){
@@ -76,60 +90,6 @@ $(function(){
         });
     }
 
-    
-    function btn_edit_user_inact(){
-        // botao editar usuários inativos
-        $(".btn_edit_user_inact").click(function(){
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "POST",
-                    url: "show-user",
-                    dataType: "json",
-                    data: {"id":$(this).attr("id_user")},
-                    success: function(response){
-                        clearErrors();
-                        $("#user_form_edit")[0].reset();
-                            $.each(response["imput"], function(id, value){
-                                $("#"+id+"_edit").val(value);
-                            });
-                        $("#modal_user_edit").modal();
-                    }
-                })
-            });
-
-        // botao excluir usuários inativos
-        $(".btn_del_user").click(function(){
-            course_id = $(this);
-            Swal.fire({
-                title: "Atenção!",
-                text: "Deseja deletar este Usuário?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#dc3545",
-                confirmButtonText: "Sim",
-                cancelButtonText: "Não",
-            }).then((result)=>{
-                if(result.value){
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        type: "POST",
-                        url: "destroy",
-                        dataType: "json",
-                        data: {"id": course_id.attr("id_user")},
-                        success: function(response){
-                           Swal.fire("Sucesso!", "Usuário removido com sucesso!", "success");
-                           dt_users.ajax.reload();
-                           dt_users_inact.ajax.reload();
-                        }
-                    })
-                }
-            })
-        });
-    }
 
    
 
@@ -149,16 +109,34 @@ $(function(){
             { data: 'base.name', name: 'base.name' },
             {"data": "status",
                 "render": function(data, type, row, meta){
-                    return data == USUARIO_ATIVO ? "<span class='badge badge-success'>ativo</span>" : "<span class='badge badge-danger'>inativo</span>";
+                    return data == USUARIO_ATIVO ? "<span class='badge badge-success'>Ativo</span>" : data == USUARIO_PENDENTE ? "<span class='badge badge-warning'>Pendente</span>" : "<span class='badge badge-danger'>Inativo</span>";
                 },
                 columnDefs: [
                     {targets: "no-sort", orderable: false},
                     {targets: "dt-center", ClassName: "dt-center"}
                 ]
             },
-            { data: 'birth', name: 'birth' },
-            { data: 'created_at', name: 'created_at' },
-            { data: 'updated_at', name: 'updated_at' },
+            { data: 'birth', 
+
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
+            { data: 'created_at', 
+
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
+            { data: 'updated_at', 
+
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
             {
                 "data": "action",
                 "render": function(data, type, row, meta){
@@ -192,20 +170,38 @@ $(function(){
             { data: 'base.name', name: 'base.name' },
             {"data": "status",
                 "render": function(data, type, row, meta){
-                    return data == USUARIO_ATIVO ? "<span class='badge badge-success'>ativo</span>" : "<span class='badge badge-danger'>inativo</span>";
+                    return data == USUARIO_ATIVO ? "<span class='badge badge-success'>Ativo</span>" : data == USUARIO_PENDENTE ? "<span class='badge badge-warning'>Pendente</span>" : "<span class='badge badge-danger'>Inativo</span>";
                 },
                 columnDefs: [
                     {targets: "no-sort", orderable: false},
                     {targets: "dt-center", ClassName: "dt-center"}
                 ]
             },
-            { data: 'birth', name: 'birth' },
-            { data: 'created_at', name: 'created_at' },
-            { data: 'updated_at', name: 'updated_at' },
+            { data: 'birth', 
+
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
+            { data: 'created_at', 
+
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
+            { data: 'updated_at', 
+
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
             {
                 "data": "action",
                 "render": function(data, type, row, meta){
-                    return '<a id_user="'+row.id+'" class="btn btn-xs btn-primary btn_edit_user_inact" id="btn_edit_user_inact" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a id_user="'+row.id+'" class="btn btn-xs btn-danger btn_del_user" id="btn_del_user" > <i class="fa fa-trash"></i></a>';
+                    return '<a id_user="'+row.id+'" class="btn btn-xs btn-primary btn_edit_user" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a id_user="'+row.id+'" class="btn btn-xs btn-danger btn_del_user" id="btn_del_user" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     {targets: "no-sort", orderable: false},
@@ -214,10 +210,72 @@ $(function(){
         }
         ],
         "drawCallback": function(){
-            btn_edit_user_inact();
+            btn_edit_user();
          }
            
     });
+
+     /** 
+    * tabela usuários Pendentes
+    **/
+
+   var dt_users_pending = $('#dt_users_pending').DataTable({
+    "oLanguage": DATATABLE_PTBR,
+    "autoWidth":  false,
+    "processing": true,
+    // serverSide: true,
+    "ajax": baseUrl + 'edit-users-pending',
+    "columns": [
+        { data: 'name', name: 'name' },
+        { data: 'email', name: 'email' },
+        { data: 'profile.name', name: 'profile.name' },
+        { data: 'base.name', name: 'base.name' },
+        {"data": "status",
+            "render": function(data, type, row, meta){
+                return data == USUARIO_ATIVO ? "<span class='badge badge-success'>Ativo</span>" : data == USUARIO_PENDENTE ? "<span class='badge badge-warning'>Pendente</span>" : "<span class='badge badge-danger'>Inativo</span>";
+            },
+            columnDefs: [
+                {targets: "no-sort", orderable: false},
+                {targets: "dt-center", ClassName: "dt-center"}
+            ]
+        },
+        { data: 'birth', 
+
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
+            { data: 'created_at', 
+
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
+            { data: 'updated_at', 
+
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
+        {
+            "data": "action",
+            "render": function(data, type, row, meta){
+                return '<a id_user="'+row.id+'" class="btn btn-xs btn-primary btn_edit_user" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a id_user="'+row.id+'" class="btn btn-xs btn-danger btn_del_user" id="btn_del_user" > <i class="fa fa-trash"></i></a>';
+            },
+            columnDefs: [
+                {targets: "no-sort", orderable: false},
+                {targets: "dt-center", ClassName: "dt-center"}
+            ]
+    }
+    ],
+    "drawCallback": function(){
+        btn_edit_user();
+     }
+       
+});
 
 
     //Click salvar modal Usuarios
@@ -240,6 +298,7 @@ $(function(){
                     $("#modal_user").modal('hide');
                     dt_users.ajax.reload();
                     dt_users_inact.ajax.reload();
+                    dt_users_pending.ajax.reload();
                 }else{
                     showErrors(response["error_list"]);
                 }
@@ -270,6 +329,7 @@ $(function(){
                     $("#modal_user_edit").modal('hide');
                     dt_users.ajax.reload();
                     dt_users_inact.ajax.reload();
+                    dt_users_pending.ajax.reload();
                 }else{
                     showErrors(response["error_list"]);
                 }
