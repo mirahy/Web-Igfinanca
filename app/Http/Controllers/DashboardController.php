@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Entities\TbCadUser;
+use App\Entities\TbLaunch;
 use Illuminate\Http\Request;
 use App\Validators\TbCadUserValidator;
 use App\Repositories\TbCadUserRepository;
@@ -27,7 +28,14 @@ class DashboardController extends Controller
 
   public function index()
   {
-    return view('dashboard.dashboard');
+    return view('dashboard.dashboard', [
+
+      'pend'=> TbLaunch::where('status', 0)->count(),
+      'entries'=> TbLaunch::where([['status', 1],['idtb_operation', 1]])->sum('value'),
+      'exits'=> TbLaunch::where([['status', 1],['idtb_operation', 2]])->sum('value'),
+      
+    ]);
+
   }
 
 
