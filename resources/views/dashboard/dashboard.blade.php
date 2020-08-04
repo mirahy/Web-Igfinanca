@@ -33,7 +33,7 @@
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                   <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Entradas </div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">R$ 2.000,00</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$entries?></div>
                 </div>
                 <div class="col-auto">
                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -50,7 +50,7 @@
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                   <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Saídas</div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">R$ 500,00</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$exits?></div>
                 </div>
                 <div class="col-auto">
                   <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -92,8 +92,8 @@
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Tarefas Pendentes</div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                  <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Aprovações Pendentes</div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$pend?></div>
                 </div>
                 <div class="col-auto">
                   <i class="fas fa-comments fa-2x text-gray-300"></i>

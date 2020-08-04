@@ -67,14 +67,31 @@ class TbLaunchController extends Controller
         ]);
     }
 
-    Public function query_dizimos(Request $request){
+    public function index_l()
+    {
+        
+        return view('launch.launchs_apr', [
+            'year'         => date("Y"),
+            'operation'    => 0,
+            'type_launch'  => 0,
+            'base'         => 0,
+            'closing'      => 0,
+            'status'       => 0,
+            'id_user'      => 0,
+            'data'         => CONSTANT_MES,
+        ]);
+    }
+
+    Public function query(Request $request){
         
         if(request()->ajax()){
-           
+
+           $def = '%';
+
             return Datatables::of(TbLaunch::query()
                                     ->with('user')
                                     ->with('type_launch')
-                                    ->where('idtb_type_launch', '1'))
+                                    ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)],['status', 'LIKE', $request->query('status', $def) ]]))
                                     ->blacklist(['action'])
                                     ->make(true);
         }
@@ -82,47 +99,6 @@ class TbLaunchController extends Controller
 
     }
 
-    Public function query_ofertas(Request $request){
-
-
-        if(request()->ajax()){
-            return Datatables::of(TbLaunch::query()
-                                    ->with('user')
-                                    ->with('type_launch')
-                                    ->where('idtb_type_launch', '2'))
-                                    ->blacklist(['action'])
-                                    ->make(true);
-        }
-
-    }
-
-    Public function query_buy(Request $request){
-
-
-        if(request()->ajax()){
-            return Datatables::of(TbLaunch::query()
-                                    ->with('user')
-                                    ->with('type_launch')
-                                    ->where('idtb_type_launch', '3'))
-                                    ->blacklist(['action'])
-                                    ->make(true);
-        }
-
-    }
-
-    Public function query_service(Request $request){
-
-
-        if(request()->ajax()){
-            return Datatables::of(TbLaunch::query()
-                                    ->with('user')
-                                    ->with('type_launch')
-                                    ->where('idtb_type_launch', '4'))
-                                    ->blacklist(['action'])
-                                    ->make(true);
-        }
-
-    }
 
 
     public function keep(Request $request)
@@ -259,104 +235,17 @@ class TbLaunchController extends Controller
         echo json_encode($json);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function aprov(Request $request)
     {
-        $tbLaunch = $this->repository->find($id);
 
-        if (request()->wantsJson()) {
+        $request = $this->service->aprov($request->all()); 
 
-            return response()->json([
-                'data' => $tbLaunch,
-            ]);
-        }
+        $json["success"] = $request['messages'];
+        $json["status"] = $request['success'];
+              
+        echo json_encode($json);
 
-        return view('tbLaunches.show', compact('tbLaunch'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $tbLaunch = $this->repository->find($id);
-
-        return view('tbLaunches.edit', compact('tbLaunch'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  TbLaunchUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function update(TbLaunchUpdateRequest $request, $id)
-    {
-        try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $tbLaunch = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'TbLaunch updated.',
-                'data'    => $tbLaunch->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function destroy($id)
-    // {
-    //     $deleted = $this->repository->delete($id);
-
-    //     if (request()->wantsJson()) {
-
-    //         return response()->json([
-    //             'message' => 'TbLaunch deleted.',
-    //             'deleted' => $deleted,
-    //         ]);
-    //     }
-
-    //     return redirect()->back()->with('message', 'TbLaunch deleted.');
-    // }
+  
 }

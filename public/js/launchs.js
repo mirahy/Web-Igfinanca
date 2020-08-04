@@ -61,7 +61,7 @@ $(function(){
         })
     });
 
-    // botao laçamentos cmpras
+    // botao laçamentos compras
     $("#btn_add_launch_buy").click(function(){
         $.ajax({
                 success: function(response){
@@ -79,7 +79,7 @@ $(function(){
     });
 
 
-    // botao laçamentos cmpras
+    // botao laçamentos serviços
     $("#btn_add_launch_service").click(function(){
         $.ajax({
                 success: function(response){
@@ -95,6 +95,46 @@ $(function(){
                 }   
         })
     });
+
+    function btn_aprov(){
+
+        //Click aprovar Lançamentos
+     $(".btn_apr").click(function(){
+       
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: "POST",
+            url: "aprov",
+            dataType: "json",
+            data: {"id":$(this).attr("id_launch"),
+                   "status":$(this).attr("status")
+                    },
+
+                    success: function(response){
+                        clearErrors();
+                        if(response["status"]){
+                            $msg = "Lançamento "+ response["success"] +"  com sucesso!";
+                            Swal.fire("Sucesso!", $msg, "success");
+                            dt_launch_apr.ajax.reload();
+                            
+                        }else{
+                            $msg = "Mensagens: "+ response["success"];
+                            Swal.fire("Erro!", $msg, "error");
+                            dt_launch_apr.ajax.reload();
+                        }
+                    }
+            
+           
+        })
+        
+
+    });
+
+
+    }
+     
 
     
 
@@ -264,14 +304,20 @@ $(function(){
                     "autoWidth":  false,
                     "processing": true,
                     // "serverSide": true,
-                    "ajax": baseUrl + 'query-dizimos',
+                    "ajax": baseUrl + 'query?launch=1',
                     "columns": [
                         { data: 'type_launch.name', name: 'launch.name' },
                         { data: 'user.name', name: 'user.name' },
                         { data: 'value', name: 'value',
                           render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
                          },
-                        { data: 'operation_date', name: 'operation_date' },
+                        { data: 'operation_date', 
+
+                            render: function ( data, type, row ) {
+                                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                data;
+                            }
+                        },
                         {"data": "reference_month",
                             "render": function(data, type, row, meta){
                                 return CONSTANT_MES[data];
@@ -291,8 +337,18 @@ $(function(){
                                 {targets: "dt-center", ClassName: "dt-center"}
                             ]
                         },
-                        { data: 'created_at', name: 'created_at' },
-                        { data: 'updated_at', name: 'updated_at' },
+                        { data: 'created_at', 
+                            render: function ( data, type, row ) {
+                                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                data;
+                            }
+                        },
+                        { data: 'updated_at', 
+                            render: function ( data, type, row ) {
+                                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                data;
+                            }
+                        },
                         {
                             "data": "action",
                             "render": function(data, type, row, meta){
@@ -352,14 +408,19 @@ $(function(){
                     "autoWidth":  false,
                     "processing": true,
                     // "serverSide": true,
-                    "ajax": baseUrl + 'query-ofertas',
+                    "ajax": baseUrl + 'query?launch=2',
                     "columns": [
                         { data: 'type_launch.name', name: 'launch.name' },
                         { data: 'user.name', name: 'user.name' },
                         { data: 'value', name: 'value',
                         render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
                         },
-                        { data: 'operation_date', name: 'operation_date' },
+                        { data: 'operation_date', 
+                            render: function ( data, type, row ) {
+                                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                data;
+                            }
+                        },
                         {"data": "reference_month",
                             "render": function(data, type, row, meta){
                                 return CONSTANT_MES[data];
@@ -379,8 +440,18 @@ $(function(){
                                 {targets: "dt-center", ClassName: "dt-center"}
                             ]
                         },
-                        { data: 'created_at', name: 'created_at' },
-                        { data: 'updated_at', name: 'updated_at' },
+                        { data: 'created_at',
+                            render: function ( data, type, row ) {
+                                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                data;
+                            }
+                        },
+                        { data: 'updated_at', 
+                            render: function ( data, type, row ) {
+                                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                data;
+                            }
+                        },
                         {
                             "data": "action",
                             "render": function(data, type, row, meta){
@@ -439,14 +510,19 @@ $(function(){
             "autoWidth":  false,
             "processing": true,
             // "serverSide": true,
-            "ajax": baseUrl + 'query-buy',
+            "ajax": baseUrl + 'query?launch=3',
             "columns": [
                 { data: 'type_launch.name', name: 'launch.name' },
                 { data: 'user.name', name: 'user.name' },
                 { data: 'value', name: 'value',
                   render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
                  },
-                { data: 'operation_date', name: 'operation_date' },
+                { data: 'operation_date', 
+                    render: function ( data, type, row ) {
+                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                        data;
+                    }
+                },
                 {"data": "reference_month",
                     "render": function(data, type, row, meta){
                         return CONSTANT_MES[data];
@@ -466,8 +542,18 @@ $(function(){
                         {targets: "dt-center", ClassName: "dt-center"}
                     ]
                 },
-                { data: 'created_at', name: 'created_at' },
-                { data: 'updated_at', name: 'updated_at' },
+                { data: 'created_at',
+                    render: function ( data, type, row ) {
+                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                        data;
+                    }
+                },
+                { data: 'updated_at', 
+                    render: function ( data, type, row ) {
+                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                        data;
+                    }
+                },
                 {
                     "data": "action",
                     "render": function(data, type, row, meta){
@@ -517,6 +603,8 @@ $(function(){
             }
         });
 
+
+
         /** 
         * tabela Saidas serviços
         **/
@@ -525,14 +613,19 @@ $(function(){
         "autoWidth":  false,
         "processing": true,
         // "serverSide": true,
-        "ajax": baseUrl + 'query-service',
+        "ajax": baseUrl + 'query?launch=4',
         "columns": [
             { data: 'type_launch.name', name: 'launch.name' },
             { data: 'user.name', name: 'user.name' },
             { data: 'value', name: 'value',
               render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
              },
-            { data: 'operation_date', name: 'operation_date' },
+            { data: 'operation_date', 
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
             {"data": "reference_month",
                 "render": function(data, type, row, meta){
                     return CONSTANT_MES[data];
@@ -552,8 +645,18 @@ $(function(){
                     {targets: "dt-center", ClassName: "dt-center"}
                 ]
             },
-            { data: 'created_at', name: 'created_at' },
-            { data: 'updated_at', name: 'updated_at' },
+            { data: 'created_at',
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
+            { data: 'updated_at', 
+                render: function ( data, type, row ) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                    data;
+                }
+            },
             {
                 "data": "action",
                 "render": function(data, type, row, meta){
@@ -602,6 +705,114 @@ $(function(){
             );
         }
     });
+
+
+    
+
+     /** 
+    * tabela aprovações
+    **/
+   var dt_launch_apr = $('#dt_launch_apr').DataTable({
+    "oLanguage": DATATABLE_PTBR,
+    "autoWidth":  false,
+    "processing": true,
+    // "serverSide": true,
+    "ajax": baseUrl + 'query?status=0',
+    "columns": [
+        { data: 'type_launch.name', name: 'launch.name' },
+        { data: 'user.name', name: 'user.name' },
+        { data: 'value', name: 'value',
+          render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
+         },
+        { data: 'operation_date', 
+            render: function ( data, type, row ) {
+                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                data;
+            }
+        },
+        {"data": "reference_month",
+            "render": function(data, type, row, meta){
+                return CONSTANT_MES[data];
+            },
+            columnDefs: [
+                {targets: "no-sort", orderable: false},
+                {targets: "dt-center", ClassName: "dt-center"}
+            ]
+        },
+        { data: 'reference_year', name: 'reference_year' },
+        {"data": "status",
+            "render": function(data, type, row, meta){
+                return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>"  : "<span class='badge badge-danger'>Reprovado</span>";
+            },
+            columnDefs: [
+                {targets: "no-sort", orderable: false},
+                {targets: "dt-center", ClassName: "dt-center"}
+            ]
+        },
+        { data: 'created_at', 
+            render: function ( data, type, row ) {
+                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                data;
+            }
+         },
+        { data: 'updated_at', 
+            render: function ( data, type, row ) {
+                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                data;
+            } 
+        },
+        {
+            "data": "action",
+            "render": function(data, type, row, meta){
+                return  '<a id_launch="'+row.id+'" status="1" class="btn btn-xs btn-success btn_apr" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i></a> <a id_launch="'+row.id+'" status="2" class="btn btn-xs btn-danger btn_apr" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i></a>' ;
+                /*'<form> <input name="id" id="id" value="'+row.id+'" hidden> <input name="status" id="status" value="1" hidden> <button type="submit" class="btn btn-xs btn-success btn_aprovar" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i> </button> <button type="submit" class="btn btn-xs btn-danger btn_reprovar" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i> </button> </form> '*/
+            },
+            columnDefs: [
+                {targets: "no-sort", orderable: false},
+                {targets: "dt-center", ClassName: "dt-center"}
+            ]
+    }
+    ],
+    "drawCallback": function(){
+        btn_aprov();
+    },
+
+    "footerCallback": function ( row, data, start, end, display ) {
+        var api = this.api(), data;
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function ( i ) {
+            return typeof i === 'string' ?
+                i.replace(/[\$,]/g, '')*1 :
+                typeof i === 'number' ?
+                    i : 0;
+        };
+
+        // Total over all pages
+        total = api
+            .column( 2 )
+            .data()
+            .reduce( function (a, b) {
+                return intVal(a) + intVal(b);
+            }, 0 );
+
+        // Total over this page
+        pageTotal = api
+            .column( 2, { page: 'current'} )
+            .data()
+            .reduce( function (a, b) {
+                return intVal(a) + intVal(b);
+            }, 0 );
+
+        // Update footer
+        $( api.column( 9 ).footer() ).html(
+            'R$'+pageTotal +' ( R$'+ total +' total)'
+        );
+
+        
+    }
+});
+
 
 
     //Click lançar/editar modal Lançamentos

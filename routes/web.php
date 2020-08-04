@@ -49,10 +49,12 @@ Route::get('/forgot-password',['uses' => 'TbCadUsersController@forgotPassword'])
 Route::resource('user', 'TbCadUsersController');
 Route::get('/edit-users', ['as' =>'edit-users', 'uses' => 'TbCadUsersController@query'])->middleware('auth');
 Route::get('/edit-users-inact', ['as' =>'edit-users-inact', 'uses' => 'TbCadUsersController@query_inact'])->middleware('auth');
+Route::get('/edit-users-pending', ['as' =>'edit-users-pending', 'uses' => 'TbCadUsersController@query_pending'])->middleware('auth');
 Route::post('/keep', ['as' =>'keep', 'uses' => 'TbCadUsersController@keep']);
 Route::post('/show-user', ['as' =>'show-user', 'uses' => 'TbCadUsersController@show_user'])->middleware('auth');
 Route::post('/destroy', ['as' =>'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('auth');
 Route::get('/select', ['as' =>'select', 'uses' => 'TbCadUsersController@select'])->middleware('auth');
+Route::get('/autocomplete', ['as' =>'autocomplete', 'uses' => 'TbCadUsersController@autocomplete'])->middleware('auth');
 
 
 /**
@@ -63,15 +65,19 @@ Route::get('/select', ['as' =>'select', 'uses' => 'TbCadUsersController@select']
 /**entries*/
 Route::resource('launch', 'TbLaunchController');
 Route::get('/launchs-e', ['as' =>'launchs-e', 'uses' => 'TbLaunchController@index'])->middleware('auth');
-Route::get('/query-dizimos', ['as' =>'query-dizimos', 'uses' => 'TbLaunchController@query_dizimos'])->middleware('auth');
-Route::get('/query-ofertas', ['as' =>'query-ofertas', 'uses' => 'TbLaunchController@query_ofertas'])->middleware('auth');
-Route::post('/keep-lauch', ['as' =>'keep-lauch', 'uses' => 'TbLaunchController@keep'])->middleware('auth');
-Route::post('/show-launch', ['as' =>'show-lauch', 'uses' => 'TbLaunchController@show_launch'])->middleware('auth');
-Route::post('/destroy-launch', ['as' =>'destroy-launch', 'uses' => 'TbLaunchController@destroy'])->middleware('auth');
-Route::get('/autocomplete', ['as' =>'autocomplete', 'uses' => 'TbCadUsersController@autocomplete'])->middleware('auth');
 
 
 /**exits */
 Route::get('/launchs-s', ['as' =>'launchs-s', 'uses' => 'TbLaunchController@index_s'])->middleware('auth');
-Route::get('/query-buy', ['as' =>'query-buy', 'uses' => 'TbLaunchController@query_buy'])->middleware('auth');
-Route::get('/query-service', ['as' =>'query-service', 'uses' => 'TbLaunchController@query_service'])->middleware('auth');
+
+
+/**approvals*/
+Route::get('/apr-l', ['as' =>'apr-l', 'uses' => 'TbLaunchController@index_l'])->middleware('auth');
+Route::get('/apr-f', ['as' =>'apr-f', 'uses' => 'TbLaunchController@apr_f'])->middleware('auth');
+Route::post('/aprov', ['as' =>'aprov', 'uses' => 'TbLaunchController@aprov'])->middleware('auth');
+
+/**crud lauchs*/
+Route::get('/query', ['as' =>'query', 'uses' => 'TbLaunchController@query'])->middleware('auth');
+Route::post('/keep-lauch', ['as' =>'keep-lauch', 'uses' => 'TbLaunchController@keep'])->middleware('auth');
+Route::post('/show-launch', ['as' =>'show-lauch', 'uses' => 'TbLaunchController@show_launch'])->middleware('auth');
+Route::post('/destroy-launch', ['as' =>'destroy-launch', 'uses' => 'TbLaunchController@destroy'])->middleware('auth');

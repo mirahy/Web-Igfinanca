@@ -42,14 +42,14 @@
 										@include('templates.forms.email',['input' => 'email', 'attributes' => ['placeholder' => 'Email', 'required','class' => 'form-control form-control-user ', 'id' => 'email', 'name' => 'email',  'maxlength' => '100']])
 										
 										@include('templates.forms.password',['input' => 'password', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'password', 'name' => 'password']])
-										<div class="form-group">
+										<div class="form-group " >
 											<div class="col-sm-12 ">
 												<label  id="g-recaptcha" class="g-recaptcha " data-sitekey="6LfXo1gUAAAAAB2V2SVQCXpHZC4-i5SgQFQcUjAM" data-size="normal" style="transform:scale(0.93);transform-origin:0 0">
 												</label><!-- data-theme="dark" valida/acess.php -->
 											</div>
 											<span class="help-block"></span>
 										</div>
-										<div class="form-group">
+										<div class="form-group " >
 											<div class="col-sm-12 ">
 												<div class="custom-control custom-checkbox small">
 													{!! Form::checkbox('customCheck', true, null, array('class' => 'custom-control-input', 'id'=>'customCheck')) !!}

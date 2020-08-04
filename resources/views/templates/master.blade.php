@@ -14,6 +14,7 @@
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <!-- <link href="css/font-awesome.min.css" rel="stylesheet" > -->
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template-->
@@ -114,8 +115,8 @@
         <a class="collapse-item" href="{{ asset('/launchs-e')}}">Entradas</a>
         <a class="collapse-item" href="{{ asset('/launchs-s')}}">Saídas</a>
         <h6 class="collapse-header">Consulta:</h6>
-        <a class="collapse-item" href="{{ asset('/launch-ce')}}">Entradas</a>
-        <a class="collapse-item" href="{{ asset('/launch-cs')}}">Saídas</a>
+        <!-- <a class="collapse-item " href="{{ asset('/launch-ce')}}" >Entradas</a> -->
+        <!-- <a class="collapse-item" href="{{ asset('/launch-cs')}}">Saídas</a> -->
       </div>
     </div>
   </li>
@@ -129,10 +130,8 @@
     <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Aprovar:</h6>
-        <a class="collapse-item" href="#">Dízimos</a>
-        <a class="collapse-item" href="#">Ofertas</a>
-        <a class="collapse-item" href="#">Saídas</a>
-        <a class="collapse-item" href="#">Fechamentos</a>
+        <a class="collapse-item" href="{{ asset('/apr-l')}}">Lançamentos</a>
+        <a class="collapse-item" href="{{ asset('/apr-f')}}">Fechamentos</a>
       </div>
     </div>
   </li>
