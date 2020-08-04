@@ -58,5 +58,15 @@ function loadingImg(message=""){
     return "<i class='fa fa-circle-notch fa-spin'></i>&nbsp;" + message
 }
 
+// formatar data/hora de "mm-dd-aaaa 00:00:00" para "dd-mm-aaaa 00:00:00"
+function FormatData(data){
+    var dateSplit = data.split('-');
+    var dateSplit2 = dateSplit[2].split(' ');
+    return dateSplit2[1] == null ? dateSplit2[0] +'-'+ dateSplit[1] +'-'+ dateSplit[0] : 
+    dateSplit2[0] +'-'+ dateSplit[1] +'-'+ dateSplit[0] + ' '+ dateSplit2[1];
+
+}
+
+
 
 
