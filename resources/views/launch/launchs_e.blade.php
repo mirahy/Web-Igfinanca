@@ -142,6 +142,8 @@
 
                             @include('templates.forms.input',['input' => 'text','value' => $status, 'class' => 'd-none', 'attributes' => [ 'name' => 'status', 'hidden', 'id' => 'status']])
 
+                            @include('templates.forms.input',['input' => 'text','value' => $caixa_list, 'class' => 'd-none', 'attributes' => [ 'name' => 'idtb_caixa', 'hidden', 'id' => 'idtb_caixa']])
+
                             
                             <!-- \ Imputs hidden -->
 
