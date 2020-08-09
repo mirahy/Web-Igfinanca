@@ -55,7 +55,7 @@ $(function(){
                         $("#idtb_closing").val(1);
                         $("#idtb_caixa").val(2);
                         $("#id_user").val(0);
-                        $("#name").val('Oferta').hide();
+                        $("#name").val('Oferta Local').hide();
                         $("#name").parent().siblings(".control-label").hide();
                         //$("#img")[0].attr("src", "");
                         $("#modal_launch").modal();
