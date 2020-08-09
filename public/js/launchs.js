@@ -33,6 +33,7 @@ $(function(){
                         $("#idtb_type_launch").val(1);
                         $("#idtb_base").val(1);
                         $("#idtb_closing").val(1);
+                        $("#idtb_caixa").val(1);
                         $("#id_user").val(0);
                         $("#name").show();
                         $("#name").parent().siblings(".control-label").show();
@@ -52,6 +53,7 @@ $(function(){
                         $("#idtb_type_launch").val(2);
                         $("#idtb_base").val(1);
                         $("#idtb_closing").val(1);
+                        $("#idtb_caixa").val(2);
                         $("#id_user").val(0);
                         $("#name").val('Oferta').hide();
                         $("#name").parent().siblings(".control-label").hide();
@@ -70,7 +72,7 @@ $(function(){
                         $("#idtb_operation").val(2);
                         $("#idtb_type_launch").val(3);
                         $("#idtb_base").val(1);
-                        $("#idtb_closing").val(2);
+                        $("#idtb_closing").val(1);
                         $("#id_user").val(0);
                         //$("#img")[0].attr("src", "");
                         $("#modal_launch").modal();
@@ -88,7 +90,7 @@ $(function(){
                         $("#idtb_operation").val(2);
                         $("#idtb_type_launch").val(4);
                         $("#idtb_base").val(1);
-                        $("#idtb_closing").val(2);
+                        $("#idtb_closing").val(1);
                         $("#id_user").val(0);
                         //$("#img")[0].attr("src", "");
                         $("#modal_launch").modal();
@@ -100,6 +102,40 @@ $(function(){
 
         //Click aprovar Lançamentos
      $(".btn_apr").click(function(){
+       
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: "POST",
+            url: "aprov",
+            dataType: "json",
+            data: {"id":$(this).attr("id_launch"),
+                   "status":$(this).attr("status")
+                    },
+
+                    success: function(response){
+                        clearErrors();
+                        if(response["status"]){
+                            $msg = "Lançamento "+ response["success"] +"  com sucesso!";
+                            Swal.fire("Sucesso!", $msg, "success");
+                            dt_launch_apr.ajax.reload();
+                            
+                        }else{
+                            $msg = "Mensagens: "+ response["success"];
+                            Swal.fire("Erro!", $msg, "error");
+                            dt_launch_apr.ajax.reload();
+                        }
+                    }
+            
+           
+        })
+        
+
+    });
+
+      //Click reprovar Lançamentos
+      $(".btn_repr").click(function(){
        
         $.ajax({
             headers: {
@@ -160,10 +196,12 @@ $(function(){
                                 $("#"+id).val(value)
                             });
                             if(response["imput"]['idtb_type_launch'] == 1){
+                                $("#idtb_caixa").val(1);
                                 $("#name").parent().siblings(".control-label").show();
                                 $("#name").show();
 
-                            }else{
+                            }else if(response["imput"]['idtb_type_launch'] == 2){
+                                $("#idtb_caixa").val(2);
                                 $("#name").parent().siblings(".control-label").hide();
                                 $("#name").val('Oferta').hide();
 
@@ -764,7 +802,7 @@ $(function(){
         {
             "data": "action",
             "render": function(data, type, row, meta){
-                return  '<a id_launch="'+row.id+'" status="1" class="btn btn-xs btn-success btn_apr" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i></a> <a id_launch="'+row.id+'" status="2" class="btn btn-xs btn-danger btn_apr" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i></a>' ;
+                return  '<a id_launch="'+row.id+'" status="1" class="btn btn-xs btn-success btn_apr" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i></a> <a id_launch="'+row.id+'" status="2" class="btn btn-xs btn-danger btn_repr" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i></a>' ;
                 /*'<form> <input name="id" id="id" value="'+row.id+'" hidden> <input name="status" id="status" value="1" hidden> <button type="submit" class="btn btn-xs btn-success btn_aprovar" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i> </button> <button type="submit" class="btn btn-xs btn-danger btn_reprovar" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i> </button> </form> '*/
             },
             columnDefs: [
