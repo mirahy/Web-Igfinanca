@@ -31,7 +31,7 @@ class CreateTbCadUserTable extends Migration
             $table->string('email', 100)->nullable();
             $table->string('password', 254)->nullable();
             $table->string('status', 45);
-            $table->string('permission', 45);
+            $table->string('permission', 45)->default(null);
             $table->string('token_access', 254)->nullable();
 
             $table->rememberToken();
