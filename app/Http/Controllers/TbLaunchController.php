@@ -11,6 +11,7 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\TbLaunchCreateRequest;
 use App\Http\Requests\TbLaunchUpdateRequest;
 use App\Repositories\TbLaunchRepository;
+use App\Repositories\TbCaixaRepository;
 use App\Validators\TbLaunchValidator;
 use Yajra\Datatables\Datatables;
 use App\Services\TbLaunchService;
@@ -24,21 +25,28 @@ const CONSTANT_MES = ['','JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL','MAIO','JUNHO
  */
 class TbLaunchController extends Controller
 {
-    
+
+    protected $TbCaixaRepository;
     protected $repository; 
     protected $service;
     
 
    
-    public function __construct(TbLaunchRepository $repository, TbLaunchService $service)
+    public function __construct(TbLaunchRepository $repository, TbLaunchService $service, TbCaixaRepository $TbCaixaRepository)
     {
-        $this->repository  = $repository;
-        $this->service  = $service;
+        $this->TbCaixaRepository  = $TbCaixaRepository;
+        $this->repository         = $repository;
+        $this->service            = $service;
     }
 
     
     public function index()
     {
+
+       
+        
+        $caixa_list  = $this->TbCaixaRepository->selectBoxList();
+
         
         return view('launch.launchs_e', [
             'year'         => date("Y"),
@@ -48,12 +56,15 @@ class TbLaunchController extends Controller
             'closing'      => 0,
             'status'       => 0,
             'id_user'      => 0,
+            'caixa_list'   => $caixa_list,
             'data'         => CONSTANT_MES,
         ]);
     }
 
     public function index_s()
     {
+
+        $caixa_list  = $this->TbCaixaRepository->selectBoxList();
         
         return view('launch.launchs_s', [
             'year'         => date("Y"),
@@ -62,6 +73,7 @@ class TbLaunchController extends Controller
             'base'         => 0,
             'closing'      => 0,
             'status'       => 0,
+            'caixa_list'   => $caixa_list,
             'id_user'      => 0,
             'data'         => CONSTANT_MES,
         ]);
@@ -128,12 +140,8 @@ class TbLaunchController extends Controller
             $request = $this->service->store($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;
            
-            session()->flash('success', [
-                'success'   =>  $request['success'],
-                'messages'  =>  $request['messages'],
-                'launch'   =>  $launch,
-             ]);
-
+           
+               
              if(!$request['success']){
                 $i=0;
                 $json["status"] = 0;
@@ -149,15 +157,10 @@ class TbLaunchController extends Controller
 
         }else{
             
-
+            
             $request = $this->service->update($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;
 
-            session()->flash('success', [
-                'success'   =>  $request['success'],
-                'messages'  =>  $request['messages'],
-                'launch'   =>  $launch,
-             ]);
              
              if(!$request['success']){
                 $i=0;
