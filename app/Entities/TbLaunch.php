@@ -14,7 +14,7 @@ class TbLaunch extends Model implements Transformable
    
      public     $timestamps   = true;
      protected  $table        = 'tb_launch';
-     protected  $fillable     = ['id','id_user','value','operation_date','reference_month','reference_year','idtb_operation','status','idtb_type_launch','idtb_base', 'idtb_closing', 'status', 'created_at', 'updated_at'];
+     protected  $fillable     = ['id','id_user','value','operation_date','reference_month','reference_year','idtb_operation','status','idtb_type_launch', 'idtb_caixa','idtb_base', 'idtb_closing', 'status', 'created_at', 'updated_at'];
      
 
      public function user(){
@@ -28,13 +28,18 @@ class TbLaunch extends Model implements Transformable
     }
 
     public function operation(){
-       return $this->belongsTo(TbTypeLaunch::class, 'idtb_operation', 'id');
+       return $this->belongsTo(TbOperation::class, 'idtb_operation', 'id');
    
     }
 
     public function base(){
-       return $this->belongsTo(TbTypeLaunch::class, 'idtb_base', 'idtb_base');
+       return $this->belongsTo(TbBase::class, 'idtb_base', 'idtb_base');
    
     }
+
+    public function caixa(){
+      return $this->belongsTo(TbCaixa::class, 'idtb_caixa', 'id');
+  
+   }
 
 }

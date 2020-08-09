@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Entities\TbCadUser;
+use App\Entities\TbLaunch;
 use Illuminate\Http\Request;
 use App\Validators\TbCadUserValidator;
 use App\Repositories\TbCadUserRepository;
@@ -27,7 +28,28 @@ class DashboardController extends Controller
 
   public function index()
   {
-    return view('dashboard.dashboard');
+    //Dízimos
+    $entradas  = TbLaunch::where([['status', 1],['idtb_operation', 1],['idtb_type_launch', 1],['idtb_caixa', 1]])->sum('value');
+    $saidas    = TbLaunch::where([['status', 1],['idtb_operation', 2],['idtb_caixa', 1]])->whereIn('idtb_type_launch',[3,4])->sum('value');
+
+    $entradas_o  = TbLaunch::where([['status', 1],['idtb_operation', 1],['idtb_type_launch', 2],['idtb_caixa', 2]])->sum('value');
+    $saidas_o    = TbLaunch::where([['status', 1],['idtb_operation', 2],['idtb_caixa', 2]])->whereIn('idtb_type_launch',[3,4])->sum('value');
+    
+
+    return view('dashboard.dashboard', [
+
+      'pend'    => TbLaunch::where([['status', 0],['idtb_caixa', 1]])->count(),
+      'entries' => $entradas,
+      'exits'   => $saidas,
+      'balance' => $entradas - $saidas,
+
+      'pend_o'    => TbLaunch::where([['status', 0],['idtb_caixa', 2]])->count(),
+      'entries_o' => $entradas_o,
+      'exits_o'   => $saidas_o,
+      'balance_o' => $entradas_o - $saidas_o,
+      
+    ]);
+
   }
 
 

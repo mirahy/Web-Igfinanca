@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
           // Cria usuários admins (dados controlados)
           $this->createAdmin();
           // Cria usuários demo (dados faker)
-          $this->createUsers();  
+          //$this->createUsers();  
 
         }
   
@@ -29,56 +29,59 @@ class DatabaseSeeder extends Seeder
 
          private  function createAdmin()
         {
+              TbBase::create([
+                'name'       => 'Vila Alta',
+                'descripion' => 'Base Vila Alta'
+        
+              ]);
+        
+              TbProfile::create([
+                'name'        => 'Desenvolvedor',
+                'description' => 'Perfil DEV_OP'
+        
+              ]);
+
               TbCadUser::create([
                 'name'          => 'Mirahy Fonseca',
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
                 'birth'         => '1989-12-06',
                 'email'         => 'mirahy@admin.com.br',
-                'password'      =>  env("PASSWORD_HASH") ? bcrypt('12345') : '12345',
+                'password'      =>  env("PASSWORD_HASH") ? bcrypt('adbvla123') : 'adbvla123',
                 'status'        => '1',
                 'permission'    => '2'
             
               ]);
+
               $this->command->info('Admin mirahy@admin.com.br user created');
-          }
+        }
 
-          private function createUsers()
-          {
-              $max = rand(10, 30);
-              for($i=0; $i < $max; $i++):
-                  $this->createUser($i+$max);
-              endfor;
-              $this->command->info($max . ' demo users created');
-          }
+          // private function createUsers()
+          // {
+          //     $max = rand(10, 30);
+          //     for($i=0; $i < $max; $i++):
+          //         $this->createUser($i+$max);
+          //     endfor;
+          //     $this->command->info($max . ' demo users created');
+          // }
 
-          private function createUser($index)
-          {   
-              return TbCadUser::create([
-                  'name'          => 'Mirahy Branco Fonseca'. $index,
-                  'idtb_profile'  => 1,
-                  'idtb_base'     => 1,
-                  'birth'         => '1989-12-06',
-                  'email'         => 'mirahy@admin'. $index .'.com.br',
-                  'password'      =>  env("PASSWORD_HASH") ? bcrypt('12345') : '12345',
-                  'status'        => '1',
-                  'permission'    => '2'
-              ]);
-          }
+          // private function createUser($index)
+          // {   
+          //     return TbCadUser::create([
+          //         'name'          => 'Mirahy Branco Fonseca'. $index,
+          //         'idtb_profile'  => 1,
+          //         'idtb_base'     => 1,
+          //         'birth'         => '1989-12-06',
+          //         'email'         => 'mirahy@admin'. $index .'.com.br',
+          //         'password'      =>  env("PASSWORD_HASH") ? bcrypt('12345') : '12345',
+          //         'status'        => '1',
+          //         'permission'    => '2'
+          //     ]);
+          // }
         
 
 
-      /*TbBase::create([
-        'name'       => 'Taruma',
-        'descripion' => 'Base taruma'
-
-      ]);
-
-      TbProfile::create([
-        'name'        => 'Desenvolvedor',
-        'description' => 'Perfil DEV_OP'
-
-      ]);*/
+    
 }
     
   

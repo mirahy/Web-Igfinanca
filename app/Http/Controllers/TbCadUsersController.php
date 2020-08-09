@@ -57,7 +57,8 @@ class TbCadUsersController extends Controller
     
 
 
-    Public function query(Request $request){
+    Public function query(Request $request)
+    {
 
         if(request()->ajax()){
            
@@ -79,13 +80,31 @@ class TbCadUsersController extends Controller
 
     }
 
-    Public function query_inact(Request $request){
+    Public function query_inact(Request $request)
+    {
 
         if(request()->ajax()){
             return Datatables::of(TbCadUser::query()
                                     ->with('base')
                                     ->with('Profile')
                                     ->where('status', '0'))
+                                    ->blacklist(['action'])
+                                    ->make(true);
+        }
+
+        
+        return view('user.edit-users');
+
+    }
+
+    Public function query_pending(Request $request)
+    {
+
+        if(request()->ajax()){
+            return Datatables::of(TbCadUser::query()
+                                    ->with('base')
+                                    ->with('Profile')
+                                    ->where('status', '2'))
                                     ->blacklist(['action'])
                                     ->make(true);
         }
@@ -120,6 +139,8 @@ class TbCadUsersController extends Controller
                 'messages'  =>  $request['messages'],
                 'usuario'   =>  $user,
              ]);
+
+             //dd($request['messages']);
 
              if(!$request['success']){
                 $i=0;
@@ -212,7 +233,8 @@ class TbCadUsersController extends Controller
         echo json_encode($json);
     }
 
-    public function select(){
+    public function select()
+    {
 
 
         $perfil_list = \App\Entities\TbProfile::pluck('name', 'idtb_profile')->All();
@@ -228,7 +250,8 @@ class TbCadUsersController extends Controller
         //echo json_encode($json);
     }
 
-    public function autocomplete(Request $request){
+    public function autocomplete(Request $request)
+    {
 
         $json  = array();   
 

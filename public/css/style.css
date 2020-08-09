@@ -49,3 +49,8 @@
   * html .ui-autocomplete {
     height: 100px !important;
   }
+
+
+  .border-none {
+    border:none
+  }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Exception;
 use App\Entities\TbCadUser;
+use App\Entities\TbLaunch;
 use App\Validators\TbLaunchValidator;
 use App\Repositories\TbLaunchRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -77,10 +78,10 @@ class TbLaunchService
         } catch (Exception $e) {
 
               switch (get_class($e)) {               
-                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => $e->getMessage()];
                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
-                case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
-                default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                case Exception::class           : return['success' => false, 'messages' => $e->getMessage(), 'type'  => $e->getMessage()];
+                default                         : return['success' => false, 'messages' => $e->getMessage(), 'type'  => $e->getMessage()];
               }
 
         }
@@ -151,6 +152,40 @@ class TbLaunchService
 
         }
 
+      }
+
+
+      public function aprov($data)
+      {
+        try {
+
+              $id = $data['id'];
+
+              $launch = TbLaunch::where('id', $id)->update(['status' => $data['status']]);
+
+              
+              if(!$launch){
+                throw new Exception('');
+
+              } 
+              return [
+                'success'     => true,
+                'messages'    => $data['status'] == 1 ? [" Aprovado"] : [" Reprovado"],
+                'data'        => $launch,
+                'type'        => [""],
+              ];
+
+
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => 'Não foi possível aprovar!', 'type'  => $e->getMessage()];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                case Exception::class           : return['success' => false, 'messages' => 'Não foi possível aprovar!', 'type'  => $e->getMessage()];
+                default                         : return['success' => false, 'messages' => 'Não foi possível aprovar!', 'type'  => $e->getMessage()];
+              }
+
+        }
       }
 
 

@@ -20,15 +20,21 @@ class TbCadUserValidator extends LaravelValidator
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
           'name'            => 'required|min:10|unique:tb_cad_user,name',
-          'email'           => 'required|email|min:10|unique:tb_cad_user,email',
-          'password'        => 'required|min:8',
-          'Repeatpassword'  => 'required|same:password',
+          'idtb_profile'    => 'required',
+          'idtb_base'       => 'required',
+          'status'          => 'required',
+          // 'email'           => 'required|email|min:10|unique:tb_cad_user,email',
+          // 'password'        => 'required|min:8',
+          // 'Repeatpassword'  => 'required|same:password',
         ],
 
         
         ValidatorInterface::RULE_UPDATE => [
           'name'            => 'required|min:10unique:tb_cad_user,name',
-          'email'           => 'required|email|min:10|unique:tb_cad_user,email',
+          'idtb_profile'    => 'required',
+          'idtb_base'       => 'required',
+          'status'          => 'required',
+          // 'email'           => 'required|email|min:10|unique:tb_cad_user,email',
         ],
     ];
 
@@ -45,5 +51,8 @@ class TbCadUserValidator extends LaravelValidator
       'Repeatpassword.required'   => 'Confirme sua senha!',
       'Repeatpassword.min'        => 'Senha deve conter no minimo 8 carácteres!',
       'Repeatpassword.same'       => 'As senhas deven ser iguais!',
+      'idtb_profile.required'     => 'Selecionar Perfil',
+      'idtb_base.required'        => 'Selecionar Base',
+      'status.required'           => 'Selecionar Status',
     ];
 }
