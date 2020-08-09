@@ -140,6 +140,8 @@ class TbCadUsersController extends Controller
                 'usuario'   =>  $user,
              ]);
 
+             //dd($request['messages']);
+
              if(!$request['success']){
                 $i=0;
                 $json["status"] = 0;
