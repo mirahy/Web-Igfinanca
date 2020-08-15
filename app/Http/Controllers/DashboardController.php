@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 
 use App\Entities\TbCadUser;
 use App\Entities\TbLaunch;
+use App\Entities\TbBase;
 use Illuminate\Http\Request;
 use App\Validators\TbCadUserValidator;
 use App\Repositories\TbCadUserRepository;
 use App\Services\LoginService;
+use Illuminate\Support\Facades\DB;
 use Exception;
 use Auth;
 
@@ -31,7 +33,7 @@ class DashboardController extends Controller
     //Dízimos
     $entradas  = TbLaunch::where([['status', 1],['idtb_operation', 1],['idtb_type_launch', 1],['idtb_caixa', 1]])->sum('value');
     $saidas    = TbLaunch::where([['status', 1],['idtb_operation', 2],['idtb_caixa', 1]])->whereIn('idtb_type_launch',[3,4])->sum('value');
-
+    //Ofertas
     $entradas_o  = TbLaunch::where([['status', 1],['idtb_operation', 1],['idtb_type_launch', 2],['idtb_caixa', 2]])->sum('value');
     $saidas_o    = TbLaunch::where([['status', 1],['idtb_operation', 2],['idtb_caixa', 2]])->whereIn('idtb_type_launch',[3,4])->sum('value');
     
@@ -59,6 +61,8 @@ class DashboardController extends Controller
     $json  = array();
     $json["status"] = 1;
     $json["error_list"] = array();
+
+    
     
     $request = $this->service->auth($request);
     
@@ -67,6 +71,8 @@ class DashboardController extends Controller
        'messages'       =>  $request['messages'],
   
     ]);
+
+   
 
     if(!$request['success']){
       $json["status"] = 0;
