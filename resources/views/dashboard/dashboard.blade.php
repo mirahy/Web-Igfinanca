@@ -26,47 +26,51 @@
       <!--Painel Dízimos-->
 
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h5 mb-0 text-gray-800">Dízimo</h1>
+        <h1 class="h5 mb-0 text-gray-800">Caixa Dízimo</h1>
       </div>
 
       <!-- Content Row -->
       <div class="row">
 
-        <!-- Earnings (Monthly) Card Example -->
+        <!-- Entrada dízimos -->
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Entradas </div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$entries?></div>
-                </div>
-                <div class="col-auto">
-                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+            <a class="collapse-item link-none-line" href="{{ asset('/launchs-e')}}">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">  
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Entradas </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$entries?></div> 
+                    </div>
+                    <div class="col-auto">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                  </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
 
-        <!-- Earnings (Monthly) Card Example -->
+        <!-- saídas dízimos-->
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-danger shadow h-100 py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Saídas</div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$exits?></div>
-                </div>
-                <div class="col-auto">
-                  <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+            <a class="collapse-item link-none-line" href="{{ asset('/launchs-s')}}">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Saídas</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$exits?></div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                  </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
 
-        <!-- Earnings (Monthly) Card Example -->
+        <!-- Saldo Caixa dízimo -->
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-info shadow h-100 py-2">
             <div class="card-body">
@@ -113,20 +117,20 @@
           </div>
         </div> -->
 
-        <!-- Pending Requests Card Example -->
+        <!-- Pendencias de lançamentos no caixa de dízimos -->
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Aprovações Pendentes</div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$pend?></div>
-                </div>
-                <div class="col-auto">
-                  <i class="fas fa-comments fa-2x text-gray-300"></i>
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Aprovações Pendentes</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$pend?></div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -138,47 +142,51 @@
       <!--Painel Ofertas-->
 
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h5 mb-0 text-gray-800">Ofertas</h1>
+        <h1 class="h5 mb-0 text-gray-800">Caixa Ofertas</h1>
       </div>
 
       <!-- Content Row -->
       <div class="row">
 
-        <!-- Earnings (Monthly) Card Example -->
+        <!-- Entradas ofertas -->
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Entradas </div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$entries_o?></div>
-                </div>
-                <div class="col-auto">
-                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+            <a class="collapse-item link-none-line" href="{{ asset('/launchs-e')}}">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Entradas </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$entries_o?></div>
+                  </div>
+                  <div class="col-auto">
+                  <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                  </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
 
-        <!-- Earnings (Monthly) Card Example -->
+        <!-- Saídas ofertas -->
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-danger shadow h-100 py-2">
-            <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                  <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Saídas</div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$exits_o?></div>
-                </div>
-                <div class="col-auto">
-                  <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+            <a class="collapse-item link-none-line" href="{{ asset('/launchs-s')}}">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Saídas</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$exits_o?></div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                  </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
 
-        <!-- Earnings (Monthly) Card Example -->
+        <!-- Slado ofertas -->
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-info shadow h-100 py-2">
             <div class="card-body">
@@ -225,7 +233,7 @@
           </div>
         </div> -->
 
-        <!-- Pending Requests Card Example -->
+        <!-- Pendencias de lançamentos no caixa de ofertas -->
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-warning shadow h-100 py-2">
             <div class="card-body">
