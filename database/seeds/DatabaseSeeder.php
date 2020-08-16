@@ -34,6 +34,13 @@ class DatabaseSeeder extends Seeder
                 'descripion' => 'Base Vila Alta'
         
               ]);
+
+              TbCaixa::create([
+                ['name'       => 'Dízimo'],
+                ['name'       => 'Oferta'],
+                
+        
+              ]);
         
               TbProfile::create([
                 'name'        => 'Desenvolvedor',
@@ -50,6 +57,14 @@ class DatabaseSeeder extends Seeder
                 'password'      =>  env("PASSWORD_HASH") ? bcrypt('adbvla123') : 'adbvla123',
                 'status'        => '1',
                 'permission'    => '2'
+            
+              ]);
+
+              TbCadUser::create([
+                'name'          => 'Oferta Local',
+                'idtb_profile'  => 1,
+                'idtb_base'     => 1,
+                'status'        => '1',
             
               ]);
 

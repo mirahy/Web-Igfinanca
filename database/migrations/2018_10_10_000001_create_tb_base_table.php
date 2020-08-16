@@ -25,6 +25,7 @@ class CreateTbBaseTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('idtb_base');
             $table->string('name', 45);
+            $table->string('sigla', 3);
             $table->longText('descripion')->nullable();
 
             $table->timestamps();

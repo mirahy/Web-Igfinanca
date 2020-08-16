@@ -24,7 +24,7 @@ class CreateTbProfileTable extends Migration
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('idtb_profile');
-            $table->string('name', 45)->nullable();
+            $table->string('name', 45);
             $table->string('description', 45)->nullable();
 
             $table->timestamps();
