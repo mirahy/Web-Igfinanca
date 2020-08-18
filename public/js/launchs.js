@@ -442,101 +442,101 @@ $(function(){
     * tabela ofertas
     **/
    var dt_launch_o = $('#dt_launch_o').DataTable({
-                    "oLanguage": DATATABLE_PTBR,
-                    "autoWidth":  false,
-                    "processing": true,
-                    // "serverSide": true,
-                    "ajax": baseUrl + 'query?launch=2',
-                    "columns": [
-                        { data: 'type_launch.name', name: 'launch.name' },
-                        { data: 'user.name', name: 'user.name' },
-                        { data: 'value', name: 'value',
-                        render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
-                        },
-                        { data: 'operation_date', 
-                            render: function ( data, type, row ) {
-                                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                                data;
-                            }
-                        },
-                        {"data": "reference_month",
-                            "render": function(data, type, row, meta){
-                                return CONSTANT_MES[data];
+                        "oLanguage": DATATABLE_PTBR,
+                        "autoWidth":  false,
+                        "processing": true,
+                        // "serverSide": true,
+                        "ajax": baseUrl + 'query?launch=2',
+                        "columns": [
+                            { data: 'type_launch.name', name: 'launch.name' },
+                            { data: 'user.name', name: 'user.name' },
+                            { data: 'value', name: 'value',
+                            render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
                             },
-                            columnDefs: [
-                                {targets: "no-sort", orderable: false},
-                                {targets: "dt-center", ClassName: "dt-center"}
-                            ]
-                        },
-                        { data: 'reference_year', name: 'reference_year' },
-                        {"data": "status",
-                            "render": function(data, type, row, meta){
-                                return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>"  : "<span class='badge badge-danger'>Reprovado</span>";
+                            { data: 'operation_date', 
+                                render: function ( data, type, row ) {
+                                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                    data;
+                                }
                             },
-                            columnDefs: [
-                                {targets: "no-sort", orderable: false},
-                                {targets: "dt-center", ClassName: "dt-center"}
-                            ]
-                        },
-                        { data: 'created_at',
-                            render: function ( data, type, row ) {
-                                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                                data;
-                            }
-                        },
-                        { data: 'updated_at', 
-                            render: function ( data, type, row ) {
-                                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                                data;
-                            }
-                        },
-                        {
-                            "data": "action",
-                            "render": function(data, type, row, meta){
-                                return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                            {"data": "reference_month",
+                                "render": function(data, type, row, meta){
+                                    return CONSTANT_MES[data];
+                                },
+                                columnDefs: [
+                                    {targets: "no-sort", orderable: false},
+                                    {targets: "dt-center", ClassName: "dt-center"}
+                                ]
                             },
-                            columnDefs: [
-                                {targets: "no-sort", orderable: false},
-                                {targets: "dt-center", ClassName: "dt-center"}
-                            ]
-                    }
-                    ],
-                     "drawCallback": function(){
-                         btn_edit_launch();
-                     },
+                            { data: 'reference_year', name: 'reference_year' },
+                            {"data": "status",
+                                "render": function(data, type, row, meta){
+                                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>"  : "<span class='badge badge-danger'>Reprovado</span>";
+                                },
+                                columnDefs: [
+                                    {targets: "no-sort", orderable: false},
+                                    {targets: "dt-center", ClassName: "dt-center"}
+                                ]
+                            },
+                            { data: 'created_at',
+                                render: function ( data, type, row ) {
+                                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                    data;
+                                }
+                            },
+                            { data: 'updated_at', 
+                                render: function ( data, type, row ) {
+                                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                    data;
+                                }
+                            },
+                            {
+                                "data": "action",
+                                "render": function(data, type, row, meta){
+                                    return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                                },
+                                columnDefs: [
+                                    {targets: "no-sort", orderable: false},
+                                    {targets: "dt-center", ClassName: "dt-center"}
+                                ]
+                        }
+                        ],
+                        "drawCallback": function(){
+                            btn_edit_launch();
+                        },
 
-                     "footerCallback": function ( row, data, start, end, display ) {
-                        var api = this.api(), data;
-             
-                        // Remove the formatting to get integer data for summation
-                        var intVal = function ( i ) {
-                            return typeof i === 'string' ?
-                                i.replace(/[\$,]/g, '')*1 :
-                                typeof i === 'number' ?
-                                    i : 0;
-                        };
-             
-                        // Total over all pages
-                        total = api
-                            .column( 2 )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-             
-                        // Total over this page
-                        pageTotal = api
-                            .column( 2, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
-             
-                        // Update footer
-                        $( api.column( 9 ).footer() ).html(
-                            'R$'+pageTotal +' ( R$'+ total +' total)'
-                        );
-                    }
+                        "footerCallback": function ( row, data, start, end, display ) {
+                            var api = this.api(), data;
+                
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
+                
+                            // Total over all pages
+                            total = api
+                                .column( 2 )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                
+                            // Total over this page
+                            pageTotal = api
+                                .column( 2, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                
+                            // Update footer
+                            $( api.column( 9 ).footer() ).html(
+                                'R$'+pageTotal +' ( R$'+ total +' total)'
+                            );
+                        }
     });
 
 
@@ -544,102 +544,103 @@ $(function(){
         * tabela Saidas compras
         **/
         var dt_launch_buy = $('#dt_launch_buy').DataTable({
-            "oLanguage": DATATABLE_PTBR,
-            "autoWidth":  false,
-            "processing": true,
-            // "serverSide": true,
-            "ajax": baseUrl + 'query?launch=3',
-            "columns": [
-                { data: 'type_launch.name', name: 'launch.name' },
-                { data: 'user.name', name: 'user.name' },
-                { data: 'value', name: 'value',
-                  render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
-                 },
-                { data: 'operation_date', 
-                    render: function ( data, type, row ) {
-                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                        data;
-                    }
-                },
-                {"data": "reference_month",
-                    "render": function(data, type, row, meta){
-                        return CONSTANT_MES[data];
-                    },
-                    columnDefs: [
-                        {targets: "no-sort", orderable: false},
-                        {targets: "dt-center", ClassName: "dt-center"}
-                    ]
-                },
-                { data: 'reference_year', name: 'reference_year' },
-                {"data": "status",
-                    "render": function(data, type, row, meta){
-                        return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>"  : "<span class='badge badge-danger'>Reprovado</span>";
-                    },
-                    columnDefs: [
-                        {targets: "no-sort", orderable: false},
-                        {targets: "dt-center", ClassName: "dt-center"}
-                    ]
-                },
-                { data: 'created_at',
-                    render: function ( data, type, row ) {
-                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                        data;
-                    }
-                },
-                { data: 'updated_at', 
-                    render: function ( data, type, row ) {
-                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                        data;
-                    }
-                },
-                {
-                    "data": "action",
-                    "render": function(data, type, row, meta){
-                        return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch_exits" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch_exits" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
-                    },
-                    columnDefs: [
-                        {targets: "no-sort", orderable: false},
-                        {targets: "dt-center", ClassName: "dt-center"}
-                    ]
-            }
-            ],
-            "drawCallback": function(){
-                btn_edit_launch_s();
-            },
+                            "oLanguage": DATATABLE_PTBR,
+                            "autoWidth":  false,
+                            "processing": true,
+                            // "serverSide": true,
+                            "ajax": baseUrl + 'query?launch=3',
+                            "columns": [
+                                { data: 'type_launch.name', name: 'launch.name' },
+                                { data: 'user.name', name: 'user.name' },
+                                { data: 'value', name: 'value',
+                                render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
+                                },
+                                { data: 'caixa.name', name: 'caixa.name' },
+                                { data: 'operation_date', 
+                                    render: function ( data, type, row ) {
+                                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                        data;
+                                    }
+                                },
+                                {"data": "reference_month",
+                                    "render": function(data, type, row, meta){
+                                        return CONSTANT_MES[data];
+                                    },
+                                    columnDefs: [
+                                        {targets: "no-sort", orderable: false},
+                                        {targets: "dt-center", ClassName: "dt-center"}
+                                    ]
+                                },
+                                { data: 'reference_year', name: 'reference_year' },
+                                {"data": "status",
+                                    "render": function(data, type, row, meta){
+                                        return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>"  : "<span class='badge badge-danger'>Reprovado</span>";
+                                    },
+                                    columnDefs: [
+                                        {targets: "no-sort", orderable: false},
+                                        {targets: "dt-center", ClassName: "dt-center"}
+                                    ]
+                                },
+                                { data: 'created_at',
+                                    render: function ( data, type, row ) {
+                                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                        data;
+                                    }
+                                },
+                                { data: 'updated_at', 
+                                    render: function ( data, type, row ) {
+                                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                        data;
+                                    }
+                                },
+                                {
+                                    "data": "action",
+                                    "render": function(data, type, row, meta){
+                                        return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch_exits" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch_exits" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
+                                    },
+                                    columnDefs: [
+                                        {targets: "no-sort", orderable: false},
+                                        {targets: "dt-center", ClassName: "dt-center"}
+                                    ]
+                            }
+                            ],
+                            "drawCallback": function(){
+                                btn_edit_launch_s();
+                            },
 
-            "footerCallback": function ( row, data, start, end, display ) {
-                var api = this.api(), data;
-     
-                // Remove the formatting to get integer data for summation
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '')*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-     
-                // Total over all pages
-                total = api
-                    .column( 2 )
-                    .data()
-                    .reduce( function (a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0 );
-     
-                // Total over this page
-                pageTotal = api
-                    .column( 2, { page: 'current'} )
-                    .data()
-                    .reduce( function (a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0 );
-     
-                // Update footer
-                $( api.column( 9 ).footer() ).html(
-                    'R$'+pageTotal +' ( R$'+ total +' total)'
-                );
-            }
-        });
+                            "footerCallback": function ( row, data, start, end, display ) {
+                                var api = this.api(), data;
+                    
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function ( i ) {
+                                    return typeof i === 'string' ?
+                                        i.replace(/[\$,]/g, '')*1 :
+                                        typeof i === 'number' ?
+                                            i : 0;
+                                };
+                    
+                                // Total over all pages
+                                total = api
+                                    .column( 2 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                    
+                                // Total over this page
+                                pageTotal = api
+                                    .column( 2, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                    
+                                // Update footer
+                                $( api.column( 9 ).footer() ).html(
+                                    'R$'+pageTotal +' ( R$'+ total +' total)'
+                                );
+                            }
+                        });
 
 
 
@@ -647,102 +648,103 @@ $(function(){
         * tabela Saidas serviços
         **/
     var dt_launch_service = $('#dt_launch_service').DataTable({
-        "oLanguage": DATATABLE_PTBR,
-        "autoWidth":  false,
-        "processing": true,
-        // "serverSide": true,
-        "ajax": baseUrl + 'query?launch=4',
-        "columns": [
-            { data: 'type_launch.name', name: 'launch.name' },
-            { data: 'user.name', name: 'user.name' },
-            { data: 'value', name: 'value',
-              render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
-             },
-            { data: 'operation_date', 
-                render: function ( data, type, row ) {
-                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                    data;
-                }
-            },
-            {"data": "reference_month",
-                "render": function(data, type, row, meta){
-                    return CONSTANT_MES[data];
-                },
-                columnDefs: [
-                    {targets: "no-sort", orderable: false},
-                    {targets: "dt-center", ClassName: "dt-center"}
-                ]
-            },
-            { data: 'reference_year', name: 'reference_year' },
-            {"data": "status",
-                "render": function(data, type, row, meta){
-                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>"  : "<span class='badge badge-danger'>Reprovado</span>";
-                },
-                columnDefs: [
-                    {targets: "no-sort", orderable: false},
-                    {targets: "dt-center", ClassName: "dt-center"}
-                ]
-            },
-            { data: 'created_at',
-                render: function ( data, type, row ) {
-                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                    data;
-                }
-            },
-            { data: 'updated_at', 
-                render: function ( data, type, row ) {
-                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                    data;
-                }
-            },
-            {
-                "data": "action",
-                "render": function(data, type, row, meta){
-                    return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch_exits" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch_exits" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
-                },
-                columnDefs: [
-                    {targets: "no-sort", orderable: false},
-                    {targets: "dt-center", ClassName: "dt-center"}
-                ]
-        }
-        ],
-        "drawCallback": function(){
-            btn_edit_launch_s();
-        },
+                            "oLanguage": DATATABLE_PTBR,
+                            "autoWidth":  false,
+                            "processing": true,
+                            // "serverSide": true,
+                            "ajax": baseUrl + 'query?launch=4',
+                            "columns": [
+                                { data: 'type_launch.name', name: 'launch.name' },
+                                { data: 'user.name', name: 'user.name' },
+                                { data: 'value', name: 'value',
+                                render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
+                                },
+                                { data: 'caixa.name', name: 'caixa.name' },
+                                { data: 'operation_date', 
+                                    render: function ( data, type, row ) {
+                                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                        data;
+                                    }
+                                },
+                                {"data": "reference_month",
+                                    "render": function(data, type, row, meta){
+                                        return CONSTANT_MES[data];
+                                    },
+                                    columnDefs: [
+                                        {targets: "no-sort", orderable: false},
+                                        {targets: "dt-center", ClassName: "dt-center"}
+                                    ]
+                                },
+                                { data: 'reference_year', name: 'reference_year' },
+                                {"data": "status",
+                                    "render": function(data, type, row, meta){
+                                        return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>"  : "<span class='badge badge-danger'>Reprovado</span>";
+                                    },
+                                    columnDefs: [
+                                        {targets: "no-sort", orderable: false},
+                                        {targets: "dt-center", ClassName: "dt-center"}
+                                    ]
+                                },
+                                { data: 'created_at',
+                                    render: function ( data, type, row ) {
+                                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                        data;
+                                    }
+                                },
+                                { data: 'updated_at', 
+                                    render: function ( data, type, row ) {
+                                        return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                        data;
+                                    }
+                                },
+                                {
+                                    "data": "action",
+                                    "render": function(data, type, row, meta){
+                                        return '<a idtb_launch="'+row.id+'" class="btn btn-xs btn-primary btn_edit_launch_exits" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="'+row.id+'" class="btn btn-xs btn-danger btn_del_launch_exits" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
+                                    },
+                                    columnDefs: [
+                                        {targets: "no-sort", orderable: false},
+                                        {targets: "dt-center", ClassName: "dt-center"}
+                                    ]
+                            }
+                            ],
+                            "drawCallback": function(){
+                                btn_edit_launch_s();
+                            },
 
-        "footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api(), data;
- 
-            // Remove the formatting to get integer data for summation
-            var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '')*1 :
-                    typeof i === 'number' ?
-                        i : 0;
-            };
- 
-            // Total over all pages
-            total = api
-                .column( 2 )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Total over this page
-            pageTotal = api
-                .column( 2, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Update footer
-            $( api.column( 9 ).footer() ).html(
-                'R$'+pageTotal +' ( R$'+ total +' total)'
-            );
-        }
-    });
+                            "footerCallback": function ( row, data, start, end, display ) {
+                                var api = this.api(), data;
+                    
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function ( i ) {
+                                    return typeof i === 'string' ?
+                                        i.replace(/[\$,]/g, '')*1 :
+                                        typeof i === 'number' ?
+                                            i : 0;
+                                };
+                    
+                                // Total over all pages
+                                total = api
+                                    .column( 2 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                    
+                                // Total over this page
+                                pageTotal = api
+                                    .column( 2, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                    
+                                // Update footer
+                                $( api.column( 9 ).footer() ).html(
+                                    'R$'+pageTotal +' ( R$'+ total +' total)'
+                                );
+                            }
+                        });
 
 
     
@@ -751,141 +753,136 @@ $(function(){
     * tabela aprovações
     **/
    var dt_launch_apr = $('#dt_launch_apr').DataTable({
-    "oLanguage": DATATABLE_PTBR,
-    "autoWidth":  false,
-    "processing": true,
-    // "serverSide": true,
-    "ajax": baseUrl + 'query?status=0',
-    "columns": [
-        { data: 'type_launch.name', name: 'launch.name' },
-        { data: 'user.name', name: 'user.name' },
-        { data: 'value', name: 'value',
-          render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
-         },
-        { data: 'operation_date', 
-            render: function ( data, type, row ) {
-                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                data;
-            }
-        },
-        {"data": "reference_month",
-            "render": function(data, type, row, meta){
-                return CONSTANT_MES[data];
-            },
-            columnDefs: [
-                {targets: "no-sort", orderable: false},
-                {targets: "dt-center", ClassName: "dt-center"}
-            ]
-        },
-        { data: 'reference_year', name: 'reference_year' },
-        {"data": "status",
-            "render": function(data, type, row, meta){
-                return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>"  : "<span class='badge badge-danger'>Reprovado</span>";
-            },
-            columnDefs: [
-                {targets: "no-sort", orderable: false},
-                {targets: "dt-center", ClassName: "dt-center"}
-            ]
-        },
-        { data: 'created_at', 
-            render: function ( data, type, row ) {
-                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                data;
-            }
-         },
-        { data: 'updated_at', 
-            render: function ( data, type, row ) {
-                return type === "display" || type === "filter" ? Dataformat = FormatData(data):
-                data;
-            } 
-        },
-        {
-            "data": "action",
-            "render": function(data, type, row, meta){
-                return  '<a id_launch="'+row.id+'" status="1" class="btn btn-xs btn-success btn_apr" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i></a> <a id_launch="'+row.id+'" status="2" class="btn btn-xs btn-danger btn_repr" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i></a>' ;
-                /*'<form> <input name="id" id="id" value="'+row.id+'" hidden> <input name="status" id="status" value="1" hidden> <button type="submit" class="btn btn-xs btn-success btn_aprovar" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i> </button> <button type="submit" class="btn btn-xs btn-danger btn_reprovar" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i> </button> </form> '*/
-            },
-            columnDefs: [
-                {targets: "no-sort", orderable: false},
-                {targets: "dt-center", ClassName: "dt-center"}
-            ]
-    }
-    ],
-    "drawCallback": function(){
-        btn_aprov();
-    },
+                        "oLanguage": DATATABLE_PTBR,
+                        "autoWidth":  false,
+                        "processing": true,
+                        // "serverSide": true,
+                        "ajax": baseUrl + 'query?status=0',
+                        "columns": [
+                            { data: 'type_launch.name', name: 'launch.name' },
+                            { data: 'user.name', name: 'user.name' },
+                            { data: 'value', name: 'value',
+                            render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
+                            },
+                            { data: 'caixa.name', name: 'caixa.name' },
+                            { data: 'operation_date', 
+                                render: function ( data, type, row ) {
+                                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                    data;
+                                }
+                            },
+                            {"data": "reference_month",
+                                "render": function(data, type, row, meta){
+                                    return CONSTANT_MES[data];
+                                },
+                                columnDefs: [
+                                    {targets: "no-sort", orderable: false},
+                                    {targets: "dt-center", ClassName: "dt-center"}
+                                ]
+                            },
+                            { data: 'reference_year', name: 'reference_year' },
+                            {"data": "status",
+                                "render": function(data, type, row, meta){
+                                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>"  : "<span class='badge badge-danger'>Reprovado</span>";
+                                },
+                                columnDefs: [
+                                    {targets: "no-sort", orderable: false},
+                                    {targets: "dt-center", ClassName: "dt-center"}
+                                ]
+                            },
+                            { data: 'updated_at', 
+                                render: function ( data, type, row ) {
+                                    return type === "display" || type === "filter" ? Dataformat = FormatData(data):
+                                    data;
+                                } 
+                            },
+                            {
+                                "data": "action",
+                                "render": function(data, type, row, meta){
+                                    return  '<a id_launch="'+row.id+'" status="1" class="btn btn-xs btn-success btn_apr" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i></a> <a id_launch="'+row.id+'" status="2" class="btn btn-xs btn-danger btn_repr" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i></a>' ;
+                                    /*'<form> <input name="id" id="id" value="'+row.id+'" hidden> <input name="status" id="status" value="1" hidden> <button type="submit" class="btn btn-xs btn-success btn_aprovar" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i> </button> <button type="submit" class="btn btn-xs btn-danger btn_reprovar" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i> </button> </form> '*/
+                                },
+                                columnDefs: [
+                                    {targets: "no-sort", orderable: false},
+                                    {targets: "dt-center", ClassName: "dt-center"}
+                                ]
+                        }
+                        ],
+                        "drawCallback": function(){
+                            btn_aprov();
+                        },
 
-    "footerCallback": function ( row, data, start, end, display ) {
-        var api = this.api(), data;
+                        "footerCallback": function ( row, data, start, end, display ) {
+                            var api = this.api(), data;
 
-        // Remove the formatting to get integer data for summation
-        var intVal = function ( i ) {
-            return typeof i === 'string' ?
-                i.replace(/[\$,]/g, '')*1 :
-                typeof i === 'number' ?
-                    i : 0;
-        };
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
 
-        // Total over all pages
-        total = api
-            .column( 2 )
-            .data()
-            .reduce( function (a, b) {
-                return intVal(a) + intVal(b);
-            }, 0 );
+                            // Total over all pages
+                            total = api
+                                .column( 2 )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
 
-        // Total over this page
-        pageTotal = api
-            .column( 2, { page: 'current'} )
-            .data()
-            .reduce( function (a, b) {
-                return intVal(a) + intVal(b);
-            }, 0 );
+                            // Total over this page
+                            pageTotal = api
+                                .column( 2, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
 
-        // Update footer
-        $( api.column( 9 ).footer() ).html(
-            'R$'+pageTotal +' ( R$'+ total +' total)'
-        );
+                            // Update footer
+                            $( api.column( 9 ).footer() ).html(
+                                'R$'+pageTotal +' ( R$'+ total +' total)'
+                            );
 
-        
-    }
-});
+                            
+                        }
+                    });
 
 
 
     //Click lançar/editar modal Lançamentos
     $("#launch_form").submit(function(){
        
-        $.ajax({
-            type: "POST",
-            url: "keep-lauch",
-            dataType: "json",
-            data: $(this).serialize(),
-            beforeSend: function(){
-                clearErrors();
-                $("#btn_save_launch").parent().siblings(".help-block").html(loadingImg("Verificando..."))
-            },
-            
-            success: function(response){
-                clearErrors();
-                if(response["status"]){
-                    $msg = "Lançamento "+ response["success"] +"  com sucesso!";
-                    Swal.fire("Sucesso!", $msg, "success");
-                    $("#modal_launch").modal('hide');
-                    dt_launch.ajax.reload();
-                    dt_launch_o.ajax.reload();
-                    dt_launch_buy.ajax.reload();
-                    dt_launch_service.ajax.reload();
-                    
-                }else{
-                    showErrors(response["error_list"]);
-                }
-            }
-        })
-        
-     return false;
+                            $.ajax({
+                                type: "POST",
+                                url: "keep-lauch",
+                                dataType: "json",
+                                data: $(this).serialize(),
+                                beforeSend: function(){
+                                    clearErrors();
+                                    $("#btn_save_launch").parent().siblings(".help-block").html(loadingImg("Verificando..."))
+                                },
+                                
+                                success: function(response){
+                                    clearErrors();
+                                    if(response["status"]){
+                                        $msg = "Lançamento "+ response["success"] +"  com sucesso!";
+                                        Swal.fire("Sucesso!", $msg, "success");
+                                        $("#modal_launch").modal('hide');
+                                        dt_launch.ajax.reload();
+                                        dt_launch_o.ajax.reload();
+                                        dt_launch_buy.ajax.reload();
+                                        dt_launch_service.ajax.reload();
+                                        
+                                    }else{
+                                        showErrors(response["error_list"]);
+                                    }
+                                }
+                            })
+                            
+                        return false;
 
-    });
+                        });
 
 
 
