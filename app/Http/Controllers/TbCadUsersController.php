@@ -42,7 +42,7 @@ class TbCadUsersController extends Controller
 
     public function index()
     {
-        return view('user.index');
+        return redirect('/edit-users');
     }
 
     public function register()
