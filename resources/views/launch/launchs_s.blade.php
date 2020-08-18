@@ -49,6 +49,7 @@
                                         <th>Tipo</th>
                                         <th>Nome</th>
                                         <th>Valor</th>
+                                        <th>Caixa</th>
                                         <th>Data </th>
                                         <th data-orderable="false" >Mês Referência</th>
                                         <th data-orderable="false" >Ano Referência</th>
@@ -80,6 +81,7 @@
                                         <th>Tipo</th>
                                         <th>Nome</th>
                                         <th>Valor</th>
+                                        <th>Caixa</th>
                                         <th>Data</th>
                                         <th data-orderable="false" >Mês Referência</th>
                                         <th data-orderable="false" >Ano Referência</th>

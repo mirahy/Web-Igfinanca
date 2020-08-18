@@ -102,6 +102,7 @@ class TbLaunchController extends Controller
 
             return Datatables::of(TbLaunch::query()
                                     ->with('user')
+                                    ->with('caixa')
                                     ->with('type_launch')
                                     ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)],['status', 'LIKE', $request->query('status', $def) ]]))
                                     ->blacklist(['action'])

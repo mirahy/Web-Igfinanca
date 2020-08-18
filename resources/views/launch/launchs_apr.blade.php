@@ -47,11 +47,11 @@
                                         <th>Tipo</th>
                                         <th>Nome</th>
                                         <th>Valor</th>
+                                        <th>Caixa</th>
                                         <th>Coleta</th>
                                         <th data-orderable="false" >Mês Referência</th>
                                         <th data-orderable="false" >Ano Referência</th>
                                         <th>Status</th>
-                                        <th>Data lançamento</th>
                                         <th>Data Ataulização</th>
                                         <th data-orderable="false" >Ações</th>
                                     </tr>
