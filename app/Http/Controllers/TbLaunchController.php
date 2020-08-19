@@ -94,13 +94,24 @@ class TbLaunchController extends Controller
         ]);
     }
 
+    public function index_reports()
+    {
+        
+        return view('reports.closings',[
+            'data'         => CONSTANT_MES,
+            'year'         => date("Y"),
+        ]);
+    }
+
     Public function query(Request $request){
+
+        
         
         if(request()->ajax()){
 
            $def = '%';
 
-            return Datatables::of(TbLaunch::query()
+            return  Datatables::of(TbLaunch::query()
                                     ->with('user')
                                     ->with('caixa')
                                     ->with('type_launch')
@@ -108,7 +119,7 @@ class TbLaunchController extends Controller
                                     ->blacklist(['action'])
                                     ->make(true);
         }
-           
+        
 
     }
 

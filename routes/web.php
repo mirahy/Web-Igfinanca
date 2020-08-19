@@ -58,7 +58,7 @@ Route::get('/autocomplete', ['as' =>'autocomplete', 'uses' => 'TbCadUsersControl
 
 
 /**
-* Routes to dashboard nav lauchs
+* Routes to dashboard nav lauchs and approvals
 *========================================================================
 */
 
@@ -81,3 +81,12 @@ Route::get('/query', ['as' =>'query', 'uses' => 'TbLaunchController@query'])->mi
 Route::post('/keep-lauch', ['as' =>'keep-lauch', 'uses' => 'TbLaunchController@keep'])->middleware('auth');
 Route::post('/show-launch', ['as' =>'show-lauch', 'uses' => 'TbLaunchController@show_launch'])->middleware('auth');
 Route::post('/destroy-launch', ['as' =>'destroy-launch', 'uses' => 'TbLaunchController@destroy'])->middleware('auth');
+
+
+/**
+* Routes to dashboard nav reports
+*========================================================================
+*/
+
+Route::get('/reports-f', ['as' =>'reports-f', 'uses' => 'TbLaunchController@index_reports'])->middleware('auth');
+Route::get('/closingPDF', ['as' =>'closingPDF', 'uses' => 'PdfController@closing_pdf'])->middleware('auth');

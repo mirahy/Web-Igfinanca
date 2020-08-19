@@ -157,7 +157,7 @@
         <a class="collapse-item" href="#">Dízimos</a>
         <a class="collapse-item" href="#">Ofertas</a>
         <a class="collapse-item" href="#">Saídas</a>
-        <a class="collapse-item" href="#">Fechamentos</a>
+        <a class="collapse-item" href="{{ asset('/reports-f')}}">Fechamentos</a>
       </div>
     </div>
   </li>
