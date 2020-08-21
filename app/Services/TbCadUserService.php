@@ -9,6 +9,7 @@ use App\Repositories\TbCadUserRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
+use Yajra\Datatables\Datatables;
 use DB;
 class TbCadUserService
 {
@@ -23,7 +24,7 @@ class TbCadUserService
 
       }
 
-
+      //função cadastar usuário
       public function store($data)
       {
         try {
@@ -54,8 +55,7 @@ class TbCadUserService
 
       }
 
-
-
+      //função atualizar usuário
       public function update($data)
       {
         try {
@@ -87,7 +87,7 @@ class TbCadUserService
         }
       }
 
-
+      //função deletar usuário
       public function delete($id)
       {
 
@@ -119,6 +119,7 @@ class TbCadUserService
             
       }
 
+      //retorna usuario pelo id
       public function find_Id($id)
       {
 
@@ -147,17 +148,35 @@ class TbCadUserService
 
       }
 
-      public function find_All(){
-            $data = $this->repository->with('base')->with('Profile')->get();
-            return  json_encode($data);
-      }
-
-      public function find_Autocomplete($term){
+      //retorna nomes dos usuários apartir do textos digitados nos formulário
+      public function find_Autocomplete($term)
+      {
 
         $data =  TbCadUser::where([['name', 'LIKE', '%' . $term. '%'],['status','=','1'],['deleted_at','=', null]])->get();
         
         return  $data;
-  }
+      }
+      //retorna usuários para uso na tabelas do framework datatables
+      public function find_DataTables($request)
+      {
 
+          $def = '%';
+
+          return Datatables::of(TbCadUser::query()
+          ->with('base')
+          ->with('Profile')
+          ->where([['status', 'LIKE', $request->query('status', $def)]]))
+          ->blacklist(['action'])
+          ->make(true);
+      }
+
+       //retorna usuário pelo nome
+       public function find_User_name($name)
+       {
+         
+         $data =  TbCadUser::where('name', 'LIKE', '%' . $name. '%')->get();
+         
+         return  $data;
+       }
 
 }
