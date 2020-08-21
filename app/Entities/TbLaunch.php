@@ -42,4 +42,11 @@ class TbLaunch extends Model implements Transformable
   
    }
 
+   //data formatada d-m-Y
+   protected $appends = ['dataOperation'];
+   public function getDataOperationAttribute()
+   {
+       return date('d-m-Y', strtotime($this->attributes['operation_date']));
+   }
+
 }
