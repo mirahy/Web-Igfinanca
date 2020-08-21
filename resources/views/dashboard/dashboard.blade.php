@@ -11,6 +11,7 @@
 <!-- Page level custom scripts -->
 <script src="js/demo/chart-area-demo.js"></script>
 <script src="js/demo/chart-pie-demo.js"></script>
+<script src="js/dashboard.js"></script>
 @endsection
 
 @section('conteudo-view')
@@ -40,7 +41,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">  
                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Entradas </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$entries?></div> 
+                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="entries">R$ <?=$entries?></div> 
                     </div>
                     <div class="col-auto">
                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -59,7 +60,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Saídas</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$exits?></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="exits">R$ <?=$exits?></div>
                   </div>
                   <div class="col-auto">
                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -79,7 +80,7 @@
                   <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Saldo</div>
                   <div class="row no-gutters align-items-center">
                     <div class="col-auto">
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">R$ <?=$balance?></div>
+                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="balance">R$ <?=$balance?></div>
                     </div>
                   </div>
                 </div>
@@ -124,7 +125,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Aprovações Pendentes</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$pend?></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="pend"><?=$pend?></div>
                   </div>
                   <div class="col-auto">
                     <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -156,7 +157,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Entradas </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$entries_o?></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="entries_o">R$ <?=$entries_o?></div>
                   </div>
                   <div class="col-auto">
                   <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -175,7 +176,7 @@
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Saídas</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$ <?=$exits_o?></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="exits_o">R$ <?=$exits_o?></div>
                   </div>
                   <div class="col-auto">
                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -195,7 +196,7 @@
                   <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Saldo</div>
                   <div class="row no-gutters align-items-center">
                     <div class="col-auto">
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">R$ <?=$balance_o?></div>
+                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="balance_o">R$ <?=$balance_o?></div>
                     </div>
                   </div>
                 </div>
@@ -240,7 +241,7 @@
               <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                   <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Aprovações Pendentes</div>
-                  <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$pend_o?></div>
+                  <div class="h5 mb-0 font-weight-bold text-gray-800" id="pend_o"><?=$pend_o?></div>
                 </div>
                 <div class="col-auto">
                   <i class="fas fa-comments fa-2x text-gray-300"></i>
