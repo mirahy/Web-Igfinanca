@@ -30,7 +30,6 @@ class TbLaunchController extends Controller
     protected $repository; 
     protected $service;
     
-
    
     public function __construct(TbLaunchRepository $repository, TbLaunchService $service, TbCaixaRepository $TbCaixaRepository)
     {
@@ -39,11 +38,9 @@ class TbLaunchController extends Controller
         $this->service            = $service;
     }
 
-    
+    //redireciona para a view launchs_e e retorna dados para o form da view
     public function index()
-    {
-
-       
+    {  
         
         $caixa_list  = $this->TbCaixaRepository->selectBoxList();
 
@@ -61,6 +58,7 @@ class TbLaunchController extends Controller
         ]);
     }
 
+    //redireciona para a view launchs_s e retorna dados para o form da view
     public function index_s()
     {
 
@@ -79,6 +77,7 @@ class TbLaunchController extends Controller
         ]);
     }
 
+    //redireciona para a view launchs_apr e retorna dados para o form da view
     public function index_l()
     {
         
@@ -94,37 +93,31 @@ class TbLaunchController extends Controller
         ]);
     }
 
+    //redireciona para a view closings e retorna dados para os imputs da view
     public function index_reports()
     {
         
         return view('reports.closings',[
-            'data'         => CONSTANT_MES,
-            'year'         => date("Y"),
+                    'data'      => CONSTANT_MES,
+                    'year'      => date("Y"),
+                    'entries'   => 'Calculando...',
+                    'exits'     => 'Calculando...',
+                    'balance'   => 'Calculando...',
         ]);
     }
 
-    Public function query(Request $request){
-
-        
+    //retorna dados para as tabelas do framework datatables
+    Public function query_DataTables(Request $request){
         
         if(request()->ajax()){
 
-           $def = '%';
-
-            return  Datatables::of(TbLaunch::query()
-                                    ->with('user')
-                                    ->with('caixa')
-                                    ->with('type_launch')
-                                    ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)],['status', 'LIKE', $request->query('status', $def) ]]))
-                                    ->blacklist(['action'])
-                                    ->make(true);
-        }
-        
+            return  $this->service->find_DataTables($request);
+        }        
 
     }
 
 
-
+    //função para cadastar e atualizar
     public function keep(Request $request)
     {
         $json  = array();
@@ -132,10 +125,10 @@ class TbLaunchController extends Controller
         $json["error_list"] = array();
         $json["success"] = array();
 
-        $id = $this->service->find_IdUser($request['name'])->toArray();
+        $user = $this->service->find_User_name($request['name'])->toArray();
 
-        if($id){
-            $request['id_user'] = $id[0]['id'];
+        if($user){
+            $request['id_user'] = $user[0]['id'];
 
         }else{
             $json["status"] = 0;
@@ -193,6 +186,7 @@ class TbLaunchController extends Controller
              echo json_encode($json);
     }
 
+    //função para retornar laçamentos pelo id
     public function show_launch(Request $request)
     {
         $json  = array();
@@ -220,7 +214,7 @@ class TbLaunchController extends Controller
 
     }
 
-
+    //função para deletar laçamentos pelo id
     public function destroy(Request $request)
     {
         $json  = array();
@@ -250,10 +244,11 @@ class TbLaunchController extends Controller
         echo json_encode($json);
     }
 
-    public function aprov(Request $request)
+    //função para aprovar/reprovar laçamentos pelo id
+    public function aprov_id(Request $request)
     {
 
-        $request = $this->service->aprov($request->all()); 
+        $request = $this->service->aprov_id($request->all()); 
 
         $json["success"] = $request['messages'];
         $json["status"] = $request['success'];
