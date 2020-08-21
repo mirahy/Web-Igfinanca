@@ -23,6 +23,9 @@ OPERATION_INPUT  = 1;
 
 $(function(){
 
+    var entrie;
+    var exit;
+
         /** 
          * tabela fechamentos
         **/
@@ -31,7 +34,8 @@ $(function(){
                                 "autoWidth":  false,
                                 "processing": true,
                                 // "serverSide": true,
-                                "ajax": baseUrl + 'query?status=1',
+                                "ajax": baseUrl + 'query?caixa=1&status=1&month=8&year=2020',
+                                "order": [],
                                 "columns": [
                                     { data: 'type_launch.name', name: 'launch.name' },
                                     { data: 'user.name', name: 'user.name' },
@@ -86,6 +90,31 @@ $(function(){
                                     
                                 }
             });
+
+    
+    //retorna valor para a div entries do card entradas dos dízimos
+    $.ajax({
+        type: "GET",
+        url: "sum?status=1&operation=1&caixa=1",
+        dataType: "json",
+        success: function (response) {
+            entrie = response;
+            $("#entries").html('R$' + response);
+        }
+    })
+
+    //retorna valor para a div exits do card saídas e retorna o valor do carda saldo dos dízímos
+    $.ajax({
+        type: "GET",
+        url: "sum?status=1&operation=2&caixa=1",
+        dataType: "json",
+        success: function (response) {
+            $("#exits").html('R$' + response);
+            exit = response;
+            var result = entrie - exit;
+            $("#balance").html('R$' + result);
+        }
+    })
 
 
 });
