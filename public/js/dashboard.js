@@ -1,9 +1,12 @@
 $(function () {
 
-    var entrie;
-    var exit;
-    var entrie_o;
-    var exit_o;
+    var entrie = 0;
+    var exit = 0;
+    var entrie_o = 0;
+    var exit_o = 0;
+    var result = 0;
+    var result_o = 0;
+
 
     //retorna valor para a div entries do card entradas dos dízimos
     $.ajax({
@@ -24,7 +27,7 @@ $(function () {
         success: function (response) {
             $("#exits").html('R$' + response);
             exit = response;
-            var result = entrie - exit;
+            result = entrie - exit;
             $("#balance").html('R$' + result);
         }
     })
@@ -48,8 +51,8 @@ $(function () {
         success: function (response) {
             $("#exits_o").html('R$' + response);
             exit_o = response;
-            var result = entrie_o - exit_o;
-            $("#balance_o").html('R$' + result);
+            result_o = entrie_o - exit_o;
+            $("#balance_o").html('R$' + result_o);
         }
     })
 

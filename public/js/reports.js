@@ -23,8 +23,9 @@ OPERATION_INPUT  = 1;
 
 $(function(){
 
-    var entrie;
-    var exit;
+    var entrie = 0;
+    var exit = 0;
+    var result = 0;
 
         /** 
          * tabela fechamentos
@@ -111,7 +112,7 @@ $(function(){
         success: function (response) {
             $("#exits").html('R$' + response);
             exit = response;
-            var result = entrie - exit;
+            result = entrie - exit;
             $("#balance").html('R$' + result);
         }
     })
