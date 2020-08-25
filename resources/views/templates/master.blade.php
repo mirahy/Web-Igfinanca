@@ -140,7 +140,7 @@
 
   <!-- Nav Item - Charts -->
   <li class="nav-item">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{{ asset('/closing')}}">
     <i class="fas fa-file-signature fa-lg"></i>
       <span>Fechamentos</span></a>
   </li>

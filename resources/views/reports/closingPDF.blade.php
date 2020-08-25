@@ -20,7 +20,7 @@
 <body>
 
     <div class="container-fluid">
-        <h3 class="text-center"><strong>Fechamento de Caixa - {{$tpCaixa}}</strong></h3>
+        <h3 class="text-center"><strong>Fechamento de Caixa - {{$tpCaixa[0]['name']}}</strong></h3>
         <h4 class="text-center"><strong>Período: {{$month.'/'.$year}}</strong></h4>
           <div class="col-sm-6">
             <table class="table table-borderless table-sm">

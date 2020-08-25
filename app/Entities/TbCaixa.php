@@ -15,7 +15,7 @@ class TbCaixa extends Model implements Transformable
 {
     use TransformableTrait;
 
-    public     $timestamps   = true;
+     public     $timestamps   = true;
      protected  $table        = 'tb_caixa';
      protected  $fillable     = ['id','name','description'];
 

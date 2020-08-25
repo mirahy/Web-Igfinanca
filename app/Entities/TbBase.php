@@ -25,6 +25,6 @@ class TbBase extends Model implements Transformable
      */
      public     $timestamps   = true;
      protected  $table        = 'tb_base';
-     protected $fillable = ['name','sigla','descripion'];
+     protected $fillable = ['id','name','sigla','descripion'];
 
 }

@@ -24,6 +24,6 @@ class TbProfile extends Model implements Transformable
      */
      public     $timestamps   = true;
      protected  $table        = 'tb_profile';
-     protected $fillable = ['name','description'];
+     protected $fillable = ['id', 'name','description'];
 
 }
