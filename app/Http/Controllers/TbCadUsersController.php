@@ -18,11 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\TbBaseRepository;
 use App\Repositories\TbProfileRepository;
 
-/**
- * Class TbCadUsersController.
- *
- * @package namespace App\Http\Controllers;
- */
+
 class TbCadUsersController extends Controller
 {
     protected $TbProfileRepository;
