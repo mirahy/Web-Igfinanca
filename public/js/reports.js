@@ -27,6 +27,61 @@ $(function(){
     var exit = 0;
     var result = 0;
 
+    // $("#form_report_closing").submit(function(){
+        
+    //     $.ajax({
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         type: "POST",
+    //         url: "closingPDF",
+    //         dataType: "json",
+    //         data: $(this).serialize(),
+    //         beforeSend: function(){
+    //             Swal.showLoading () 
+    //             $msg= "Carregando dados!"
+    //             Swal.fire({title: "<i class='fa fa-circle-notch fa-spin'></i>&nbsp;" + $msg,
+    //                        showConfirmButton: false})
+
+    //         },
+    //         success: function(response){
+                  
+    //               //console.log("url->",response);
+    //               //window.open(baseUrl + 'gerarPDF' + response,'_blank');
+    //               //download.bind(baseUrl + 'gerarPDF' + response, response['nameDoc'], 'PDF');
+
+    //               $.ajax({
+    //                 headers: {
+    //                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //                 },
+    //                 type: "POST",
+    //                 url: "gerarPDF",
+    //                 dataType: "json",
+    //                 data: response,
+    //                 beforeSend: function(){
+    //                     Swal.showLoading () 
+    //                     $msg= "Carregando dados!"
+    //                     Swal.fire({title: "<i class='fa fa-circle-notch fa-spin'></i>&nbsp;" + $msg,
+    //                                showConfirmButton: false})
+        
+    //                 },
+    //                 success:function(){
+    //                     swal.close();
+
+    //                 }
+    //             })
+                   
+
+    //         },
+    //         error: function(response) {
+    //             swal.close();
+    //             console.log(response);
+    //         }
+    //     })
+
+    //     return false;
+    // })
+
         /** 
          * tabela fechamentos
         **/
@@ -117,5 +172,8 @@ $(function(){
         }
     })
 
+
+    
+    
 
 });

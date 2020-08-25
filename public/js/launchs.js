@@ -2,21 +2,9 @@ LANCAMENTO_PENDETE = 0;
 LANCAMENTO_APROVADO = 1;
 LANCAMENTO_REPROVADO = 2;
 
-CONSTANT_MES = [
-    'MES',
-    'JANEIRO',
-    'FEVEREIRO',
-    'MARÇO',
-    'ABRIL',
-    'MAIO',
-    'JUNHO',
-    'JULHO',
-    'AGOSTO',
-    'SETEMBRO',
-    'OUTUBRO',
-    'NOVEMBRO',
-    'DEZENBRO'
-];
+FECHAMENTO_FECHADO = 0;
+FECHAMENTO_ABERTO = 1;
+FECHAMENTO_PRE_FECHAMENTO = 2;
 
 OPERATION_OUTPUT = 0;
 OPERATION_INPUT = 1;
@@ -32,7 +20,6 @@ $(function () {
                 $("#idtb_operation").val(1);
                 $("#idtb_type_launch").val(1);
                 $("#idtb_base").val(1);
-                $("#idtb_closing").val(1);
                 $("#idtb_caixa").val(1);
                 $("#id_user").val(0);
                 $("#name").show();
@@ -52,7 +39,6 @@ $(function () {
                 $("#idtb_operation").val(1);
                 $("#idtb_type_launch").val(2);
                 $("#idtb_base").val(1);
-                $("#idtb_closing").val(1);
                 $("#idtb_caixa").val(2);
                 $("#id_user").val(0);
                 $("#name").val('Oferta Local').hide();
@@ -72,7 +58,6 @@ $(function () {
                 $("#idtb_operation").val(2);
                 $("#idtb_type_launch").val(3);
                 $("#idtb_base").val(1);
-                $("#idtb_closing").val(1);
                 $("#id_user").val(0);
                 //$("#img")[0].attr("src", "");
                 $("#modal_launch").modal();
@@ -90,7 +75,6 @@ $(function () {
                 $("#idtb_operation").val(2);
                 $("#idtb_type_launch").val(4);
                 $("#idtb_base").val(1);
-                $("#idtb_closing").val(1);
                 $("#id_user").val(0);
                 //$("#img")[0].attr("src", "");
                 $("#modal_launch").modal();
@@ -124,7 +108,7 @@ $(function () {
 
                     } else {
                         $msg = "Mensagens: " + response["success"];
-                        Swal.fire("Erro!", $msg, "error");
+                        Swal.fire("Atenção!", $msg, "error");
                         dt_launch_apr.ajax.reload();
                     }
                 }
@@ -349,6 +333,7 @@ $(function () {
                 data: 'value', name: 'value',
                 render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
             },
+            { data: 'caixa.name', name: 'caixa.name' },
             {
                 data: 'operation_date',
 
@@ -358,20 +343,20 @@ $(function () {
                 }
             },
             {
-                "data": "reference_month",
+                "data": "status",
                 "render": function (data, type, row, meta) {
-                    return CONSTANT_MES[data];
+                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
-            { data: 'reference_year', name: 'reference_year' },
+            { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
-                "data": "status",
+                "data": "closing.status",
                 "render": function (data, type, row, meta) {
-                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
+                    return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -435,7 +420,7 @@ $(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(9).footer()).html(
+            $(api.column(8).footer()).html(
                 'R$' + pageTotal + ' ( R$' + total + ' total)'
             );
 
@@ -459,6 +444,7 @@ $(function () {
                 data: 'value', name: 'value',
                 render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
             },
+            { data: 'caixa.name', name: 'caixa.name' },
             {
                 data: 'operation_date',
                 render: function (data, type, row) {
@@ -467,20 +453,20 @@ $(function () {
                 }
             },
             {
-                "data": "reference_month",
+                "data": "status",
                 "render": function (data, type, row, meta) {
-                    return CONSTANT_MES[data];
+                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
-            { data: 'reference_year', name: 'reference_year' },
+            { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
-                "data": "status",
+                "data": "closing.status",
                 "render": function (data, type, row, meta) {
-                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
+                    return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -544,7 +530,7 @@ $(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(9).footer()).html(
+            $(api.column(8).footer()).html(
                 'R$' + pageTotal + ' ( R$' + total + ' total)'
             );
         }
@@ -576,20 +562,20 @@ $(function () {
                 }
             },
             {
-                "data": "reference_month",
+                "data": "status",
                 "render": function (data, type, row, meta) {
-                    return CONSTANT_MES[data];
+                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
-            { data: 'reference_year', name: 'reference_year' },
+            { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
-                "data": "status",
+                "data": "closing.status",
                 "render": function (data, type, row, meta) {
-                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
+                    return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -653,7 +639,7 @@ $(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(9).footer()).html(
+            $(api.column(8).footer()).html(
                 'R$' + pageTotal + ' ( R$' + total + ' total)'
             );
         }
@@ -686,20 +672,20 @@ $(function () {
                 }
             },
             {
-                "data": "reference_month",
+                "data": "status",
                 "render": function (data, type, row, meta) {
-                    return CONSTANT_MES[data];
+                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
-            { data: 'reference_year', name: 'reference_year' },
+            { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
-                "data": "status",
+                "data": "closing.status",
                 "render": function (data, type, row, meta) {
-                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
+                    return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -763,7 +749,7 @@ $(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(9).footer()).html(
+            $(api.column(8).footer()).html(
                 'R$' + pageTotal + ' ( R$' + total + ' total)'
             );
         }
@@ -797,20 +783,20 @@ $(function () {
                 }
             },
             {
-                "data": "reference_month",
+                "data": "status",
                 "render": function (data, type, row, meta) {
-                    return CONSTANT_MES[data];
+                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
-            { data: 'reference_year', name: 'reference_year' },
+            { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
-                "data": "status",
+                "data": "closing.status",
                 "render": function (data, type, row, meta) {
-                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
+                    return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },

@@ -93,4 +93,14 @@ Route::post('/destroy-launch', ['as' =>'destroy-launch', 'uses' => 'TbLaunchCont
 */
 
 Route::get('/reports-f', ['as' =>'reports-f', 'uses' => 'TbLaunchController@index_reports'])->middleware('auth');
-Route::get('/closingPDF', ['as' =>'closingPDF', 'uses' => 'PdfController@closing_pdf'])->middleware('auth');
+//Route::get('/closingPDF', ['as' =>'closingPDF', 'uses' => 'PdfController@closing_pdf'])->middleware('auth');
+Route::post('/closingPDF', ['as' =>'closingPDF', 'uses' => 'PdfController@closing_pdf'])->middleware('auth');
+
+
+/**
+* Routes to dashboard nav closing
+*========================================================================
+*/
+
+Route::get('/closing', ['as' =>'closing', 'uses' => 'TbClosingsController@index'])->middleware('auth');
+Route::get('/query_closing', ['as' =>'query_closing', 'uses' => 'TbClosingsController@query_DataTables'])->middleware('auth');
