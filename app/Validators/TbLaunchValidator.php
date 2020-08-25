@@ -22,6 +22,7 @@ class TbLaunchValidator extends LaravelValidator
           'name'             => 'required|min:3',
           'value'            => 'required|numeric|min:0|not_in:0',
           'reference_month'  => 'required|not_in:0',
+          'operation_date'   => 'required|date'
         ],
 
         
@@ -29,6 +30,7 @@ class TbLaunchValidator extends LaravelValidator
             'name'             => 'required|min:5',
             'value'            => 'required|numeric|min:0|not_in:0',
             'reference_month'  => 'required|not_in:0',
+            'operation_date'   => 'required|date'
         ],
     ];
 
@@ -41,5 +43,7 @@ class TbLaunchValidator extends LaravelValidator
             'value.not_in'                     => 'Valor deve ser maior que zero!',
             'reference_month.required'         => 'Mês de referência deve ser informado!',
             'reference_month.not_in'           => 'Mês de referência deve ser informado!',
+            'operation_date.required'          => 'Data de coleta deve ser informada!',
+            'operation_date.date'              => 'Data de coleta deve ser informada!',
     ];
 }

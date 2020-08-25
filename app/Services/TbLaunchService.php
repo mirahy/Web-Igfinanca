@@ -67,6 +67,19 @@ class TbLaunchService
               $id = $data['id'];
 
               $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+
+              $closing = $this->repository->with('closing')->find($id)->toArray();
+              
+              if($closing['closing']['status'] == 0){
+                return[
+                       'success'  => 'closing',
+                       'messages' => 'Lançamento com período fechado não pode ser editado!',
+                       'type'     => 'reference_month',
+                       'data'     => '',
+                      ];
+
+              }
+              
               $launch = $this->repository->update($data, $id);
               $msg = $launch['value'];
 
@@ -134,7 +147,10 @@ class TbLaunchService
 
         try {
 
-        $launch = $this->repository->with('user')->find($id)->toArray();
+        $launch = $this->repository->with('user')
+                                   ->with('closing')
+                                   ->find($id)
+                                   ->toArray();
           
           return [
             'success'     => true,
@@ -163,6 +179,18 @@ class TbLaunchService
         try {
 
               $id = $data['id'];
+
+              $closing = $this->repository->with('closing')->find($id)->toArray();
+              
+              if($closing['closing']['status'] == 0){
+                return[
+                       'success'  => false,
+                       'messages' => 'Lançamento com período fechado não pode ser Aprovado/Reprovado!',
+                       'type'     => '',
+                       'data'     => '',
+                      ];
+
+              }
 
               $launch = TbLaunch::where('id', $id)->update(['status' => $data['status']]);
 
@@ -201,53 +229,76 @@ class TbLaunchService
                                     ->with('user')
                                     ->with('caixa')
                                     ->with('type_launch')
+                                    ->with('closing')
                                     ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)],
                                              ['status', 'LIKE', $request->query('status', $def)],
                                              ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
-                                             ['idtb_operation', 'LIKE', $request->query('operation', $def)],
-                                             ['reference_month', 'LIKE', $request->query('month', $def)],
-                                             ['reference_year', 'LIKE', $request->query('year', $def)]])
+                                             ['idtb_operation', 'LIKE', $request->query('operation', $def)]])
                                     ->orderBy('operation_date'))
                                     ->blacklist(['action'])
                                     ->make(true);
       }
 
        //retorna lançamentos via parametros passados
-       public function find_Parameters($request)
-       {
- 
-         $def = '%';
-         $now = now();
- 
-             return  (TbLaunch::query()
-                      ->with('user')
-                      ->with('caixa')
-                      ->with('type_launch')
-                      ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
-                               ['status', 'LIKE', $request->query('status', $def)],
-                               ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
-                               ['idtb_operation', 'LIKE', $request->query('operation', $def)],
-                               ['reference_month', 'LIKE', $request->query('month', $def)],
-                               ['reference_year', 'LIKE', $request->query('year', $def)]])
-                      ->orderBy('operation_date'))
-                      ->get();
-       }
+      public function find_Parameters($request)
+      {
+          $def = '%';
+
+          if ($request->isMethod('get')) {
+              return  (TbLaunch::query()
+                        ->with('user')
+                        ->with('caixa')
+                        ->with('type_launch')
+                        ->with('closing')
+                        ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
+                                ['status', 'LIKE', $request->query('status', $def)],
+                                ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
+                                ['idtb_operation', 'LIKE', $request->query('operation', $def)]])
+                        ->orderBy('operation_date'))
+                        ->get();
+
+        }elseif ($request->isMethod('post')) {
+                  return  (TbLaunch::query()
+                            ->with('user')
+                            ->with('caixa')
+                            ->with('type_launch')
+                            ->with('closing')
+                            ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
+                                    ['status', 'LIKE', $request['status']],
+                                    ['idtb_caixa', 'LIKE', $request['caixa']],
+                                    ['idtb_operation', 'LIKE', $request['operation']]])
+                            ->orderBy('operation_date'))
+                            ->get();
+
+        }
+
+      }
 
        //retorna valor dos lançamentos via parametros passados
-       public function Sum($request)
-       {
+      public function Sum($request)
+      {
  
          $def = '%';
- 
+
+         if ($request->isMethod('get')) {
              return  (TbLaunch::query()
                       ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
                                ['status', 'LIKE', $request->query('status', $def)],
                                ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
-                               ['idtb_operation', 'LIKE', $request->query('operation', $def)],
-                               ['reference_month', 'LIKE', $request->query('month', $def)],
-                               ['reference_year', 'LIKE', $request->query('year', $def)]]))
-                      ->sum('value');
-       }
+                               ['idtb_operation', 'LIKE', $request->query('operation', $def)]]))
+                      ->sum('value');             
+
+         }elseif ($request->isMethod('post')) {
+                  return  (TbLaunch::query()
+                            ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
+                                    ['status', 'LIKE', $request['status']],
+                                    ['idtb_caixa', 'LIKE', $request['caixa']],
+                                    ['idtb_operation', 'LIKE', $request['operation']]]))
+                            ->sum('value');
+
+         }
+
+      }
 
        //retorna lançamentos pendentes via parametros passados
        public function Pend($request)
@@ -259,9 +310,7 @@ class TbLaunchService
                       ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
                                ['status', 'LIKE', $request->query('status', $def)],
                                ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
-                               ['idtb_operation', 'LIKE', $request->query('operation', $def)],
-                               ['reference_month', 'LIKE', $request->query('month', $def)],
-                               ['reference_year', 'LIKE', $request->query('year', $def)]]))
+                               ['idtb_operation', 'LIKE', $request->query('operation', $def)]]))
                       ->count();
        }
 
