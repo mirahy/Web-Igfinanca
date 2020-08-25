@@ -15,6 +15,11 @@ use App\Validators\TbTypeLauncValidator;
  */
 class TbTypeLauncRepositoryEloquent extends BaseRepository implements TbTypeLauncRepository
 {
+    public function selectBoxList(string $descrição = 'name', string $chave = 'id'){
+
+        return $this->model->pluck($descrição, $chave);
+    }
+    
     /**
      * Specify Model class name
      *
