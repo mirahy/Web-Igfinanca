@@ -65,9 +65,10 @@
 												<span class="help-block"></span>
 											</div>
 										</div>
+										<!-- 
 										<hr>
 										@include('templates.forms.button',['input' => '<i class="fab fa-google fa-fw" disabled></i> Entre com o Google','attributes' => ['type' => 'submit', 'class' => 'btn btn-google btn-user btn-block ', 'disabled']])
-										 @include('templates.forms.button',['input' => '<i class="fab fa-facebook-f fa-fw" disabled></i> Entrar com o Facebook','attributes' => ['type' => 'submit', 'class' => 'btn btn-facebook btn-user btn-block', 'disabled']])
+										 @include('templates.forms.button',['input' => '<i class="fab fa-facebook-f fa-fw" disabled></i> Entrar com o Facebook','attributes' => ['type' => 'submit', 'class' => 'btn btn-facebook btn-user btn-block', 'disabled']])-->
 										 <!-- Alterar botoes acima pelos links abaixo apos implementação dos registros socias
 										@include('templates.forms.btnLink',['href' => '#', 'class_a' => 'btn btn-google btn-user btn-block', 'class_i' => 'fab fa-google fa-fw', 'text' => 'Entre com o Google', 'role' => 'button', 'aria_disabled' => 'true'])
 										@include('templates.forms.btnLink',['href' => '#', 'class_a' => 'btn btn-facebook btn-user btn-block', 'class_i' => 'fab fa-facebook-f fa-fw', 'text' => 'Entrar com o Facebook', 'role' => 'button', 'aria_disabled' => 'true'])-->
