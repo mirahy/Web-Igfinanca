@@ -7,10 +7,73 @@ $(function () {
     // botao adicionar período
     $("#btn_add_closing").click(function () {
         clearErrors();
+        $("#status").hide();
+        $("#status").parent().siblings(".control-label").hide();
         $("#closing_form")[0].reset();
+        $("#status").val(0);
         //$("#img")[0].attr("src", "");
         $("#modal_closing").modal();
     });
+
+
+     // botao editar períodos
+     function btn_table_function() {
+        $(".btn_edit_closing").click(function () {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "show-closing",
+                dataType: "json",
+                data: { "id": $(this).attr("id") },
+                success: function (response) {
+                    clearErrors();
+                    $("#status").show();
+                    $("#status").parent().siblings(".control-label").show();
+                    $("#closing_form")[0].reset();
+                    $.each(response["imput"], function (id, value) {
+                        $("#" + id ).val(value);
+                    });
+                    $("#modal_closing").modal();
+                }
+            })
+
+        });
+
+        // botao excluir período
+        $(".btn_del_closing").click(function () {
+            course_id = $(this);
+            Swal.fire({
+                title: "Atenção!",
+                text: "Deseja deletar este período?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "Sim",
+                cancelButtonText: "Não",
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: "POST",
+                        url: "destroy",
+                        dataType: "json",
+                        data: { "id": course_id.attr("id") },
+                        success: function (response) {
+                            console.log(response);
+                            $msg = "Período " + response["success"] + " removido com sucesso!";
+                            Swal.fire("Sucesso!", $msg, "success");
+                            dt_report_closing.ajax.reload();
+                            
+                        }
+                    })
+                }
+            })
+        });
+    }
 
 
     /** 
@@ -53,7 +116,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                    return '<a id="' + row.id + '" class="btn btn-xs btn-primary btn_edit_closing" id="btn_edit_closing" title="Editar Período"> <i class="fa fa-edit"></i></a> <a id="' + row.id + '" class="btn btn-xs btn-danger btn_del_closing" id="btn_del_closing" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -61,9 +124,9 @@ $(function () {
                 ]
             }
         ],
-        // "drawCallback": function(){
-        //     btn_aprov();
-        // },
+        "drawCallback": function(){
+            btn_table_function();
+        },
 
     });
 
@@ -83,7 +146,7 @@ $(function () {
             success: function (response) {
                 clearErrors();
                 if (response["status"]) {
-                    $msg = "Período de " + response["success"] + " adicionado com sucesso!";
+                    $msg = "Período de " + response["success"] + " com sucesso!";
                     Swal.fire("Sucesso!", $msg, "success");
                     $("#modal_closing").modal('hide');
                     dt_report_closing.ajax.reload();

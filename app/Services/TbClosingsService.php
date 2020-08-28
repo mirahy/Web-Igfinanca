@@ -37,7 +37,7 @@ class TbClosingsService
 
               return [
                 'success'     => true,
-                'messages'    => $month,
+                'messages'    => [$month." adicionado"],
                 'data'        => $closing,
                 'type'        => ["id"],
               ];
@@ -50,6 +50,67 @@ class TbClosingsService
                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
                 case Exception::class           : return['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
                 default                         : return['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
+              }
+
+        }
+
+      }
+
+      //função atualizar período
+      public function update($data)
+      {
+         try {
+ 
+               $id = $data['id'];
+ 
+               $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+               $closing = $this->repository->update($data, $id);
+ 
+               $month = $closing['month'];
+ 
+               return [
+                 'success'     => true,
+                 'messages'    => [$month." editado"],
+                 'data'        => $closing,
+                 'type'        => [""],
+               ];
+ 
+ 
+         } catch (Exception $e) {
+ 
+               switch (get_class($e)) {               
+                 case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o período!', 'type'  => $e->getMessage()];
+                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                 case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o período!', 'type'  => $e->getMessage()];
+                 default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o período!', 'type'  => $e->getMessage()];
+               }
+ 
+         }
+      }
+
+      //retorna periodo pelo id
+      public function find_Id($id)
+      {
+
+        try {
+
+         $closing = $this->repository->find($id)->toArray();
+
+          return [
+            'success'     => true,
+            'messages'    => null,
+            'data'        => $closing,
+            'type'        => null,
+          ];
+
+
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => null];
+                case Exception::class           : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+                default                         : return['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
               }
 
         }

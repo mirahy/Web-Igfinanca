@@ -97,6 +97,11 @@
                     ['placeholder' => 'Ano', 'class' => 'form-control form-control-user', 'id' => 'year', 'name' =>
                     'year']])
 
+                    @include('templates.forms.select',['select' => 'status', 'label' => 'Status', 'data' => [ '1' =>
+                    'Aberto', '2' => 'Pre-Fechamento', '0' => 'Fechado']
+                    ,'attributes' => ['placeholder' => 'Status', 'class' => 'form-control form-control-user', 'id' =>
+                    'status', 'name' => 'status']])
+
                 </div>
                 <div class="modal-footer">
 
@@ -106,7 +111,7 @@
                     => ['type' => 'button', 'class' => 'btn btn-secondary', 'data-dismiss' => 'modal']])
 
                     <!--<button type="button" class="btn btn-primary">Save changes</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
                 </div>
 
 

@@ -64,6 +64,7 @@ class TbClosingsController extends Controller
            
              $request = $this->service->store($request->all()); 
              $closing = $request['success'] ? $request['data'] : null;
+
              
              session()->flash('success', [
                  'success'   =>  $request['success'],
@@ -94,7 +95,7 @@ class TbClosingsController extends Controller
              session()->flash('success', [
                  'success'   =>  $request['success'],
                  'messages'  =>  $request['messages'],
-                 'usuario'   =>  $closing,
+                 'periodo'   =>  $closing,
               ]);
               
               if(!$request['success']){
@@ -111,6 +112,27 @@ class TbClosingsController extends Controller
               echo json_encode($json);
  
      }
+
+    //função para retornar laçamentos pelo id
+    public function show_closing(Request $request)
+    {
+        $json  = array();
+        $json["status"] = 1;
+        $json["imput"] = array();
+        
+
+        $request = $this->service->find_Id($request["id"]); 
+        $closing = $request['success'] ? $request['data'] : null;
+        
+        $json["imput"]['id'] = $closing['id'];
+        $json["imput"]['month'] = array_search( $closing['month'], MONTH );
+        $json["imput"]['year'] = $closing['year'];
+        $json["imput"]['status'] = $closing['status'];
+
+        echo json_encode($json);
+
+    }
+
 
    
   
