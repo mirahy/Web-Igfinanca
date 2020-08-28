@@ -25,6 +25,37 @@ class TbClosingsService
           
       }
 
+      //função cadastar período
+      public function store($data)
+      {
+        try {
+
+              $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
+              $closing = $this->repository->create($data);
+
+              $month = $closing['month'];
+
+              return [
+                'success'     => true,
+                'messages'    => $month,
+                'data'        => $closing,
+                'type'        => ["id"],
+              ];
+
+
+        } catch (Exception $e) {
+
+              switch (get_class($e)) {               
+                case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
+                case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                case Exception::class           : return['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
+                default                         : return['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
+              }
+
+        }
+
+      }
+
 
       //retorna Fechamentos para uso na tabelas do framework datatables
       public function find_DataTables($request)

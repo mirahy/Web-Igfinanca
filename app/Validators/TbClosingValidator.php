@@ -18,7 +18,21 @@ class TbClosingValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        ValidatorInterface::RULE_CREATE => [],
-        ValidatorInterface::RULE_UPDATE => [],
+        ValidatorInterface::RULE_CREATE => [
+            'month'       => 'required',
+            'year'        => 'required',
+
+        ],
+        ValidatorInterface::RULE_UPDATE => [
+            'month'       => 'required',
+            'year'        => 'required',
+
+        ],
     ];
+
+    protected $messages = [
+        'month.required'            => 'Mês deve ser informado!',
+        'year.required'             => 'Ano deve ser informado!',
+        
+      ];
 }

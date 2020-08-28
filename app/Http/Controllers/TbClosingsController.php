@@ -30,7 +30,7 @@ class TbClosingsController extends Controller
         $this->service          = $service;
     }
 
-    
+    //retorna view closing
     public function index()
     {
         return view('launch.closing',[
@@ -49,129 +49,69 @@ class TbClosingsController extends Controller
     }
 
     
-    public function store(TbClosingCreateRequest $request)
-    {
-        try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
-            $tbClosing = $this->repository->create($request->all());
-
-            $response = [
-                'message' => 'TbClosing created.',
-                'data'    => $tbClosing->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
-    }
+     //função para cadastar e atualizar
+     public function keep(Request $request)
+     {
+ 
+         $json  = array();
+         $json["status"] = 1;
+         $json["error_list"] = array();
+         $json["success"] = array();
+         
+         $request['month'] = MONTH[$request['month']];
+         
+         if(!$request["id"]){
+           
+             $request = $this->service->store($request->all()); 
+             $closing = $request['success'] ? $request['data'] : null;
+             
+             session()->flash('success', [
+                 'success'   =>  $request['success'],
+                 'messages'  =>  $request['messages'],
+                 'periodo'   =>  $closing,
+              ]);
+ 
+ 
+              if(!$request['success']){
+                 $i=0;
+                 $json["status"] = 0;
+                   foreach($request['messages'] as $msg){
+                       $json["error_list"]["#".$request['type'][$i]] = $msg;
+                       $i++;
+                   } 
+                 } else{
+                     $json["success"] = $request['messages'];
+ 
+                 }
+             
+ 
+         }else{
+             
+ 
+             $request = $this->service->update($request->all()); 
+             $closing = $request['success'] ? $request['data'] : null;
+ 
+             session()->flash('success', [
+                 'success'   =>  $request['success'],
+                 'messages'  =>  $request['messages'],
+                 'usuario'   =>  $closing,
+              ]);
+              
+              if(!$request['success']){
+                 $i=0;
+                 $json["status"] = 0;
+                   foreach($request['messages'] as $msg){
+                       $json["error_list"]["#".$request['type'][$i]."_edit"] = $msg;
+                       $i++;
+                   } 
+                 }      
+             
+         }      
+          
+              echo json_encode($json);
+ 
+     }
 
    
-    public function show($id)
-    {
-        $tbClosing = $this->repository->find($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $tbClosing,
-            ]);
-        }
-
-        return view('tbClosings.show', compact('tbClosing'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $tbClosing = $this->repository->find($id);
-
-        return view('tbClosings.edit', compact('tbClosing'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  TbClosingUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function update(TbClosingUpdateRequest $request, $id)
-    {
-        try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $tbClosing = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'TbClosing updated.',
-                'data'    => $tbClosing->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
-            return response()->json([
-                'message' => 'TbClosing deleted.',
-                'deleted' => $deleted,
-            ]);
-        }
-
-        return redirect()->back()->with('message', 'TbClosing deleted.');
-    }
+  
 }

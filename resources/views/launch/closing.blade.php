@@ -79,7 +79,7 @@
                     </button>
                 </div>
 
-                {!! Form::open(['class' => 'user', 'id' => 'launch_closing']) !!}
+                {!! Form::open(['class' => 'user', 'id' => 'closing_form']) !!}
 
                 <div class="modal-body">
 

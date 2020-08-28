@@ -101,6 +101,9 @@ Route::post('/closingPDF', ['as' =>'closingPDF', 'uses' => 'PdfController@closin
 * Routes to dashboard nav closing
 *========================================================================
 */
-
+/**Closings */
 Route::get('/closing', ['as' =>'closing', 'uses' => 'TbClosingsController@index'])->middleware('auth');
-Route::get('/query_closing', ['as' =>'query_closing', 'uses' => 'TbClosingsController@query_DataTables'])->middleware('auth');
+
+/**crud closing*/
+Route::get('/query-closing', ['as' =>'query-closing', 'uses' => 'TbClosingsController@query_DataTables'])->middleware('auth');
+Route::post('/keep-closing', ['as' =>'keep-closing', 'uses' => 'TbClosingsController@keep'])->middleware('auth');

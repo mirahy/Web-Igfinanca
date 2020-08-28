@@ -4,6 +4,15 @@ FECHAMENTO_PRE_FECHAMENTO = 2;
 
 $(function () {
 
+    // botao adicionar período
+    $("#btn_add_closing").click(function () {
+        clearErrors();
+        $("#closing_form")[0].reset();
+        //$("#img")[0].attr("src", "");
+        $("#modal_closing").modal();
+    });
+
+
     /** 
     * tabela fechamentos
     **/
@@ -12,7 +21,7 @@ $(function () {
         "autoWidth": false,
         "processing": true,
         // "serverSide": true,
-        "ajax": baseUrl + 'query_closing',
+        "ajax": baseUrl + 'query-closing',
         "order": [],
         "columns": [
             { data: 'month', name: 'month' },
@@ -27,8 +36,20 @@ $(function () {
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
-            {data: 'created_at', name: 'created_at'},
-            {data: 'updated_at', name: 'updated_at'},
+            {
+                data: 'created_at',
+                render: function (data, type, row) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data) :
+                        data;
+                }
+            },
+            {
+                data: 'updated_at',
+                render: function (data, type, row) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data) :
+                        data;
+                }
+            },
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
@@ -43,6 +64,36 @@ $(function () {
         // "drawCallback": function(){
         //     btn_aprov();
         // },
+
+    });
+
+
+    //Click salvar modal Usuarios
+    $("#closing_form").submit(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "keep-closing",
+            dataType: "json",
+            data: $(this).serialize(),
+            beforeSend: function () {
+                clearErrors();
+                $("#btn_save_closing").parent().siblings(".help-block").html(loadingImg("Verificando..."))
+            },
+            success: function (response) {
+                clearErrors();
+                if (response["status"]) {
+                    $msg = "Período de " + response["success"] + " adicionado com sucesso!";
+                    Swal.fire("Sucesso!", $msg, "success");
+                    $("#modal_closing").modal('hide');
+                    dt_report_closing.ajax.reload();
+                } else {
+                    showErrors(response["error_list"]);
+                }
+            }
+        })
+
+        return false;
 
     });
 })
