@@ -326,7 +326,9 @@
         </div>
       </div>
 
-      <!-- Content Row -->
+      {{-- ------------------------------------------paineis para futuras implementações------------------------------------------------------
+        
+        <!-- Content Row -->
       <div class="row">
 
         <!-- Content Column -->
@@ -446,6 +448,6 @@
       </div>
 
     </div>
-    <!-- /.container-fluid -->
+    <!-- /.container-fluid --> --}}
 
 @endsection
