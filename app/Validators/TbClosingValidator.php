@@ -4,6 +4,7 @@ namespace App\Validators;
 
 use \Prettus\Validator\Contracts\ValidatorInterface;
 use \Prettus\Validator\LaravelValidator;
+use Validator;
 
 /**
  * Class TbClosingValidator.
@@ -19,20 +20,42 @@ class TbClosingValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'month'       => 'required',
-            'year'        => 'required',
+            'month'       => 'bail|required|not_in:',
+            'year'        => 'bail|required|not_in:',
 
         ],
         ValidatorInterface::RULE_UPDATE => [
-            'month'       => 'required',
-            'year'        => 'required',
+            'month'       => 'bail|required|not_in:',
+            'year'        => 'bail|required|not_in:',
 
         ],
+
+    ];
+    
+    protected $messages = [
+        
+        'month.required'            => 'Mês deve ser informado!',
+        'month.not_in'              => 'Mês deve ser informado!',
+        'year.required'             => 'Ano deve ser informado!',
+        'year.not_in'               => 'Ano deve ser informado!',
+        'year.between'              => 'Informar um ano válido!'
     ];
 
-    protected $messages = [
-        'month.required'            => 'Mês deve ser informado!',
-        'year.required'             => 'Ano deve ser informado!',
+    public function validaPeriodo($data){
         
-      ];
+        $param = $data['year'].$data['id'];
+        $validator = Validator::make($data, 
+              ['month'       => "uniqueperiodduple:{$param}"], 
+              ['month.uniqueperiodduple' => 'Período já cadastrado!']);
+              if($validator->fails()){
+                return [
+                  'success'     => false,
+                  'messages'    => $validator->getMessageBag()->all(),
+                  'type'        => $validator->getMessageBag()->keys(),
+                ];
+              }
+              
+              return ['success'  => true];
+    }
+
 }

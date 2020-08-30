@@ -11,6 +11,7 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
 use Yajra\Datatables\Datatables;
 use DB;
+
 class TbClosingsService
 {
 
@@ -29,8 +30,15 @@ class TbClosingsService
       public function store($data)
       {
         try {
-
+              // validando campos
               $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
+              // validando se período ja existe
+              $v = $this->validator->validaPeriodo($data);
+              if(!$v['success']){
+                return $v;
+              }
+              
+
               $closing = $this->repository->create($data);
 
               $month = $closing['month'];
@@ -44,7 +52,7 @@ class TbClosingsService
 
 
         } catch (Exception $e) {
-
+         
               switch (get_class($e)) {               
                 case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
@@ -62,8 +70,14 @@ class TbClosingsService
          try {
  
                $id = $data['id'];
- 
+                // validando campos
                $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+               // validando se período ja existe
+               $v = $this->validator->validaPeriodo($data);
+              if(!$v['success']){
+                return $v;
+              }
+
                $closing = $this->repository->update($data, $id);
  
                $month = $closing['month'];
@@ -77,7 +91,7 @@ class TbClosingsService
  
  
          } catch (Exception $e) {
- 
+          dd($e);
                switch (get_class($e)) {               
                  case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o período!', 'type'  => $e->getMessage()];
                  case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];

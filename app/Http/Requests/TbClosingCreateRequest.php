@@ -13,7 +13,7 @@ class TbClosingCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,14 @@ class TbClosingCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+           'month' => "uniqueperiodduple:{$this->request->get('year')}"
         ];
     }
+
+    public function messages(){
+        return [
+            'month.uniqueperiodduple' => 'Período já cadastrado!',
+        ];
+    }
+
 }
