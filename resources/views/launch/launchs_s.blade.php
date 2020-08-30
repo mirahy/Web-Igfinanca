@@ -49,10 +49,11 @@
                                         <th>Tipo</th>
                                         <th>Nome</th>
                                         <th>Valor</th>
+                                        <th>Caixa</th>
                                         <th>Data </th>
-                                        <th data-orderable="false" >Mês Referência</th>
-                                        <th data-orderable="false" >Ano Referência</th>
                                         <th>Status</th>
+                                        <th data-orderable="false" >Período</th>
+                                        <th>Status Período</th>
                                         <th>Data lançamento</th>
                                         <th>Data Ataulização</th>
                                         <th data-orderable="false" >Ações</th>
@@ -62,7 +63,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="9" style="text-align:right">Total:</th>
+                                        <th colspan="8" style="text-align:right">Total:</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
@@ -80,10 +81,11 @@
                                         <th>Tipo</th>
                                         <th>Nome</th>
                                         <th>Valor</th>
+                                        <th>Caixa</th>
                                         <th>Data</th>
-                                        <th data-orderable="false" >Mês Referência</th>
-                                        <th data-orderable="false" >Ano Referência</th>
                                         <th>Status</th>
+                                        <th data-orderable="false" >Período</th>
+                                        <th>Status Período</th>
                                         <th>Data lançamento</th>
                                         <th>Data Ataulização</th>
                                         <th data-orderable="false" >Ações</th>
@@ -93,7 +95,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="9" style="text-align:right">Total:</th>
+                                        <th colspan="8" style="text-align:right">Total:</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
@@ -129,15 +131,11 @@
                             
                             @include('templates.forms.input',['input' => 'text','value' => '$id_user', 'class' => 'd-none', 'attributes' => [ 'name' => 'id_user', 'hidden', 'id' => 'id_user']])
 
-                            @include('templates.forms.input',['input' => 'text','value' => $year, 'class' => 'd-none', 'attributes' => [ 'name' => 'reference_year', 'hidden', 'id' => 'reference_year']])
-
                             @include('templates.forms.input',['input' => 'text','value' => $operation, 'class' => 'd-none', 'attributes' => [ 'name' => 'idtb_operation', 'hidden', 'id' => 'idtb_operation']])
 
                             @include('templates.forms.input',['input' => 'text','value' => $type_launch, 'class' => 'd-none', 'attributes' => [ 'name' => 'idtb_type_launch', 'hidden', 'id' => 'idtb_type_launch']])
 
                             @include('templates.forms.input',['input' => 'text','value' => $base, 'class' => 'd-none', 'attributes' => [ 'name' => 'idtb_base', 'hidden', 'id' => 'idtb_base']])
-
-                            @include('templates.forms.input',['input' => 'text','value' => $closing, 'class' => 'd-none', 'attributes' => [ 'name' => 'idtb_closing', 'hidden', 'id' => 'idtb_closing']])
 
                             @include('templates.forms.input',['input' => 'text','value' => $status, 'class' => 'd-none', 'attributes' => [ 'name' => 'status', 'hidden', 'id' => 'status']])
 
@@ -152,7 +150,7 @@
 
                             @include('templates.forms.select',['select' => 'Caixa', 'label' => 'Caixa', 'data' => $caixa_list, 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'idtb_caixa', 'name' => 'idtb_caixa']])
 
-                            @include('templates.forms.select',['select' => 'mes', 'label' => 'Mês Referência', 'data' => $data ,'attributes' => ['placeholder' => 'Mês Referência', 'class' => 'form-control form-control-user', 'id' => 'reference_month', 'name' => 'reference_month']])
+                            @include('templates.forms.select',['select' => 'mes', 'label' => 'Período', 'data' => $month ,'attributes' => ['placeholder' => 'Período', 'class' => 'form-control form-control-user', 'id' => 'reference_month', 'name' => 'reference_month']])
                             
                             @include('templates.forms.date',['date' => 'date', 'label' => 'Data Coleta','attributes' => ['placeholder' => 'Data Coleta', 'class' => 'form-control form-control-user col-lg-5', 'id' => 'operation_date', 'name' => 'operation_date']])
                             

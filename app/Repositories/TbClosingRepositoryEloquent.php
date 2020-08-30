@@ -4,21 +4,23 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\tb_profileRepository;
-use App\Entities\TbProfile;
-use App\Validators\TbProfileValidator;
+use App\Repositories\TbClosingRepository;
+use App\Entities\TbClosing;
+use App\Validators\TbClosingValidator;
 
 /**
- * Class TbProfileRepositoryEloquent.
+ * Class TbClosingRepositoryEloquent.
  *
  * @package namespace App\Repositories;
  */
-class TbProfileRepositoryEloquent extends BaseRepository implements TbProfileRepository
+class TbClosingRepositoryEloquent extends BaseRepository implements TbClosingRepository
 {
-    public function selectBoxList(string $descrição = 'name', string $chave = 'id'){
+    public function selectBoxList_month(string $month = 'Month_Year', string $chave = 'id'){
 
-        return $this->model->pluck($descrição, $chave);
+        return $this->model->all(['id', 'month', 'year', 'status'])->whereIn('status', [1,2])->pluck($month, $chave);
     }
+
+    
     /**
      * Specify Model class name
      *
@@ -26,7 +28,7 @@ class TbProfileRepositoryEloquent extends BaseRepository implements TbProfileRep
      */
     public function model()
     {
-        return TbProfile::class;
+        return TbClosing::class;
     }
 
     /**
@@ -37,7 +39,7 @@ class TbProfileRepositoryEloquent extends BaseRepository implements TbProfileRep
     public function validator()
     {
 
-        return TbProfileValidator::class;
+        return TbClosingValidator::class;
     }
 
 

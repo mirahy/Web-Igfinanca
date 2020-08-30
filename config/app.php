@@ -170,6 +170,9 @@ return [
         //DomPDF
         Barryvdh\DomPDF\ServiceProvider::class,
 
+        //valida período
+        App\Providers\UniquePeriodServiceProvider::class,
+
     ],
 
     /*

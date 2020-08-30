@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Entities\TbCadUser;
-use App\Entities\TbLaunch;
-use App\Entities\TbBase;
 use Illuminate\Http\Request;
 use App\Validators\TbCadUserValidator;
 use App\Repositories\TbCadUserRepository;
 use App\Services\LoginService;
 use Illuminate\Support\Facades\DB;
+use App\Services\TbLaunchService;
 use Exception;
 use Auth;
 
@@ -20,41 +17,17 @@ class DashboardController extends Controller
   Private $repository;
   Private $validator;
   Private $service;
+  Private $serviceLaunch;
 
-  public function __construct(TbCadUserRepository $repository, TbCadUserValidator $validator, LoginService $service)
+  public function __construct(TbCadUserRepository $repository, TbCadUserValidator $validator, LoginService $service, TbLaunchService $serviceLaunch)
   {
-      $this->repository = $repository;
-      $this->validator  = $validator;
-      $this->service = $service;
+      $this->repository     = $repository;
+      $this->validator      = $validator;
+      $this->service        = $service;
+      $this->serviceLaunch  = $serviceLaunch;
   }
 
-  public function index()
-  {
-    //Dízimos
-    $entradas  = TbLaunch::where([['status', 1],['idtb_operation', 1],['idtb_type_launch', 1],['idtb_caixa', 1]])->sum('value');
-    $saidas    = TbLaunch::where([['status', 1],['idtb_operation', 2],['idtb_caixa', 1]])->whereIn('idtb_type_launch',[3,4])->sum('value');
-    //Ofertas
-    $entradas_o  = TbLaunch::where([['status', 1],['idtb_operation', 1],['idtb_type_launch', 2],['idtb_caixa', 2]])->sum('value');
-    $saidas_o    = TbLaunch::where([['status', 1],['idtb_operation', 2],['idtb_caixa', 2]])->whereIn('idtb_type_launch',[3,4])->sum('value');
-    
-
-    return view('dashboard.dashboard', [
-
-      'pend'    => TbLaunch::where([['status', 0],['idtb_caixa', 1]])->count(),
-      'entries' => $entradas,
-      'exits'   => $saidas,
-      'balance' => $entradas - $saidas,
-
-      'pend_o'    => TbLaunch::where([['status', 0],['idtb_caixa', 2]])->count(),
-      'entries_o' => $entradas_o,
-      'exits_o'   => $saidas_o,
-      'balance_o' => $entradas_o - $saidas_o,
-      
-    ]);
-
-  }
-
-
+  // função para login do usuário
   public function auth(Request $request)
   {
 
@@ -88,7 +61,7 @@ class DashboardController extends Controller
       echo json_encode($json);
   }
 
-
+  // função para logout do usuário
   public function logout()
   {
 
@@ -96,12 +69,46 @@ class DashboardController extends Controller
     {
       Auth::logout();
 
-
     }
-
 
       return redirect()->route('user.login');
-    }
+  }
+
+  //funcçao de retorno de valores dos laçamentos para a view dashboard
+  public function sum(Request $request)
+  {
+    $value = $this->serviceLaunch->sum($request);
+
+    echo json_encode($value);
+
+  }
+
+  //funcçao de retorno de pendencias dos laçamentos para a view dashboard
+  public function pend(Request $request)
+  {
+    $value = $this->serviceLaunch->pend($request);
+
+    echo json_encode($value);
+
+  }
+
+  //função redirecionamento para a view dashboard
+  public function index()
+  {
+ 
+    return view('dashboard.dashboard', [
+                'pend'      => 'Atualizando...',
+                'entries'   => 'Calculando...',
+                'exits'     => 'Calculando...',
+                'balance'   => 'Calculando...',
+                'pend_o'    => 'Atualizando...',
+                'entries_o' => 'Calculando...',
+                'exits_o'   => 'Calculando...',
+                'balance_o' => 'Calculando...',
+      
+    ]);
+
+  }
 
 
 

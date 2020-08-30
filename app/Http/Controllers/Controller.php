@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Entities\TbLaunch;
-use App\Http\Controllers\DashboardController;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -13,15 +11,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    Private $DashboardController;
-  
-    public function __construct(DashboardController $DashboardController)
-    {
-        $this->DashboardController = $DashboardController;
-       
-    }
-  
 
 
     /**
@@ -32,7 +21,7 @@ class Controller extends BaseController
     {
       
       if(Auth::check()){
-        return $this->DashboardController->index();
+        return redirect('/dashboard');
 
         }else{
 
@@ -50,7 +39,7 @@ class Controller extends BaseController
     public function telalogin()
     {
       if(Auth::check()){
-        return $this->DashboardController->index();
+        return redirect('/dashboard');
 
       }else{
 

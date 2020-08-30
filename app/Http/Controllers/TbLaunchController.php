@@ -12,11 +12,11 @@ use App\Http\Requests\TbLaunchCreateRequest;
 use App\Http\Requests\TbLaunchUpdateRequest;
 use App\Repositories\TbLaunchRepository;
 use App\Repositories\TbCaixaRepository;
+use App\Repositories\TbClosingRepository;
 use App\Validators\TbLaunchValidator;
 use Yajra\Datatables\Datatables;
 use App\Services\TbLaunchService;
 
-const CONSTANT_MES = ['','JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZENBRO'];
 
 /**
  * Class TbLaunchesController.
@@ -26,30 +26,32 @@ const CONSTANT_MES = ['','JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL','MAIO','JUNHO
 class TbLaunchController extends Controller
 {
 
+    protected $TbClosingRepository;
     protected $TbCaixaRepository;
     protected $repository; 
     protected $service;
     
-
+    
    
-    public function __construct(TbLaunchRepository $repository, TbLaunchService $service, TbCaixaRepository $TbCaixaRepository)
+    public function __construct(TbLaunchRepository $repository,
+                                TbLaunchService $service,
+                                TbCaixaRepository $TbCaixaRepository,
+                                TbClosingRepository $TbClosingRepository)
     {
-        $this->TbCaixaRepository  = $TbCaixaRepository;
-        $this->repository         = $repository;
-        $this->service            = $service;
+        $this->TbClosingRepository  = $TbClosingRepository;
+        $this->TbCaixaRepository    = $TbCaixaRepository;
+        $this->repository           = $repository;
+        $this->service              = $service;
     }
 
-    
+    //redireciona para a view launchs_e e retorna dados para o form da view
     public function index()
-    {
-
-       
+    {  
         
         $caixa_list  = $this->TbCaixaRepository->selectBoxList();
-
+        $closing_list_month  = $this->TbClosingRepository->selectBoxList_month();
         
         return view('launch.launchs_e', [
-            'year'         => date("Y"),
             'operation'    => 0,
             'type_launch'  => 0,
             'base'         => 0,
@@ -57,17 +59,18 @@ class TbLaunchController extends Controller
             'status'       => 0,
             'id_user'      => 0,
             'caixa_list'   => $caixa_list,
-            'data'         => CONSTANT_MES,
+            'month'        => $closing_list_month,
         ]);
     }
 
+    //redireciona para a view launchs_s e retorna dados para o form da view
     public function index_s()
     {
 
         $caixa_list  = $this->TbCaixaRepository->selectBoxList();
+        $closing_list_month  = $this->TbClosingRepository->selectBoxList_month();
         
         return view('launch.launchs_s', [
-            'year'         => date("Y"),
             'operation'    => 0,
             'type_launch'  => 0,
             'base'         => 0,
@@ -75,55 +78,59 @@ class TbLaunchController extends Controller
             'status'       => 0,
             'caixa_list'   => $caixa_list,
             'id_user'      => 0,
-            'data'         => CONSTANT_MES,
+            'month'        => $closing_list_month,
         ]);
     }
 
+    //redireciona para a view launchs_apr e retorna dados para o form da view
     public function index_l()
     {
         
-        return view('launch.launchs_apr', [
-            'year'         => date("Y"),
-            'operation'    => 0,
-            'type_launch'  => 0,
-            'base'         => 0,
-            'closing'      => 0,
-            'status'       => 0,
-            'id_user'      => 0,
-            'data'         => CONSTANT_MES,
+        return view('launch.launchs_apr');
+    }
+
+    //redireciona para a view closings e retorna dados para os imputs da view
+    public function index_reports()
+    {   
+        $caixa_list  = $this->TbCaixaRepository->selectBoxList();
+        $closing_list_month  = $this->TbClosingRepository->selectBoxList_month();
+        
+        return view('reports.closings',[
+                    'month'      => $closing_list_month,
+                    'year'      => date("Y"),
+                    'caixa_list'   => $caixa_list,
+                    'status'       => 1,
+                    'entries'   => 'Calculando...',
+                    'exits'     => 'Calculando...',
+                    'balance'   => 'Calculando...',
         ]);
     }
 
-    Public function query(Request $request){
+    //retorna dados para as tabelas do framework datatables
+    Public function query_DataTables(Request $request){
         
         if(request()->ajax()){
 
-           $def = '%';
-
-            return Datatables::of(TbLaunch::query()
-                                    ->with('user')
-                                    ->with('type_launch')
-                                    ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)],['status', 'LIKE', $request->query('status', $def) ]]))
-                                    ->blacklist(['action'])
-                                    ->make(true);
-        }
-           
+            return  $this->service->find_DataTables($request);
+        }        
 
     }
 
 
-
+    //função para cadastar e atualizar
     public function keep(Request $request)
     {
+
         $json  = array();
         $json["status"] = 1;
         $json["error_list"] = array();
         $json["success"] = array();
+        $request->request->add(['idtb_closing' => $request['reference_month']]);
 
-        $id = $this->service->find_IdUser($request['name'])->toArray();
+        $user = $this->service->find_User_name($request['name'])->toArray();
 
-        if($id){
-            $request['id_user'] = $id[0]['id'];
+        if($user){
+            $request['id_user'] = $user[0]['id'];
 
         }else{
             $json["status"] = 0;
@@ -161,26 +168,30 @@ class TbLaunchController extends Controller
             $request = $this->service->update($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;
 
-             
-             if(!$request['success']){
-                $i=0;
+            if($request['success'] === "closing"){
+                $request['success'] = false;
                 $json["status"] = 0;
-                  foreach($request['messages'] as $msg){
-                    $json["error_list"]["#".$request['type'][$i]] = $msg;
-                      $i++;
-                  } 
-                }else{
-                    $json["success"] = $request['messages'];
+                $json["error_list"]["#".$request['type']] = $request['messages'];
 
-                }      
-            
-        }
-       
+                    }elseif(!$request['success']){
+                            $i=0;
+                            $json["status"] = 0;
+                                foreach($request['messages'] as $msg){
+                                    $json["error_list"]["#".$request['type'][$i]] = $msg;
+                                    $i++;
+                        }
+    
+                        }else{
+                             $json["success"] = $request['messages'];
+
+                    }          
+        }   
          
          
              echo json_encode($json);
     }
 
+    //função para retornar laçamentos pelo id
     public function show_launch(Request $request)
     {
         $json  = array();
@@ -195,8 +206,8 @@ class TbLaunchController extends Controller
         $json["imput"]['id_user'] = $launch['id_user'];
         $json["imput"]['value'] = $launch['value'];
         $json["imput"]['operation_date'] = $launch['operation_date'];
-        $json["imput"]['reference_month'] = $launch['reference_month'];
-        $json["imput"]['reference_year'] = $launch['reference_year'];
+        $json["imput"]['reference_month'] = $launch['closing']['id'];
+        $json["imput"]['reference_year'] = $launch['closing']['id'];
         $json["imput"]['idtb_operation'] = $launch['idtb_operation'];
         $json["imput"]['idtb_type_launch'] = $launch['idtb_type_launch'];
         $json["imput"]['idtb_base'] = $launch['idtb_base'];
@@ -208,7 +219,7 @@ class TbLaunchController extends Controller
 
     }
 
-
+    //função para deletar laçamentos pelo id
     public function destroy(Request $request)
     {
         $json  = array();
@@ -238,10 +249,13 @@ class TbLaunchController extends Controller
         echo json_encode($json);
     }
 
-    public function aprov(Request $request)
+    //função para aprovar/reprovar laçamentos pelo id
+    public function aprov_id(Request $request)
     {
 
-        $request = $this->service->aprov($request->all()); 
+        $request = $this->service->aprov_id($request->all());
+
+        //dd($request);
 
         $json["success"] = $request['messages'];
         $json["status"] = $request['success'];

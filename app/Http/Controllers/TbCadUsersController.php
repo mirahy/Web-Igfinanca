@@ -18,11 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\TbBaseRepository;
 use App\Repositories\TbProfileRepository;
 
-/**
- * Class TbCadUsersController.
- *
- * @package namespace App\Http\Controllers;
- */
+
 class TbCadUsersController extends Controller
 {
     protected $TbProfileRepository;
@@ -39,40 +35,38 @@ class TbCadUsersController extends Controller
 
     }
 
-
+    //redireciona para a view edit-user
     public function index()
     {
-        return view('user.index');
+        return redirect('/edit-users');
     }
 
+    //redireciona para a view register
     public function register()
     {
         return view('user.register');
     }
 
+    //redireciona para a view forgot-password
     public function forgotPassword()
     {
         return view('user.forgot-password');
     }
     
 
-
-    Public function query(Request $request)
+    //retorna dados para as tabelas do framework datatables
+    Public function query_DataTables(Request $request)
     {
 
         if(request()->ajax()){
            
-            return Datatables::of(TbCadUser::query()
-                                    ->with('base')
-                                    ->with('Profile')
-                                    ->where('status', '1'))
-                                    ->blacklist(['action'])
-                                    ->make(true);
+            return $this->service->find_DataTables($request);
         }
+
         
         $perfil_list  = $this->TbProfileRepository->selectBoxList();
         $base_list    = $this->TbBaseRepository->selectBoxList();
-        
+
         return view('user.edit-users',[
             'perfil_list'  => $perfil_list,
             'base_list'    => $base_list,
@@ -80,42 +74,8 @@ class TbCadUsersController extends Controller
 
     }
 
-    Public function query_inact(Request $request)
-    {
-
-        if(request()->ajax()){
-            return Datatables::of(TbCadUser::query()
-                                    ->with('base')
-                                    ->with('Profile')
-                                    ->where('status', '0'))
-                                    ->blacklist(['action'])
-                                    ->make(true);
-        }
-
-        
-        return view('user.edit-users');
-
-    }
-
-    Public function query_pending(Request $request)
-    {
-
-        if(request()->ajax()){
-            return Datatables::of(TbCadUser::query()
-                                    ->with('base')
-                                    ->with('Profile')
-                                    ->where('status', '2'))
-                                    ->blacklist(['action'])
-                                    ->make(true);
-        }
-
-        
-        return view('user.edit-users');
-
-    }
-
     
-
+    //função para cadastar e atualizar
     public function keep(Request $request)
     {
 
@@ -185,7 +145,7 @@ class TbCadUsersController extends Controller
     }
 
     
-
+    //função para retornar usuário pelo id
     public function show_user(Request $request)
     {
         $json  = array();
@@ -206,7 +166,7 @@ class TbCadUsersController extends Controller
 
     }
 
-
+    //função para deletar usuário pelo id
     public function destroy(Request $request)
     {
         $json  = array();
@@ -233,23 +193,8 @@ class TbCadUsersController extends Controller
         echo json_encode($json);
     }
 
-    public function select()
-    {
 
-
-        $perfil_list = \App\Entities\TbProfile::pluck('name', 'idtb_profile')->All();
-        $base_list = \App\Entities\TbBase::pluck('name', 'idtb_base')->All();
-        //dd($perfil_list);
-        return ([
-            $perfil_list,
-            $base_list,
-        ]);
-
-        //dd(json_encode($json));
-
-        //echo json_encode($json);
-    }
-
+    //retorna nomes dos usuários apartir do textos digitados nos formulário
     public function autocomplete(Request $request)
     {
 

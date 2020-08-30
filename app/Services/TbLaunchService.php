@@ -3,28 +3,31 @@
 namespace App\Services;
 
 use Exception;
-use App\Entities\TbCadUser;
 use App\Entities\TbLaunch;
+use App\Services\TbCadUserService;
 use App\Validators\TbLaunchValidator;
 use App\Repositories\TbLaunchRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
+use Yajra\Datatables\Datatables;
 use DB;
 class TbLaunchService
 {
 
       private $repository;
       private $validator;
+      private $serviceUser;
 
-      public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator)
+      public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator, TbCadUserService $serviceUser )
       {
           $this->repository   = $repository;
           $this->validator    = $validator;
+          $this->serviceUser  = $serviceUser;
 
       }
 
-
+      //função cadastar lançamento
       public function store($data)
       {
         try {
@@ -56,7 +59,7 @@ class TbLaunchService
 
       }
 
-
+      //função atualizar lançamento
       public function update($data)
       {
         try {
@@ -64,6 +67,19 @@ class TbLaunchService
               $id = $data['id'];
 
               $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+
+              $closing = $this->repository->with('closing')->find($id)->toArray();
+              
+              if($closing['closing']['status'] == 0){
+                return[
+                       'success'  => 'closing',
+                       'messages' => 'Lançamento com período fechado não pode ser editado!',
+                       'type'     => 'reference_month',
+                       'data'     => '',
+                      ];
+
+              }
+              
               $launch = $this->repository->update($data, $id);
               $msg = $launch['value'];
 
@@ -87,6 +103,7 @@ class TbLaunchService
         }
       }
 
+      //função deletar lançamento
       public function delete($id)
       {
 
@@ -117,21 +134,23 @@ class TbLaunchService
             
       }
 
-
-      public function find_IdUser($name)
+      //retorna usuário pelo nome
+      public function find_User_name($name)
       {
         
-        $data =  TbCadUser::where('name', 'LIKE', '%' . $name. '%')->get();
-        
-        return  $data;
+        return  $this->serviceUser->find_User_name($name);
       }
 
+      //retorna lançamento pelo id
       public function find_Id($id)
       {
 
         try {
 
-        $launch = $this->repository->with('user')->find($id)->toArray();
+        $launch = $this->repository->with('user')
+                                   ->with('closing')
+                                   ->find($id)
+                                   ->toArray();
           
           return [
             'success'     => true,
@@ -154,12 +173,24 @@ class TbLaunchService
 
       }
 
-
-      public function aprov($data)
+      //função aprovar/reprovar lançamentos
+      public function aprov_id($data)
       {
         try {
 
               $id = $data['id'];
+
+              $closing = $this->repository->with('closing')->find($id)->toArray();
+              
+              if($closing['closing']['status'] == 0){
+                return[
+                       'success'  => false,
+                       'messages' => 'Lançamento com período fechado não pode ser Aprovado/Reprovado!',
+                       'type'     => '',
+                       'data'     => '',
+                      ];
+
+              }
 
               $launch = TbLaunch::where('id', $id)->update(['status' => $data['status']]);
 
@@ -187,6 +218,104 @@ class TbLaunchService
 
         }
       }
+
+      //retorna lançamentos para uso na tabelas do framework datatables
+      public function find_DataTables($request)
+      {
+
+        $def = '%';
+
+            return  Datatables::of(TbLaunch::query()
+                                    ->with('user')
+                                    ->with('caixa')
+                                    ->with('type_launch')
+                                    ->with('closing')
+                                    ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)],
+                                             ['status', 'LIKE', $request->query('status', $def)],
+                                             ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
+                                             ['idtb_operation', 'LIKE', $request->query('operation', $def)]])
+                                    ->orderBy('operation_date'))
+                                    ->blacklist(['action'])
+                                    ->make(true);
+      }
+
+       //retorna lançamentos via parametros passados
+      public function find_Parameters($request)
+      {
+          $def = '%';
+
+          if ($request->isMethod('get')) {
+              return  (TbLaunch::query()
+                        ->with('user')
+                        ->with('caixa')
+                        ->with('type_launch')
+                        ->with('closing')
+                        ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
+                                ['status', 'LIKE', $request->query('status', $def)],
+                                ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
+                                ['idtb_operation', 'LIKE', $request->query('operation', $def)]])
+                        ->orderBy('operation_date'))
+                        ->get();
+
+        }elseif ($request->isMethod('post')) {
+                  return  (TbLaunch::query()
+                            ->with('user')
+                            ->with('caixa')
+                            ->with('type_launch')
+                            ->with('closing')
+                            ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
+                                    ['status', 'LIKE', $request['status']],
+                                    ['idtb_caixa', 'LIKE', $request['caixa']],
+                                    ['idtb_operation', 'LIKE', $request['operation']]])
+                            ->orderBy('operation_date'))
+                            ->get();
+
+        }
+
+      }
+
+       //retorna valor dos lançamentos via parametros passados
+      public function Sum($request)
+      {
+ 
+         $def = '%';
+
+         if ($request->isMethod('get')) {
+             return  (TbLaunch::query()
+                      ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
+                               ['status', 'LIKE', $request->query('status', $def)],
+                               ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
+                               ['idtb_operation', 'LIKE', $request->query('operation', $def)]]))
+                      ->sum('value');             
+
+         }elseif ($request->isMethod('post')) {
+                  return  (TbLaunch::query()
+                            ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
+                                    ['status', 'LIKE', $request['status']],
+                                    ['idtb_caixa', 'LIKE', $request['caixa']],
+                                    ['idtb_operation', 'LIKE', $request['operation']]]))
+                            ->sum('value');
+
+         }
+
+      }
+
+       //retorna lançamentos pendentes via parametros passados
+       public function Pend($request)
+       {
+ 
+         $def = '%';
+ 
+             return  (TbLaunch::query()
+                      ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
+                               ['status', 'LIKE', $request->query('status', $def)],
+                               ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
+                               ['idtb_operation', 'LIKE', $request->query('operation', $def)]]))
+                      ->count();
+       }
+
+
+      
 
 
 

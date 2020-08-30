@@ -26,7 +26,7 @@ class CreateTbCadUserTable extends Migration
             $table->increments('id');
             $table->string('name', 100);
             $table->unsignedInteger('idtb_profile');
-            $table->unsignedInteger('idtb_base');
+            $table->unsignedInteger('idtb_base')->default(null);
             $table->date('birth')->nullable()->default(null);
             $table->string('email', 100)->nullable();
             $table->string('password', 254)->nullable();

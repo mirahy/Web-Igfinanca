@@ -26,8 +26,6 @@ class CreateTbLaunchTable extends Migration
             $table->increments('id');
             $table->integer('id_user')->unsigned();
             $table->date('operation_date');
-            $table->string('reference_month', 20);
-            $table->string('reference_year', 4);
             $table->decimal('value');
             $table->integer('idtb_caixa')->unsigned();
             $table->integer('idtb_operation')->unsigned();
@@ -49,6 +47,7 @@ class CreateTbLaunchTable extends Migration
             $table->index(["idtb_base"], 'fk_tb_launch_tb_base1_idx');
 
             $table->index(["idtb_closing"], 'fk_tb_launch_tb_closing_record1_idx');
+            
 
 
             $table->foreign('id_user', 'fk_tb_launch_tb_cad_user1_idx')

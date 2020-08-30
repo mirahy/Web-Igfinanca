@@ -140,7 +140,7 @@
 
   <!-- Nav Item - Charts -->
   <li class="nav-item">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{{ asset('/closing')}}">
     <i class="fas fa-file-signature fa-lg"></i>
       <span>Fechamentos</span></a>
   </li>
@@ -157,7 +157,7 @@
         <a class="collapse-item" href="#">Dízimos</a>
         <a class="collapse-item" href="#">Ofertas</a>
         <a class="collapse-item" href="#">Saídas</a>
-        <a class="collapse-item" href="#">Fechamentos</a>
+        <a class="collapse-item" href="{{ asset('/reports-f')}}">Fechamentos</a>
       </div>
     </div>
   </li>

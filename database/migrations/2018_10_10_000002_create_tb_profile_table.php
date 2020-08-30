@@ -23,7 +23,7 @@ class CreateTbProfileTable extends Migration
         if (Schema::hasTable($this->set_schema_table)) return;
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('idtb_profile');
+            $table->increments('id');
             $table->string('name', 45);
             $table->string('description', 45)->nullable();
 
