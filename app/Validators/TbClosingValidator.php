@@ -4,6 +4,7 @@ namespace App\Validators;
 
 use \Prettus\Validator\Contracts\ValidatorInterface;
 use \Prettus\Validator\LaravelValidator;
+use App\Entities\TbLaunch;
 use Validator;
 
 /**
@@ -41,12 +42,14 @@ class TbClosingValidator extends LaravelValidator
         'year.between'              => 'Informar um ano válido!'
     ];
 
+    //verrifica se perído ja exite
     public function validaPeriodo($data){
         
         $param = $data['year'].$data['id'];
         $validator = Validator::make($data, 
               ['month'       => "uniqueperiodduple:{$param}"], 
               ['month.uniqueperiodduple' => 'Período já cadastrado!']);
+
               if($validator->fails()){
                 return [
                   'success'     => false,
@@ -56,6 +59,26 @@ class TbClosingValidator extends LaravelValidator
               }
               
               return ['success'  => true];
+    }
+
+    //verificar se periodo possue lançametos
+    public function countLaunch($id){
+
+       $count = TbLaunch::query()
+                ->with('Launch')
+                ->where('idtb_closing',$id)
+                ->count();
+
+                if($count){
+                    return [
+                      'success'     => false,
+                      'messages'    => ['Não é possivel excluir! Período possui '.$count.' lançamentos'],
+                      'type'        => [""],
+                    ];
+                  }
+                  
+                  return ['success'  => true];
+
     }
 
 }

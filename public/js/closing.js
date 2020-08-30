@@ -59,14 +59,23 @@ $(function () {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         type: "POST",
-                        url: "destroy",
+                        url: "destroy-closing",
                         dataType: "json",
                         data: { "id": course_id.attr("id") },
                         success: function (response) {
-                            console.log(response);
-                            $msg = "Período " + response["success"] + " removido com sucesso!";
-                            Swal.fire("Sucesso!", $msg, "success");
-                            dt_report_closing.ajax.reload();
+                            if (response["status"]) {
+                             $msg = "Período removido com sucesso!";
+                             Swal.fire("Sucesso!", $msg, "success");
+
+                             }else{
+                               $.each(response["error_list"], function (id, value) {
+                                    $msg = "Mensagens: " + value;
+                                    Swal.fire("Atenção!", $msg, "error");
+                                });
+            
+                             }
+
+                        dt_report_closing.ajax.reload();
                             
                         }
                     })

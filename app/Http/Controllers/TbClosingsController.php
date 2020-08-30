@@ -71,7 +71,7 @@ class TbClosingsController extends Controller
              $request = $this->service->store($request->all()); 
              $closing = $request['success'] ? $request['data'] : null;
 
-             
+
              session()->flash('success', [
                  'success'   =>  $request['success'],
                  'messages'  =>  $request['messages'],
@@ -138,7 +138,35 @@ class TbClosingsController extends Controller
 
     }
 
+    //função para deletar laçamentos pelo id
+    public function destroy(Request $request)
+    {
+        $json  = array();
+        $json["status"] = 1;
+        
+        $request = $this->service->delete($request["id"]); 
+        $closing = $request['success'] ? $request['data'] : null;
 
+        session()->flash('success', [
+            'success'   =>  $request['success'],
+            'messages'  =>  $request['messages'],
+            'launch'   =>  $closing,
+        ]);
+           
+        if(!$request['success']){
+            $i=0;
+            $json["status"] = 0;
+            foreach($request['messages'] as $msg){
+            $json["error_list"][$i] = $msg;
+            $i++;
+            } 
+        }else{
+            $json["success"] = $request['messages'];
+
+        }
+            
+        echo json_encode($json);
+    }
    
   
 }

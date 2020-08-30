@@ -147,5 +147,39 @@ class TbClosingsService
                                     ->make(true);
       }
 
+       //função deletar lançamento
+       public function delete($id)
+       {
+ 
+         try {
+
+                $v = $this->validator->countLaunch($id);
+                if(!$v['success']){
+                  return $v;
+                }
+     
+               $closing = $this->repository->delete($id);
+               
+               return [
+                 'success'     => true,
+                 'messages'    => "",
+                 'data'        => $closing,
+                 'type'        => [""],
+               ];
+ 
+ 
+         } catch (Exception $e) {
+ 
+               switch (get_class($e)) {               
+                 case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                 case Exception::class           : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+                 default                         : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+               }
+ 
+         }
+             
+       }
+
 
 }

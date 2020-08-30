@@ -108,3 +108,4 @@ Route::get('/closing', ['as' =>'closing', 'uses' => 'TbClosingsController@index'
 Route::get('/query-closing', ['as' =>'query-closing', 'uses' => 'TbClosingsController@query_DataTables'])->middleware('auth');
 Route::post('/keep-closing', ['as' =>'keep-closing', 'uses' => 'TbClosingsController@keep'])->middleware('auth');
 Route::post('/show-closing', ['as' =>'show-closing', 'uses' => 'TbClosingsController@show_closing'])->middleware('auth');
+Route::post('/destroy-closing', ['as' =>'destroy-closing', 'uses' => 'TbClosingsController@destroy'])->middleware('auth');
