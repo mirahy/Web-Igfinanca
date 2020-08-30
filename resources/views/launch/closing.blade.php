@@ -93,9 +93,9 @@
                     ,'attributes' => ['placeholder' => 'Mês', 'class' => 'form-control form-control-user', 'id' =>
                     'month', 'name' => 'month']])
 
-                    @include('templates.forms.number',['input' => 'number', 'label' => 'Ano', 'attributes' =>
-                    ['placeholder' => 'Ano', 'class' => 'form-control form-control-user', 'id' => 'year', 'name' =>
-                    'year']])
+                    @include('templates.forms.select',['select' => 'Ano', 'label' => 'Ano', 'data' => $year
+                    ,'attributes' => ['placeholder' => 'Ano', 'class' => 'form-control form-control-user', 'id' =>
+                    'year', 'name' => 'year']])
 
                     @include('templates.forms.select',['select' => 'status', 'label' => 'Status', 'data' => [ '1' =>
                     'Aberto', '2' => 'Pre-Fechamento', '0' => 'Fechado']

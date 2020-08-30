@@ -13,6 +13,7 @@ use App\Repositories\TbClosingRepository;
 use App\Validators\TbClosingValidator;
 use App\Services\TbClosingsService;
 
+
 const MONTH = ['Mês', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
 class TbClosingsController extends Controller
@@ -33,8 +34,14 @@ class TbClosingsController extends Controller
     //retorna view closing
     public function index()
     {
+
+        $year = [date("Y")-1 => date("Y")-1,
+                 date("Y")+0 => date("Y")+0,
+                 date("Y")+1 => date("Y")+1];
+
         return view('launch.closing',[
             'month'        => MONTH,
+            'year'         => $year,
         ]);
     }
 
@@ -58,8 +65,7 @@ class TbClosingsController extends Controller
          $json["error_list"] = array();
          $json["success"] = array();
          
-         $request['month'] = MONTH[$request['month']];
-         
+         $request['month'] = $request['month'] ? MONTH[$request['month']]: null;
          if(!$request["id"]){
            
              $request = $this->service->store($request->all()); 
@@ -71,8 +77,7 @@ class TbClosingsController extends Controller
                  'messages'  =>  $request['messages'],
                  'periodo'   =>  $closing,
               ]);
- 
- 
+
               if(!$request['success']){
                  $i=0;
                  $json["status"] = 0;
@@ -102,7 +107,7 @@ class TbClosingsController extends Controller
                  $i=0;
                  $json["status"] = 0;
                    foreach($request['messages'] as $msg){
-                       $json["error_list"]["#".$request['type'][$i]."_edit"] = $msg;
+                       $json["error_list"]["#".$request['type'][$i]] = $msg;
                        $i++;
                    } 
                  }      
