@@ -23,9 +23,9 @@ class TbCadUserValidator extends LaravelValidator
           'idtb_profile'    => 'required',
           'idtb_base'       => 'required',
           'status'          => 'required',
-          'email'           => 'bail|email|min:10|unique:tb_cad_user,email',
-          'password'        => 'min:8',
-          'Repeatpassword'  => 'bail|not_in:|same:password',
+          'email'           => 'bail|nullable|email|min:10|unique:tb_cad_user,email',
+          'password'        => 'bail|nullable|min:8',
+          'Repeatpassword'  => 'bail|nullable|not_in:|same:password',
         ],
 
         
@@ -34,7 +34,7 @@ class TbCadUserValidator extends LaravelValidator
           'idtb_profile'    => 'required',
           'idtb_base'       => 'required',
           'status'          => 'required',
-          'email'           => 'bail|email|min:10|unique:tb_cad_user,email',
+          'email'           => 'bail|nullable|email|min:10|unique:tb_cad_user,email',
         ],
     ];
 
