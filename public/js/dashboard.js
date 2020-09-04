@@ -15,7 +15,7 @@ $(function () {
         dataType: "json",
         success: function (response) {
             entrie = response;
-            $("#entries").html('R$' + response);
+            $("#entries").html('R$' + number_format(entrie,2,',','.'));
         }
     })
 
@@ -25,10 +25,10 @@ $(function () {
         url: "sum?status=1&operation=2&caixa=1",
         dataType: "json",
         success: function (response) {
-            $("#exits").html('R$' + response);
             exit = response;
+            $("#exits").html('R$' + number_format(exit,2,',','.'));
             result = entrie - exit;
-            $("#balance").html('R$' + result);
+            $("#balance").html('R$' + number_format(result,2,',','.'));
         }
     })
 
@@ -39,7 +39,7 @@ $(function () {
         dataType: "json",
         success: function (response) {
             entrie_o = response;
-            $("#entries_o").html('R$' + response);
+            $("#entries_o").html('R$' + number_format(entrie_o,2,',','.'));
         }
     })
 
@@ -49,10 +49,10 @@ $(function () {
         url: "sum?status=1&operation=2&caixa=2",
         dataType: "json",
         success: function (response) {
-            $("#exits_o").html('R$' + response);
             exit_o = response;
+            $("#exits_o").html('R$' + number_format(exit_o,2,',','.'));
             result_o = entrie_o - exit_o;
-            $("#balance_o").html('R$' + result_o);
+            $("#balance_o").html('R$' + number_format(result_o,2,',','.'));
         }
     })
 
