@@ -27,6 +27,30 @@ $(function(){
     var exit = 0;
     var result = 0;
 
+    //retorna valor para a div entries do card entradas dos dízimos
+    $.ajax({
+        type: "GET",
+        url: "sum?status=1&operation=1&caixa=1",
+        dataType: "json",
+        success: function (response) {
+            entrie = response;
+            $("#entries").html('R$' + number_format(entrie,2,',','.'));
+        }
+    })
+
+    //retorna valor para a div exits do card saídas e retorna o valor do carda saldo dos dízímos
+    $.ajax({
+        type: "GET",
+        url: "sum?status=1&operation=2&caixa=1",
+        dataType: "json",
+        success: function (response) {
+            exit = response;
+            $("#exits").html('R$' + number_format(exit,2,',','.'));
+            result = entrie - exit;
+            $("#balance").html('R$' + number_format(result,2,',','.'));
+        }
+    })
+
     // $("#form_report_closing").submit(function(){
         
     //     $.ajax({
@@ -147,33 +171,5 @@ $(function(){
                                 }
             });
 
-    
-    //retorna valor para a div entries do card entradas dos dízimos
-    $.ajax({
-        type: "GET",
-        url: "sum?status=1&operation=1&caixa=1",
-        dataType: "json",
-        success: function (response) {
-            entrie = response;
-            $("#entries").html('R$' + response);
-        }
-    })
-
-    //retorna valor para a div exits do card saídas e retorna o valor do carda saldo dos dízímos
-    $.ajax({
-        type: "GET",
-        url: "sum?status=1&operation=2&caixa=1",
-        dataType: "json",
-        success: function (response) {
-            $("#exits").html('R$' + response);
-            exit = response;
-            result = entrie - exit;
-            $("#balance").html('R$' + result);
-        }
-    })
-
-
-    
-    
 
 });
