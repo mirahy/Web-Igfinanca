@@ -21,7 +21,7 @@
 
     <div class="container-fluid">
         <h3 class="text-center"><strong>Fechamento de Caixa - {{$tpCaixa[0]['name']}}</strong></h3>
-        <h4 class="text-center"><strong>Período: {{$month.'/'.$year}}</strong></h4>
+        <h4 class="text-center"><strong>Período: {{$period[0]['month'].'/'.$period[0]['year']}}</strong></h4>
           <div class="col-sm-6">
             <table class="table table-borderless table-sm">
               <thead>
@@ -31,19 +31,19 @@
                   <td class="col-sm-1"><!-- Entrada dízimos -->
                       <div class="m-1">
                         <div class="text-xs font-weight-bold text-success text-uppercase">Entradas </div>
-                        <div class=" font-weight-bold text-gray-800" id="entries">R$ {{$entries}}</div>
+                        <div class=" font-weight-bold text-gray-800" id="entries">R$ {{ number_format($entries, 2, ',', '.') }}</div>
                       </div>
                   </td>
                   <td class="col-sm-1"><!-- saídas dízimos-->
                       <div class="m-1">
                         <div class="text-xs font-weight-bold text-danger text-uppercase">Saídas</div>
-                        <div class=" font-weight-bold text-gray-800" id="exits">R$ {{$exits}}</div>
+                        <div class=" font-weight-bold text-gray-800" id="exits">R$ {{ number_format($exits, 2, ',', '.') }}</div>
                       </div>
                   </td>
                   <td class="col-sm-1"><!-- Saldo Caixa dízimo -->
                     <div class="m-1">
                         <div class="text-xs font-weight-bold text-info text-uppercase">Saldo</div>
-                        <div class="font-weight-bold text-gray-800" id="balance">R$ {{$balance}}</div>
+                        <div class="font-weight-bold text-gray-800" id="balance">R$ {{ number_format($balance, 2, ',', '.') }}</div>
                     </div>
                   </td>
                 </tr>
@@ -51,7 +51,7 @@
               <tfoot></tfoot>
             </table>
           </div>                   
-        <table id="dt_report_closing" class="table table-striped table-hover">
+        <table id="dt_report_closing" class="table ">
             <thead>
                 <tr>
                     <th>Tipo</th>
@@ -61,7 +61,7 @@
                     <th>Coleta</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="tb-size">
                 
                 @foreach ($dados as $item)
                 <tr>
@@ -76,18 +76,48 @@
                         @if ($item->idtb_operation == 2)
                         {{'-'}}    
                         @endif
-                        {{$item->value }}
+                        {{number_format( $item->value, 2, ',', '.') }}
                       </th>
                     <th>{{ $item->caixa->name }}</th>
                     <th>{{ $item->dataOperation }}</th>
                 </tr>    
                 @endforeach
-               
+
             </tbody>
             <tfoot>
+
                
             </tfoot>
         </table>
+        <div class="col-sm-12">
+          <table class="table table-borderless table-sm">
+            <thead>
+            </thead>
+            <tbody>
+              <tr class="table-secondary">>
+                <td class="col-sm-1"><!-- Entrada dízimos -->
+                    <div class="m-1">
+                      <div class="col-md-4">__________________</div>
+                      <div class="col-md-4 center">Tesouraria Sede</div>
+                    </div>
+                </td>
+                <td class="col-sm-1"><!-- saídas dízimos-->
+                    <div class="m-1">
+                      <div class="col-md-4">__________________</div>
+                      <div class="col-md-4 center">Tesouraria Cong.</div>
+                    </div>
+                </td>
+                <td class="col-sm-1"><!-- Saldo Caixa dízimo -->
+                  <div class="m-1">
+                    <div class="col-md-4">__________________</div>
+                    <div class="col-md-4 center">Pastor Cong.</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot></tfoot>
+          </table>
+        </div>    
     </div>
     <!-- /.container-fluid -->
 
