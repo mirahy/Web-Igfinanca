@@ -39,9 +39,8 @@
 
     {!! Form::open(['class' =>'user', 'id' => 'form_report_closing', 'action' => 'PdfController@closing_pdf' ]) !!}
     @include('templates.forms.input',['input' => 'text','value' => $status,  'attributes' => ['hidden', 'class' => 'd-none ', 'name' => 'status', 'id' => 'status']])
-    @include('templates.forms.select',['select' => 'mes', 'data' => $month ,'attributes' => ['placeholder' => 'Mês', 'class' => 'form-control form-control-user col-md-2 ', 'id' => 'reference_month', 'name' => 'reference_month']])
-    @include('templates.forms.input',['input' => 'text','value' => $year, 'attributes' => [ 'class' => 'form-control form-control-user col-md-2', 'name' => 'reference_year', 'id' => 'reference_year']])
-    @include('templates.forms.select',['select' => 'Caixa','data' => $caixa_list,  'attributes' => ['placeholder' => 'Caixa', 'class' => 'form-control form-control-user col-md-2','name' => 'caixa', 'id' => 'caixa']])
+    @include('templates.forms.select',['select' => 'mes', 'data' => $month ,'attributes' => ['placeholder' => 'Mês', 'class' => 'form-control form-control-user col-md-2 ', 'id' => 'reference_month', 'name' => 'reference_month', 'required']])
+    @include('templates.forms.select',['select' => 'Caixa','data' => $caixa_list,  'attributes' => ['placeholder' => 'Caixa', 'class' => 'form-control form-control-user col-md-2','name' => 'caixa', 'id' => 'caixa', 'required']])
     @include('templates.forms.button',['input' => '<i class="fas fa-download fa-sm text-white-50"></i> Exportar PDF','attributes' => ['formtarget' => '_blank', 'type' => 'submit', 'class' => 'd-none d-sm-inline-block btn btn-sm btn-primary shadow-sm m-2', 'id' => 'btn_pdf_closing']])
     {!! Form::close() !!}
     

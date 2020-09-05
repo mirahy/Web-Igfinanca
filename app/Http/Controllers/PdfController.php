@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Entities\TbTypeLaunch;
+use App\Entities\TbClosing;
 use App\Services\TbLaunchService;
 use PDF;
 
@@ -21,11 +22,9 @@ class PdfController extends Controller
     //coletar dados para gerar  pdf de fechamentos
     public function closing_pdf(Request $request)
     {
-        $def = '%';
         
-        $tpCaixa    = TbTypeLaunch::where('id',$request['caixa'])->get('name');
-        $month      = 'Agosto';
-        $year       = '2020';
+        $tpCaixa    = TbTypeLaunch::where('id',$request['caixa'])->get('name')->toArray();
+        $period     = TbClosing::where('id', $request['reference_month'])->get();
 
         $dados      = $this->serviceLaunch->find_Parameters($request);
 
@@ -37,7 +36,7 @@ class PdfController extends Controller
 
         $balance    = $entries - $exits;
 
-        $pdf = PDF::loadView('reports.closingPDF', compact('dados', 'month', 'year', 'entries', 'exits', 'balance', 'tpCaixa'));
+        $pdf = PDF::loadView('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
 
         return $pdf->setPaper('a4')->stream('fechamento');
 
