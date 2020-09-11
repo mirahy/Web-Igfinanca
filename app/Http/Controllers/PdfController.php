@@ -23,6 +23,7 @@ class PdfController extends Controller
     public function closing_pdf(Request $request)
     {
         
+        $request->request->add(['closing_status' => '%']);
         $tpCaixa    = TbTypeLaunch::where('id',$request['caixa'])->get('name')->toArray();
         $period     = TbClosing::where('id', $request['reference_month'])->get();
 

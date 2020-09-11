@@ -277,19 +277,32 @@ class TbLaunchService
        //retorna valor dos lançamentos via parametros passados
       public function Sum($request)
       {
- 
          $def = '%';
 
+         
+
          if ($request->isMethod('get')) {
-             return  (TbLaunch::query()
+             return (TbLaunch::query()
+                      ->whereHas('closing', function($q) use ($request, $def)
+                                  {   
+                                      $q->where([['status', 'like',  $request->query('closing_status', $def)],
+                                                 ['id', 'like',  $request->query('reference_month', $def)]]);
+
+                                  })
                       ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
                                ['status', 'LIKE', $request->query('status', $def)],
                                ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
                                ['idtb_operation', 'LIKE', $request->query('operation', $def)]]))
-                      ->sum('value');             
+                               ->sum('value');             
 
          }elseif ($request->isMethod('post')) {
                   return  (TbLaunch::query()
+                             ->whereHas('closing', function($q) use ($request)
+                                        {   
+                                            $q->where([['status', 'like',  $request['status']],
+                                            ['id', 'like',  $request['reference_month']]]);
+
+                                        })
                             ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
                                     ['status', 'LIKE', $request['status']],
                                     ['idtb_caixa', 'LIKE', $request['caixa']],

@@ -18,12 +18,12 @@ class TbLaunch extends Model implements Transformable
      
 
      public function user(){
-            return $this->belongsTo(TbCadUser::class, 'id_user', 'id');
+       return $this->belongsTo(TbCadUser::class, 'id_user', 'id');
 
      }
 
      public function type_launch(){
-            return $this->belongsTo(TbTypeLaunch::class, 'idtb_type_launch', 'id');
+       return $this->belongsTo(TbTypeLaunch::class, 'idtb_type_launch', 'id');
         
     }
 

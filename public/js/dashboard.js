@@ -8,10 +8,10 @@ $(function () {
     var result_o = 0;
 
 
-    //retorna valor para a div entries do card entradas dos dízimos
+    //retorna valor para a div entries do card entradas dos dízimos de períodos em abertos
     $.ajax({
         type: "GET",
-        url: "sum?status=1&operation=1&caixa=1",
+        url: "sum?status=1&operation=1&caixa=1&closing_status=1",
         dataType: "json",
         success: function (response) {
             entrie = response;
@@ -19,10 +19,10 @@ $(function () {
         }
     })
 
-    //retorna valor para a div exits do card saídas e retorna o valor do carda saldo dos dízímos
+    //retorna valor para a div exits do card saídas e retorna o valor do card saldo dos dízímos de períodos em abertos
     $.ajax({
         type: "GET",
-        url: "sum?status=1&operation=2&caixa=1",
+        url: "sum?status=1&operation=2&caixa=1&closing_status=1",
         dataType: "json",
         success: function (response) {
             exit = response;

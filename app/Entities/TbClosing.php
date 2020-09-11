@@ -21,9 +21,10 @@ class TbClosing extends Model implements Transformable
 
 
      public function Launch(){
-        return $this->belongsTo(TbLaunch::class, 'id', 'idtb_closing');
+        return $this->hasMany(TbLaunch::class, 'id', 'idtb_closing');
     
      }
+
 
 
      //retorno "mes/ano"
