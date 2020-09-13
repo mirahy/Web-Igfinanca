@@ -96,13 +96,12 @@ class TbLaunchController extends Controller
         $closing_list_month  = $this->TbClosingRepository->selectBoxList_month();
         
         return view('reports.closings',[
-                    'month'      => $closing_list_month,
-                    'year'      => date("Y"),
+                    'month'        => $closing_list_month,
                     'caixa_list'   => $caixa_list,
                     'status'       => 1,
-                    'entries'   => 'Calculando...',
-                    'exits'     => 'Calculando...',
-                    'balance'   => 'Calculando...',
+                    'entries'      => 'Calculando...',
+                    'exits'        => 'Calculando...',
+                    'balance'      => 'Calculando...',
         ]);
     }
 

@@ -9,6 +9,8 @@ FECHAMENTO_PRE_FECHAMENTO = 2;
 OPERATION_OUTPUT = 0;
 OPERATION_INPUT = 1;
 
+edit = "";
+
 $(function () {
 
     // botao laçamentos dizimos
@@ -356,6 +358,7 @@ $(function () {
             {
                 "data": "closing.status",
                 "render": function (data, type, row, meta) {
+                    data == FECHAMENTO_FECHADO ? edit = 'disabled' :  edit = '';
                     return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
                 },
                 columnDefs: [
@@ -380,7 +383,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch ' + edit + '" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch ' + edit + '" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -466,6 +469,7 @@ $(function () {
             {
                 "data": "closing.status",
                 "render": function (data, type, row, meta) {
+                    data == FECHAMENTO_FECHADO ? edit = 'disabled' :  edit = '';
                     return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
                 },
                 columnDefs: [
@@ -490,7 +494,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch ' + edit + '" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch ' + edit + '" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -575,6 +579,7 @@ $(function () {
             {
                 "data": "closing.status",
                 "render": function (data, type, row, meta) {
+                    data == FECHAMENTO_FECHADO ? edit = 'disabled' :  edit = '';
                     return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
                 },
                 columnDefs: [
@@ -599,7 +604,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch_exits" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch_exits" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch_exits ' + edit + '" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch_exits ' + edit + '" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -685,6 +690,7 @@ $(function () {
             {
                 "data": "closing.status",
                 "render": function (data, type, row, meta) {
+                    data == FECHAMENTO_FECHADO ? edit = 'disabled' :  edit = '';
                     return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
                 },
                 columnDefs: [
@@ -709,7 +715,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch_exits" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch_exits" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch_exits ' + edit + '" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch_exits ' + edit + '" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },

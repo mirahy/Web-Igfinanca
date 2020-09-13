@@ -27,10 +27,11 @@ $(function(){
     var exit = 0;
     var result = 0;
 
+
     //retorna valor para a div entries do card entradas dos dízimos
     $.ajax({
         type: "GET",
-        url: "sum?status=1&operation=1&caixa=1",
+        url: "sum?status=1&operation=1&caixa=1&closing_status=1",
         dataType: "json",
         success: function (response) {
             entrie = response;
@@ -41,7 +42,7 @@ $(function(){
     //retorna valor para a div exits do card saídas e retorna o valor do carda saldo dos dízímos
     $.ajax({
         type: "GET",
-        url: "sum?status=1&operation=2&caixa=1",
+        url: "sum?status=1&operation=2&caixa=1&closing_status=1",
         dataType: "json",
         success: function (response) {
             exit = response;
@@ -114,7 +115,7 @@ $(function(){
                                 "autoWidth":  false,
                                 "processing": true,
                                 // "serverSide": true,
-                                "ajax": baseUrl + 'query?caixa=1&status=1&month=8&year=2020',
+                                "ajax": baseUrl + 'query?caixa=1&status=1&month=8&year=2020&closing_status=1',
                                 "order": [],
                                 "columns": [
                                     { data: 'type_launch.name', name: 'launch.name' },

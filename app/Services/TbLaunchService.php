@@ -230,6 +230,12 @@ class TbLaunchService
                                     ->with('caixa')
                                     ->with('type_launch')
                                     ->with('closing')
+                                    ->whereHas('closing', function($q) use ($request, $def)
+                                                {   
+                                                    $q->where([['status', 'like',  $request->query('closing_status', $def)],
+                                                              ['id', 'like',  $request->query('reference_month', $def)]]);
+
+                                                })
                                     ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)],
                                              ['status', 'LIKE', $request->query('status', $def)],
                                              ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
@@ -244,15 +250,24 @@ class TbLaunchService
       {
           $def = '%';
 
+         // dd($request);
+
           if ($request->isMethod('get')) {
               return  (TbLaunch::query()
                         ->with('user')
                         ->with('caixa')
                         ->with('type_launch')
                         ->with('closing')
+                        ->whereHas('closing', function($q) use ($request, $def)
+                                  {   
+                                      $q->where([['status', 'like',  $request->query('closing_status', $def)],
+                                                 ['id', 'like',  $request->query('reference_month', $def)]]);
+
+                                  })
                         ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
                                 ['status', 'LIKE', $request->query('status', $def)],
                                 ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
+                                ['idtb_closing', 'LIKE', $request->query('reference_month', $def)],
                                 ['idtb_operation', 'LIKE', $request->query('operation', $def)]])
                         ->orderBy('operation_date'))
                         ->get();
@@ -263,9 +278,16 @@ class TbLaunchService
                             ->with('caixa')
                             ->with('type_launch')
                             ->with('closing')
+                            ->whereHas('closing', function($q) use ($request)
+                                        {   
+                                            $q->where([['status', 'like',  $request['status']],
+                                            ['id', 'like',  $request['reference_month']]]);
+
+                                        })
                             ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
                                     ['status', 'LIKE', $request['status']],
                                     ['idtb_caixa', 'LIKE', $request['caixa']],
+                                    ['idtb_closing', 'LIKE', $request['reference_month']],
                                     ['idtb_operation', 'LIKE', $request['operation']]])
                             ->orderBy('operation_date'))
                             ->get();
