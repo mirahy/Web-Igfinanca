@@ -92,7 +92,7 @@ class LoginService
                     'type'        => ["email","password"],  
                   ];
 
-              Auth::login($user, $remember);
+                  $user = Auth::login($user, $remember);
               
 
             }

@@ -42,6 +42,7 @@ class DashboardController extends Controller
     session()->flash('success', [
        'success'        =>  $request['success'],
        'messages'       =>  $request['messages'],
+       'user'           =>  $request['data'],
   
     ]);
 
