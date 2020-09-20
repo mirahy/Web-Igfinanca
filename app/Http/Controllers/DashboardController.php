@@ -58,14 +58,14 @@ class DashboardController extends Controller
             $json["error_list"]["#password"] = ""; 
       }      
 
-
-      echo json_encode($json);
+      
+      return json_encode($json);
   }
 
   // função para logout do usuário
   public function logout()
   {
-
+    
     if(Auth::check())
     {
       Auth::logout();

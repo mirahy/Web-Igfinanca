@@ -10,7 +10,7 @@ use App\Repositories\TbCadUserRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
 use Exception;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Hash;
 
 
@@ -44,7 +44,7 @@ class LoginService
             $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
             //setando email e password em suas variaveis
             $data=[
-              'email'      => $request->get('usuario'),
+              'email'      => $request->get('email'),
               'password'   => $request->get('password')
             ];
             // setando o valor de do chekc lembre-me
@@ -91,9 +91,9 @@ class LoginService
                     'data'        => $user,
                     'type'        => ["email","password"],  
                   ];
-
-                  $user = Auth::login($user, $remember);
-              
+                  
+                  $user = Auth::login($user);
+                  
 
             }
 
@@ -108,9 +108,9 @@ class LoginService
         catch (Exception $e)
         {
           switch (get_class($e)) {
-            case QueryException::class      : return['success' => false, 'messages' => 'Preencher campos!'];
-            case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
-            case Exception::class           : return['success' => false, 'messages' => 'Preencher campos!'];
+            case QueryException::class      : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => ''];
+            case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys(), 'data'   => ''];
+            case Exception::class           : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => ''];
             default                         : return['success' => false, 'messages' => 'Preencher campos!'];
           }
         }
