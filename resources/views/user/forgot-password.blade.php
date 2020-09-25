@@ -24,7 +24,7 @@
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
-            <div class="col-lg-6 d-none d-flex align-items-center "><img src="img/logo-ico.ico" class="rounded mx-auto d-block"  > </div>
+            <div class="col-lg-6 d-none d-flex align-items-center "><img src="img/adb.png" class="rounded mx-auto d-block"  > </div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
