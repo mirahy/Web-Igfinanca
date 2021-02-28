@@ -82,6 +82,14 @@ class TbLaunchController extends Controller
         ]);
     }
 
+      //redireciona para a view launchs_cl
+    public function index_cl()
+    {
+     
+        return view('launch.launchs_cl');
+    }
+
+
     //redireciona para a view launchs_apr e retorna dados para o form da view
     public function index_l()
     {
@@ -119,6 +127,8 @@ class TbLaunchController extends Controller
     //função para cadastar e atualizar
     public function keep(Request $request)
     {
+
+        //dd($request);
 
         $json  = array();
         $json["status"] = 1;
