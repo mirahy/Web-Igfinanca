@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://adbfinace.com/'),
+    'url' => env('APP_URL', 'https://www.adbfinace.com/'),
 
     /*
     |--------------------------------------------------------------------------

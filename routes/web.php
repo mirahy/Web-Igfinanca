@@ -27,18 +27,7 @@ Route::get('/login',['uses' => 'Controller@telalogin']);
 Route::post('/login',['as' =>'user.login', 'uses' => 'DashboardController@auth']);
 Route::get('/logout',['as' =>'user.logout', 'uses' => 'DashboardController@logout']);
 
-//Init group unique users route
-Route::middleware(['auth.unique.user'])->group(function () {
-    Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth');
-
-    /**
-    * Routes return values dashboard
-    *========================================================================
-    */
-    Route::get('/sum',['as' =>'sum', 'uses' => 'DashboardController@sum'])->middleware('auth');
-    Route::get('/pend',['as' =>'pend', 'uses' => 'DashboardController@pend'])->middleware('auth');
-
-    /**
+/**
     * Routes to user register
     *========================================================================
     */
@@ -50,6 +39,19 @@ Route::middleware(['auth.unique.user'])->group(function () {
     *========================================================================
     */
     Route::get('/forgot-password',['uses' => 'TbCadUsersController@forgotPassword']);
+    
+
+//Init group unique users route
+Route::middleware(['auth.unique.user'])->group(function () {
+    Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth');
+
+    /**
+    * Routes return values dashboard
+    *========================================================================
+    */
+    Route::get('/sum',['as' =>'sum', 'uses' => 'DashboardController@sum'])->middleware('auth');
+    Route::get('/pend',['as' =>'pend', 'uses' => 'DashboardController@pend'])->middleware('auth');
+
 
     /**
     * Routes to dashboard nav users
