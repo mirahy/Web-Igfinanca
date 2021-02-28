@@ -19,14 +19,20 @@ $(function () {
         }
     })
 
-    //retorna valor para a div exits do card saídas e retorna o valor do card saldo dos dízímos de períodos em abertos
+    //retorna valor para a div exits do card saídas
     $.ajax({
         type: "GET",
         url: "sum?status=1&operation=2&caixa=1&closing_status=1",
         dataType: "json",
         success: function (response) {
             exit = response;
-            $("#exits").html('R$' + number_format(exit,2,',','.'));
+            $("#exits").html('R$' + number_format(exit,2,',','.'));   
+        }
+    })
+    
+    //retorna o valor do card saldo dos dízímos de períodos em abertos
+    $.ajax({
+        success: function (response) {
             result = entrie - exit;
             $("#balance").html('R$' + number_format(result,2,',','.'));
         }
@@ -43,7 +49,7 @@ $(function () {
         }
     })
 
-    //retorna valor para a div exits do card saídas e retorna o valor do carda saldo das ofertas
+    //retorna valor para a div exits do card saídas 
     $.ajax({
         type: "GET",
         url: "sum?status=1&operation=2&caixa=2",
@@ -55,6 +61,17 @@ $(function () {
             $("#balance_o").html('R$' + number_format(result_o,2,',','.'));
         }
     })
+
+
+    //retorna o valor do carda saldo das ofertas
+    $.ajax({
+        success: function (response) {
+            result_o = entrie_o - exit_o;
+            $("#balance_o").html('R$' + number_format(result_o,2,',','.'));
+        }
+    })
+
+    
 
 
     //retorna lançamentos pendentes dos dízimos
