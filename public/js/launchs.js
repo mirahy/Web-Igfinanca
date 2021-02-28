@@ -188,7 +188,7 @@ $(function () {
                     } else if (response["imput"]['idtb_type_launch'] == 2) {
                         $("#idtb_caixa").val(2);
                         $("#name").parent().siblings(".control-label").hide();
-                        $("#name").val('Oferta').hide();
+                        $("#name").val('Oferta Local').hide();
 
                     }
 
