@@ -327,7 +327,7 @@ $(function () {
         "autoWidth": false,
         "processing": true,
         // "serverSide": true,
-        "ajax": baseUrl + 'query?launch=1&caixa=1',
+        "ajax": baseUrl + 'query?launch=1&caixa=1&closing_status=1&closing_status1=2',
         "columns": [
             { data: 'type_launch.name', name: 'launch.name' },
             { data: 'user.name', name: 'user.name' },
@@ -439,7 +439,7 @@ $(function () {
         "autoWidth": false,
         "processing": true,
         // "serverSide": true,
-        "ajax": baseUrl + 'query?launch=2&caixa=2',
+        "ajax": baseUrl + 'query?launch=2&caixa=2&closing_status=1&closing_status1=2',
         "columns": [
             { data: 'type_launch.name', name: 'launch.name' },
             { data: 'user.name', name: 'user.name' },
@@ -549,7 +549,7 @@ $(function () {
         "autoWidth": false,
         "processing": true,
         // "serverSide": true,
-        "ajax": baseUrl + 'query?launch=3',
+        "ajax": baseUrl + 'query?launch=3&closing_status=1&closing_status1=2',
         "columns": [
             { data: 'type_launch.name', name: 'launch.name' },
             { data: 'user.name', name: 'user.name' },
@@ -660,7 +660,7 @@ $(function () {
         "autoWidth": false,
         "processing": true,
         // "serverSide": true,
-        "ajax": baseUrl + 'query?launch=4',
+        "ajax": baseUrl + 'query?launch=4&closing_status=1&closing_status1=2',
         "columns": [
             { data: 'type_launch.name', name: 'launch.name' },
             { data: 'user.name', name: 'user.name' },
@@ -867,6 +867,98 @@ $(function () {
 
         }
     });
+
+
+     /** 
+    * tabela consulta
+    **/
+   var dt_launch = $('#dt_consult').DataTable({
+    "oLanguage": DATATABLE_PTBR,
+    "autoWidth": false,
+    "processing": true,
+    // "serverSide": true,
+    "ajax": baseUrl + 'query',
+    "columns": [
+        { data: 'type_launch.name', name: 'launch.name' },
+        { data: 'user.name', name: 'user.name' },
+        {
+            data: 'value', name: 'value',
+            render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
+        },
+        { data: 'caixa.name', name: 'caixa.name' },
+        {
+            data: 'operation_date',
+
+            render: function (data, type, row) {
+                return type === "display" || type === "filter" ? Dataformat = FormatData(data) :
+                    data;
+            }
+        },
+        {
+            "data": "status",
+            "render": function (data, type, row, meta) {
+                return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
+            },
+            columnDefs: [
+                { targets: "no-sort", orderable: false },
+                { targets: "dt-center", ClassName: "dt-center" }
+            ]
+        },
+        { data: 'closing.MonthYear', name: 'closing.MonthYear' },
+        {
+            "data": "closing.status",
+            "render": function (data, type, row, meta) {
+                data == FECHAMENTO_FECHADO ? edit = 'disabled' :  edit = '';
+                return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
+            },
+            columnDefs: [
+                { targets: "no-sort", orderable: false },
+                { targets: "dt-center", ClassName: "dt-center" }
+            ]
+        },
+        {
+            data: 'created_at',
+            render: function (data, type, row) {
+                return type === "display" || type === "filter" ? Dataformat = FormatData(data) :
+                    data;
+            }
+        },
+        {
+            data: 'updated_at',
+            render: function (data, type, row) {
+                return type === "display" || type === "filter" ? Dataformat = FormatData(data) :
+                    data;
+            }
+        },
+        
+    ],
+    "drawCallback": function () {
+        btn_edit_launch();
+    },
+
+    
+    //função pesquisa por coluna
+    initComplete: function () {
+        this.api().columns().every( function () {
+            var column = this;
+            var select = $('<select><option value=""></option></select>')
+                .appendTo( $(column.footer()).empty() )
+                .on( 'change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                        $(this).val()
+                    );
+
+                    column
+                        .search( val ? '^'+val+'$' : '', true, false )
+                        .draw();
+                } );
+
+            column.data().unique().sort().each( function ( d, j ) {
+                select.append( '<option value="'+d+'">'+d+'</option>' )
+            } );
+        } );
+    }
+});
 
 
 

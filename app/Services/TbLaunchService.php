@@ -230,12 +230,14 @@ class TbLaunchService
                                     ->with('caixa')
                                     ->with('type_launch')
                                     ->with('closing')
-                                    ->whereHas('closing', function($q) use ($request, $def)
+                                    ->orwhereHas('closing', function($q) use ($request, $def)
                                                 {   
                                                     $q->where([['status', 'like',  $request->query('closing_status', $def)],
-                                                              ['id', 'like',  $request->query('reference_month', $def)]]);
+                                                               ['id', 'like',  $request->query('reference_month', $def)]])
+                                                      ->orWhere('status', 'like',  $request->query('closing_status1', $def));
 
                                                 })
+                                                
                                     ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)],
                                              ['status', 'LIKE', $request->query('status', $def)],
                                              ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
