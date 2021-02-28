@@ -117,8 +117,8 @@
         <a class="collapse-item" href="{{ asset('/launchs-e')}}">Entradas</a>
         <a class="collapse-item" href="{{ asset('/launchs-s')}}">Saídas</a>
         <h6 class="collapse-header">Consulta:</h6>
-        <!-- <a class="collapse-item " href="{{ asset('/launch-ce')}}" >Entradas</a> -->
-        <!-- <a class="collapse-item" href="{{ asset('/launch-cs')}}">Saídas</a> -->
+        <a class="collapse-item " href="{{ asset('/launchs-cl')}}" >Lançamentos</a>
+        
       </div>
     </div>
   </li>

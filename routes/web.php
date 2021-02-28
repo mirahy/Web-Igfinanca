@@ -12,22 +12,22 @@
 */
 
 
-/**
-* Routes to acess home page
-*========================================================================
-*/
+    /**
+    * Routes to acess home page
+    *========================================================================
+    */
 
-Route::get('/',['uses' => 'Controller@homepage']);
+    Route::get('/',['uses' => 'Controller@homepage']);
 
-/**
-* Routes to user auth
-*========================================================================
-*/
-Route::get('/login',['uses' => 'Controller@telalogin']);
-Route::post('/login',['as' =>'user.login', 'uses' => 'DashboardController@auth']);
-Route::get('/logout',['as' =>'user.logout', 'uses' => 'DashboardController@logout']);
+    /**
+    * Routes to user auth
+    *========================================================================
+    */
+    Route::get('/login',['uses' => 'Controller@telalogin']);
+    Route::post('/login',['as' =>'user.login', 'uses' => 'DashboardController@auth']);
+    Route::get('/logout',['as' =>'user.logout', 'uses' => 'DashboardController@logout']);
 
-/**
+    /**
     * Routes to user register
     *========================================================================
     */
@@ -41,7 +41,7 @@ Route::get('/logout',['as' =>'user.logout', 'uses' => 'DashboardController@logou
     Route::get('/forgot-password',['uses' => 'TbCadUsersController@forgotPassword']);
     
 
-//Init group unique users route
+    //Init group unique users route
 Route::middleware(['auth.unique.user'])->group(function () {
     Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth');
 
@@ -79,13 +79,17 @@ Route::middleware(['auth.unique.user'])->group(function () {
     /**exits */
     Route::get('/launchs-s', ['as' =>'launchs-s', 'uses' => 'TbLaunchController@index_s'])->middleware('auth');
 
+    
+    /**consult launches */
+    Route::get('/launchs-cl', ['as' =>'launchs-cl', 'uses' => 'TbLaunchController@index_cl'])->middleware('auth');
+
 
     /**approvals*/
     Route::get('/apr-l', ['as' =>'apr-l', 'uses' => 'TbLaunchController@index_l'])->middleware('auth');
     Route::get('/apr-f', ['as' =>'apr-f', 'uses' => 'TbLaunchController@apr_f'])->middleware('auth');
     Route::post('/aprov', ['as' =>'aprov', 'uses' => 'TbLaunchController@aprov_id'])->middleware('auth');
 
-    /**crud lauchs*/
+    /**crud lauches*/
     Route::get('/query', ['as' =>'query', 'uses' => 'TbLaunchController@query_DataTables'])->middleware('auth');
     Route::post('/keep-lauch', ['as' =>'keep-lauch', 'uses' => 'TbLaunchController@keep'])->middleware('auth');
     Route::post('/show-launch', ['as' =>'show-lauch', 'uses' => 'TbLaunchController@show_launch'])->middleware('auth');
