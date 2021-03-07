@@ -256,6 +256,9 @@
 
       <!--/Painel Ofertas-->
 
+    </div>
+    <!-- /.container-fluid -->
+
     {{-- ------------------------------------------paineis para futuras implementações------------------------------------------------------
       <div class="row">
 
