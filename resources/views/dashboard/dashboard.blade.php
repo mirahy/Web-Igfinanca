@@ -256,6 +256,10 @@
 
       <!--/Painel Ofertas-->
 
+    </div>
+    <!-- /.container-fluid -->
+
+    {{-- ------------------------------------------paineis para futuras implementações------------------------------------------------------
       <div class="row">
 
         <!-- Area Chart -->
@@ -326,7 +330,6 @@
         </div>
       </div>
 
-      {{-- ------------------------------------------paineis para futuras implementações------------------------------------------------------
         
         <!-- Content Row -->
       <div class="row">
