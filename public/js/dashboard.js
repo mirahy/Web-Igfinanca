@@ -41,7 +41,7 @@ $(function () {
     //retorna valor para a div entries do card entradas das ofertas
     $.ajax({
         type: "GET",
-        url: "sum?status=1&operation=1&caixa=2",
+        url: "sum?status=1&operation=1&caixa=2&closing_status=1",
         dataType: "json",
         success: function (response) {
             entrie_o = response;
@@ -52,7 +52,7 @@ $(function () {
     //retorna valor para a div exits do card saídas 
     $.ajax({
         type: "GET",
-        url: "sum?status=1&operation=2&caixa=2",
+        url: "sum?status=1&operation=2&caixa=2&closing_status=1",
         dataType: "json",
         success: function (response) {
             exit_o = response;
