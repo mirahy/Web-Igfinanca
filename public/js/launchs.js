@@ -872,7 +872,7 @@ $(function () {
      /** 
     * tabela consulta
     **/
-   var dt_launch = $('#dt_consult').DataTable({
+   var dt_consult = $('#dt_consult').DataTable({
     "oLanguage": DATATABLE_PTBR,
     "autoWidth": false,
     "processing": true,
