@@ -282,7 +282,7 @@ class TbLaunchService
                             ->with('closing')
                             ->whereHas('closing', function($q) use ($request)
                                         {   
-                                            $q->where([['status', 'like',  $request['status']],
+                                            $q->where([['status', 'like',  $request['closing_status']],
                                             ['id', 'like',  $request['reference_month']]]);
 
                                         })
@@ -323,7 +323,7 @@ class TbLaunchService
                   return  (TbLaunch::query()
                              ->whereHas('closing', function($q) use ($request)
                                         {   
-                                            $q->where([['status', 'like',  $request['status']],
+                                            $q->where([['status', 'like',  $request['closing_status']],
                                             ['id', 'like',  $request['reference_month']]]);
 
                                         })
