@@ -124,6 +124,9 @@
                     <th>Tipo</th>
                     <th>Nome</th>
                     <th>Valor</th>
+                    <th>Status</th>
+                    <th>Período</th>
+                    <th>Status Período</th>
                     <th>Caixa</th>
                     <th>Coleta</th>
                 </tr>

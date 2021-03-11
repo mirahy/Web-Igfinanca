@@ -2,6 +2,10 @@ LANCAMENTO_PENDETE   = 0;
 LANCAMENTO_APROVADO  = 1;
 LANCAMENTO_REPROVADO = 2;
 
+FECHAMENTO_FECHADO        = 0;
+FECHAMENTO_ABERTO         = 1;
+FECHAMENTO_PRE_FECHAMENTO = 2;
+
 CONSTANT_MES = [
                 'MES', 
                 'JANEIRO', 
@@ -31,7 +35,7 @@ $(function(){
     //retorna valor para a div entries do card entradas dos dízimos
     $.ajax({
         type: "GET",
-        url: "sum?status=1&operation=1&caixa=1&closing_status=1",
+        url: "sum?status=1&operation=1&caixa=1",
         dataType: "json",
         success: function (response) {
             entrie = response;
@@ -42,7 +46,7 @@ $(function(){
     //retorna valor para a div exits do card saídas e retorna o valor do carda saldo dos dízímos
     $.ajax({
         type: "GET",
-        url: "sum?status=1&operation=2&caixa=1&closing_status=1",
+        url: "sum?status=1&operation=2&caixa=1",
         dataType: "json",
         success: function (response) {
             exit = response;
@@ -122,6 +126,28 @@ $(function(){
                                     { data: 'user.name', name: 'user.name' },
                                     { data: 'value', name: 'value',
                                     render: $.fn.dataTable.render.number( '.', ',', 2, 'R$' )
+                                    },
+                                    {
+                                        "data": "status",
+                                        "render": function (data, type, row, meta) {
+                                            return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
+                                        },
+                                        columnDefs: [
+                                            { targets: "no-sort", orderable: false },
+                                            { targets: "dt-center", ClassName: "dt-center" }
+                                        ]
+                                    },
+                                    { data: 'closing.MonthYear', name: 'closing.MonthYear' },
+                                    {
+                                        "data": "closing.status",
+                                        "render": function (data, type, row, meta) {
+                                            data == FECHAMENTO_FECHADO ? edit = 'disabled' :  edit = '';
+                                            return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
+                                        },
+                                        columnDefs: [
+                                            { targets: "no-sort", orderable: false },
+                                            { targets: "dt-center", ClassName: "dt-center" }
+                                        ]
                                     },
                                     { data: 'caixa.name', name: 'caixa.name' },
                                     { data: 'operation_date', 

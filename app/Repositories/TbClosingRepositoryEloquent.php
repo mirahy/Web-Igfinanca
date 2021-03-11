@@ -20,6 +20,11 @@ class TbClosingRepositoryEloquent extends BaseRepository implements TbClosingRep
         return $this->model->all(['id', 'month', 'year', 'status'])->whereIn('status', [1,2])->pluck($month, $chave);
     }
 
+    public function selectBoxList_month_all(string $month = 'Month_Year', string $chave = 'id'){
+
+        return $this->model->all(['id', 'month', 'year', 'status'])->pluck($month, $chave);
+    }
+
     
     /**
      * Specify Model class name
