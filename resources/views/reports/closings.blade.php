@@ -31,11 +31,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Relatórios</h1>
     </div>
-    <div class="container-fluid ">
-        <div class="col-xs-4">
-            <h2 class="text-center"><strong>Fechamentos</strong></h2>
-        </div>
-    </div>
+    
 
     {!! Form::open(['class' =>'user', 'id' => 'form_report_closing', 'action' => 'PdfController@closing_pdf' ]) !!}
     @include('templates.forms.input',['input' => 'text','value' => $status,  'attributes' => ['hidden', 'class' => 'd-none ', 'name' => 'status', 'id' => 'status']])
@@ -124,6 +120,9 @@
                     <th>Tipo</th>
                     <th>Nome</th>
                     <th>Valor</th>
+                    <th>Status</th>
+                    <th>Período</th>
+                    <th>Status Período</th>
                     <th>Caixa</th>
                     <th>Coleta</th>
                 </tr>

@@ -101,12 +101,12 @@ class TbLaunchController extends Controller
     public function index_reports()
     {   
         $caixa_list  = $this->TbCaixaRepository->selectBoxList();
-        $closing_list_month  = $this->TbClosingRepository->selectBoxList_month();
+        $closing_list_month  = $this->TbClosingRepository->selectBoxList_month_all();
         
         return view('reports.closings',[
                     'month'        => $closing_list_month,
                     'caixa_list'   => $caixa_list,
-                    'status'       => 1,
+                    'status'       => '%',
                     'entries'      => 'Calculando...',
                     'exits'        => 'Calculando...',
                     'balance'      => 'Calculando...',
