@@ -17,7 +17,7 @@ class UpdateTbLaunch extends Migration
               
 
             $table->foreign('idtb_type_launch', 'fk_tb_launch_tb_type_launch_idx')
-                ->references('id')->on('type_launch')
+                ->references('id')->on('tb_type_launch')
                 ->onDelete('no action')
                 ->onUpdate('no action');
 
