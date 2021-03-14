@@ -47,6 +47,7 @@
                                         <th>Nome</th>
                                         <th>Valor</th>
                                         <th>Caixa</th>
+                                        <th>Tp Pagamento</th>
                                         <th>Coleta</th>
                                         <th>Status</th>
                                         <th data-orderable="false" >Período</th>

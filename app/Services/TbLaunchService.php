@@ -149,6 +149,7 @@ class TbLaunchService
 
         $launch = $this->repository->with('user')
                                    ->with('closing')
+                                   ->with('payment_type')
                                    ->find($id)
                                    ->toArray();
           
@@ -230,6 +231,7 @@ class TbLaunchService
                                     ->with('caixa')
                                     ->with('type_launch')
                                     ->with('closing')
+                                    ->with('payment_type')
                                     ->orwhereHas('closing', function($q) use ($request, $def)
                                                 {   
                                                     $q->where([['status', 'like',  $request->query('closing_status', $def)],
@@ -260,6 +262,7 @@ class TbLaunchService
                         ->with('caixa')
                         ->with('type_launch')
                         ->with('closing')
+                        ->with('payment_type')
                         ->whereHas('closing', function($q) use ($request, $def)
                                   {   
                                       $q->where([['status', 'like',  $request->query('closing_status', $def)],
@@ -280,6 +283,7 @@ class TbLaunchService
                             ->with('caixa')
                             ->with('type_launch')
                             ->with('closing')
+                            ->with('payment_type')
                             ->whereHas('closing', function($q) use ($request)
                                         {   
                                             $q->where([['status', 'like',  $request['closing_status']],

@@ -4,56 +4,21 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTbLaunchTable extends Migration
+class UpdateTbLaunch extends Migration
 {
     /**
-     * Schema table name to migrate
-     * @var string
-     */
-    public $set_schema_table = 'tb_launch';
-
-    /**
      * Run the migrations.
-     * @table tb_launch
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
-        Schema::create($this->set_schema_table, function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->increments('id');
-            $table->integer('id_user')->unsigned();
-            $table->date('operation_date');
-            $table->decimal('value');
-            $table->integer('idtb_caixa')->unsigned();
-            $table->integer('idtb_operation')->unsigned();
-            $table->integer('idtb_type_launch')->unsigned();
-            $table->integer('idtb_payment_type')->unsigned();
-            $table->integer('idtb_base')->unsigned();
-            $table->integer('status')->unsigned();
-            $table->integer('idtb_closing')->unsigned();
-            
-
-            $table->timestamps();
-            $table->softDeletes();
-
-            $table->index(["id_user"], 'fk_tb_launch_tb_cad_user1_idx');
+        Schema::table('tb_launch', function (Blueprint $table) {
+            $table->integer('idtb_payment_type')->unsigned()->default('1');
 
             $table->index(["idtb_caixa"], 'fk_tb_launch_tb_caixa_idx');
 
-            $table->index(["idtb_operation"], 'fk_tb_launch_tb_operation_idx');
-
-            $table->index(["idtb_type_launch"], 'fk_tb_launch_tb_type_launch_idx');
-
             $table->index(["idtb_payment_type"], 'fk_tb_launch_tb_payment_type_idx');
-
-            $table->index(["idtb_base"], 'fk_tb_launch_tb_base1_idx');
-
-            $table->index(["idtb_closing"], 'fk_tb_launch_tb_closing_record1_idx');
-            
-
 
             $table->foreign('id_user', 'fk_tb_launch_tb_cad_user1_idx')
                 ->references('id')->on('tb_cad_user')
@@ -76,7 +41,7 @@ class CreateTbLaunchTable extends Migration
                 ->onUpdate('no action');
 
             $table->foreign('idtb_type_launch', 'fk_tb_launch_tb_type_launch_idx')
-                ->references('id')->on('tb_type_launch')
+                ->references('id')->on('type_launch')
                 ->onDelete('no action')
                 ->onUpdate('no action');
 
@@ -89,20 +54,17 @@ class CreateTbLaunchTable extends Migration
                 ->references('id')->on('tb_base')
                 ->onDelete('no action')
                 ->onUpdate('no action');
+
         });
-
     }
-
-
-    
 
     /**
      * Reverse the migrations.
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        //
+    }
 }

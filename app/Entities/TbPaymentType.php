@@ -7,13 +7,14 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 
-class TbTypeLaunc extends Model implements Transformable
+class TbPaymentType extends Model implements Transformable
 {
     use TransformableTrait;
 
   
     public     $timestamps   = true;
-    protected  $table        = 'tb_type_launch';
+    protected  $table        = 'tb_payment_type';
     protected  $fillable     = ['id','name','descripion', 'created_at', 'updated_at'];
+    
 
 }

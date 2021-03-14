@@ -336,6 +336,7 @@ $(function () {
                 render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
             },
             { data: 'caixa.name', name: 'caixa.name' },
+            { data: 'payment_type.name', name: 'payment_type.name' },
             {
                 data: 'operation_date',
 
@@ -448,6 +449,7 @@ $(function () {
                 render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
             },
             { data: 'caixa.name', name: 'caixa.name' },
+            { data: 'payment_type.name', name: 'payment_type.name' },
             {
                 data: 'operation_date',
                 render: function (data, type, row) {
@@ -558,6 +560,7 @@ $(function () {
                 render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
             },
             { data: 'caixa.name', name: 'caixa.name' },
+            { data: 'payment_type.name', name: 'payment_type.name' },
             {
                 data: 'operation_date',
                 render: function (data, type, row) {
@@ -669,6 +672,7 @@ $(function () {
                 render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
             },
             { data: 'caixa.name', name: 'caixa.name' },
+            { data: 'payment_type.name', name: 'payment_type.name' },
             {
                 data: 'operation_date',
                 render: function (data, type, row) {
@@ -781,6 +785,7 @@ $(function () {
                 render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
             },
             { data: 'caixa.name', name: 'caixa.name' },
+            { data: 'payment_type.name', name: 'payment_type.name' },
             {
                 data: 'operation_date',
                 render: function (data, type, row) {
@@ -886,6 +891,7 @@ $(function () {
             render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
         },
         { data: 'caixa.name', name: 'caixa.name' },
+        { data: 'payment_type.name', name: 'payment_type.name' },
         {
             data: 'operation_date',
 

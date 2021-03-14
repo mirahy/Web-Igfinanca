@@ -31,6 +31,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\TbTypeLaunchRepository::class, \App\Repositories\TbTypeLaunchRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\TbCaixaRepository::class, \App\Repositories\TbCaixaRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\TbClosingRepository::class, \App\Repositories\TbClosingRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\PaymentTypeRepository::class, \App\Repositories\PaymentTypeRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\TbPaymentTypeRepository::class, \App\Repositories\TbPaymentTypeRepositoryEloquent::class);
         //:end-bindings:
     }
 }
