@@ -14,10 +14,7 @@ class UpdateTbLaunch extends Migration
     public function up()
     {
         Schema::table('tb_launch', function (Blueprint $table) {
-
-            $table->index(["idtb_type_launch"], 'fk_tb_launch_tb_type_launch_idx');
-
-                
+              
 
             $table->foreign('idtb_type_launch', 'fk_tb_launch_tb_type_launch_idx')
                 ->references('id')->on('type_launch')
