@@ -13,6 +13,7 @@ use App\Http\Requests\TbLaunchUpdateRequest;
 use App\Repositories\TbLaunchRepository;
 use App\Repositories\TbCaixaRepository;
 use App\Repositories\TbClosingRepository;
+use App\Repositories\TbPaymentTypeRepository;
 use App\Validators\TbLaunchValidator;
 use Yajra\Datatables\Datatables;
 use App\Services\TbLaunchService;
@@ -30,26 +31,30 @@ class TbLaunchController extends Controller
     protected $TbCaixaRepository;
     protected $repository; 
     protected $service;
+    protected $TbPaymentTypeRepository;
     
     
    
     public function __construct(TbLaunchRepository $repository,
                                 TbLaunchService $service,
                                 TbCaixaRepository $TbCaixaRepository,
-                                TbClosingRepository $TbClosingRepository)
+                                TbClosingRepository $TbClosingRepository,
+                                TbPaymentTypeRepository $TbPaymentTypeRepository)
     {
-        $this->TbClosingRepository  = $TbClosingRepository;
-        $this->TbCaixaRepository    = $TbCaixaRepository;
-        $this->repository           = $repository;
-        $this->service              = $service;
+        $this->TbClosingRepository      = $TbClosingRepository;
+        $this->TbCaixaRepository        = $TbCaixaRepository;
+        $this->repository               = $repository;
+        $this->service                  = $service;
+        $this->TbPaymentTypeRepository  = $TbPaymentTypeRepository;
     }
 
     //redireciona para a view launchs_e e retorna dados para o form da view
     public function index()
     {  
         
-        $caixa_list  = $this->TbCaixaRepository->selectBoxList();
-        $closing_list_month  = $this->TbClosingRepository->selectBoxList_month();
+        $caixa_list              = $this->TbCaixaRepository->selectBoxList();
+        $closing_list_month      = $this->TbClosingRepository->selectBoxList_month();
+        $TbPaymentTypeRepository = $this->TbPaymentTypeRepository->selectBoxList();
         
         return view('launch.launchs_e', [
             'operation'    => 0,
@@ -60,6 +65,7 @@ class TbLaunchController extends Controller
             'id_user'      => 0,
             'caixa_list'   => $caixa_list,
             'month'        => $closing_list_month,
+            'payment_type' => $TbPaymentTypeRepository,
         ]);
     }
 
@@ -69,6 +75,7 @@ class TbLaunchController extends Controller
 
         $caixa_list  = $this->TbCaixaRepository->selectBoxList();
         $closing_list_month  = $this->TbClosingRepository->selectBoxList_month();
+        $TbPaymentTypeRepository = $this->TbPaymentTypeRepository->selectBoxList();
         
         return view('launch.launchs_s', [
             'operation'    => 0,
@@ -79,6 +86,7 @@ class TbLaunchController extends Controller
             'caixa_list'   => $caixa_list,
             'id_user'      => 0,
             'month'        => $closing_list_month,
+            'payment_type' => $TbPaymentTypeRepository,
         ]);
     }
 
@@ -223,6 +231,7 @@ class TbLaunchController extends Controller
         $json["imput"]['status'] = 0;
         $json["imput"]['idtb_closing'] = $launch['idtb_closing'];
         $json["imput"]['name'] = $launch['user']['name'];
+        $json["imput"]['idtb_payment_type'] = $launch['payment_type']['id'];
 
         echo json_encode($json);
 

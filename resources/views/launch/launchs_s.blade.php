@@ -50,6 +50,7 @@
                                         <th>Nome</th>
                                         <th>Valor</th>
                                         <th>Caixa</th>
+                                        <th>Tp Pagamento</th>
                                         <th>Data </th>
                                         <th>Status</th>
                                         <th data-orderable="false" >Período</th>
@@ -82,6 +83,7 @@
                                         <th>Nome</th>
                                         <th>Valor</th>
                                         <th>Caixa</th>
+                                        <th>Tp Pagamento</th>
                                         <th>Data</th>
                                         <th>Status</th>
                                         <th data-orderable="false" >Período</th>
@@ -149,6 +151,8 @@
                             @include('templates.forms.number',['input' => 'number', 'label' => 'Valor', 'attributes' => ['placeholder' => 'Valor', 'class' => 'form-control form-control-user', 'id' => 'value', 'name' => 'value',  'maxlength' => '100', 'step' => '0.01']])
 
                             @include('templates.forms.select',['select' => 'Caixa', 'label' => 'Caixa', 'data' => $caixa_list, 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'idtb_caixa', 'name' => 'idtb_caixa']])
+
+                            @include('templates.forms.select',['select' => 'tpPayment', 'label' => 'Tipo Pagamento', 'data' => $payment_type ,'attributes' => ['placeholder' => 'Tipo Pagamento', 'class' => 'form-control form-control-user', 'id' => 'idtb_payment_type', 'name' => 'idtb_payment_type']])
 
                             @include('templates.forms.select',['select' => 'mes', 'label' => 'Período', 'data' => $month ,'attributes' => ['placeholder' => 'Período', 'class' => 'form-control form-control-user', 'id' => 'reference_month', 'name' => 'reference_month']])
                             
