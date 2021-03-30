@@ -4,33 +4,30 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTbPaymentType extends Migration
+class CreateTbBaseTable extends Migration
 {
-   
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $set_schema_table = 'tb_payment_type';
-    
+    public $tableName = 'tb_base';
+
     /**
      * Run the migrations.
+     * @table tb_base
      *
      * @return void
      */
-    public function up() 
+    public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
-        Schema::create($this->set_schema_table, function (Blueprint $table) {
+        Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name', 20);
-            $table->longText('descripion')->nullable();
-
-
-
-            $table->timestamps();
+            $table->string('name', 45);
+            $table->string('sigla', 3);
+            $table->longText('descripion')->nullable()->default(null);
             $table->softDeletes();
+            $table->nullableTimestamps();
         });
     }
 
@@ -41,6 +38,6 @@ class CreateTbPaymentType extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists($this->set_schema_table);
+        Schema::dropIfExists($this->tableName);
     }
 }

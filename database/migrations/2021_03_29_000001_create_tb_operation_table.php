@@ -4,32 +4,29 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTbBaseTable extends Migration
+class CreateTbOperationTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $set_schema_table = 'tb_base';
+    public $tableName = 'tb_operation';
 
     /**
      * Run the migrations.
-     * @table tb_base
+     * @table tb_operation
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
-        Schema::create($this->set_schema_table, function (Blueprint $table) {
+        Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name', 45);
-            $table->string('sigla', 3);
-            $table->longText('descripion')->nullable();
-
-            $table->timestamps();
+            $table->string('name', 20);
+            $table->longText('descripion')->nullable()->default(null);
             $table->softDeletes();
+            $table->nullableTimestamps();
         });
     }
 
@@ -38,8 +35,8 @@ class CreateTbBaseTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }
