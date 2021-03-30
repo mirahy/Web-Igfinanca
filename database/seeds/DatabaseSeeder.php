@@ -31,20 +31,24 @@ class DatabaseSeeder extends Seeder
         {
               TbBase::create([
                 'name'       => 'Vila Alta',
+                'sigla'      => 'VLA',
                 'descripion' => 'Base Vila Alta'
         
               ]);
 
-              TbCaixa::create([
-                ['name'       => 'Dízimo'],
-                ['name'       => 'Oferta'],
-                
-        
-              ]);
+              TbCaixa::create(
+                ['name'       => 'Dízimo',
+                'description' => 'Dízimo'],
+                ['name'       => 'Oferta',
+                'description' => 'Oferta']
+                );
         
               TbProfile::create([
                 'name'        => 'Desenvolvedor',
-                'description' => 'Perfil DEV_OP'
+                'description' => 'Perfil DEV_OP'],
+                [
+                  'name'        => 'Básico',
+                  'description' => 'Usuario acesso basico'
         
               ]);
 
@@ -64,7 +68,8 @@ class DatabaseSeeder extends Seeder
                 'name'          => 'Oferta Local',
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
-                'status'        => '1',
+                'birth'         => '1900-01-01',
+                'status'        => 1,
             
               ]);
 

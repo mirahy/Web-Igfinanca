@@ -10,7 +10,7 @@ class CreateTbUserSocialTable extends Migration
      * Schema table name to migrate
      * @var string
      */
-    public $set_schema_table = 'tb_user_social';
+    public $tableName = 'tb_user_social';
 
     /**
      * Run the migrations.
@@ -20,8 +20,7 @@ class CreateTbUserSocialTable extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
-        Schema::create($this->set_schema_table, function (Blueprint $table) {
+        Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->unsignedInteger('user_id');
             $table->string('social_network', 45);
@@ -29,10 +28,9 @@ class CreateTbUserSocialTable extends Migration
             $table->string('social_email', 100);
             $table->string('social_avatar', 45);
 
-            $table->timestamps();
-            $table->softDeletes();
-
             $table->index(["user_id", "social_email"], 'fk_tb_user_social_tb_cad_user1_idx');
+            $table->softDeletes();
+            $table->nullableTimestamps();
 
 
             $table->foreign('user_id', 'fk_tb_user_social_tb_cad_user1_idx')
@@ -47,8 +45,8 @@ class CreateTbUserSocialTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

@@ -4,31 +4,30 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTbProfileTable extends Migration
+class CreateTbClosingTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $set_schema_table = 'tb_profile';
+    public $tableName = 'tb_closing';
 
     /**
      * Run the migrations.
-     * @table tb_profile
+     * @table tb_closing
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
-        Schema::create($this->set_schema_table, function (Blueprint $table) {
+        Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name', 45);
-            $table->string('description', 45)->nullable();
-
-            $table->timestamps();
+            $table->string('month', 20);
+            $table->string('year', 4);
+            $table->integer('status')->default('0');
             $table->softDeletes();
+            $table->nullableTimestamps();
         });
     }
 
@@ -37,8 +36,8 @@ class CreateTbProfileTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

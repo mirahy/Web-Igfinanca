@@ -10,7 +10,7 @@ class CreateUserHasLaunchTable extends Migration
      * Schema table name to migrate
      * @var string
      */
-    public $set_schema_table = 'user_has_launch';
+    public $tableName = 'user_has_launch';
 
     /**
      * Run the migrations.
@@ -20,18 +20,16 @@ class CreateUserHasLaunchTable extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
-        Schema::create($this->set_schema_table, function (Blueprint $table) {
+        Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('idtb_launch');
 
-            $table->timestamps();
-            $table->softDeletes();
-
             $table->index(["idtb_launch"], 'fk_tb_cad_user_has_tb_launch_tb_launch1_idx');
 
             $table->index(["user_id"], 'fk_tb_cad_user_has_tb_launch_tb_cad_user1_idx');
+            $table->softDeletes();
+            $table->nullableTimestamps();
 
 
             $table->foreign('user_id', 'fk_tb_cad_user_has_tb_launch_tb_cad_user1_idx')
@@ -40,7 +38,7 @@ class CreateUserHasLaunchTable extends Migration
                 ->onUpdate('no action');
 
             $table->foreign('idtb_launch', 'fk_tb_cad_user_has_tb_launch_tb_launch1_idx')
-                ->references('idtb_launch')->on('tb_launch')
+                ->references('id')->on('tb_launch')
                 ->onDelete('no action')
                 ->onUpdate('no action');
         });
@@ -51,8 +49,8 @@ class CreateUserHasLaunchTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }
