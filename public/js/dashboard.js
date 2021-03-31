@@ -7,66 +7,88 @@ $(function () {
     var result = 0;
     var result_o = 0;
 
+    $.ajax(
+        entrada1(),
+        saida1(),
+        entrada2(),
+        saida2()
+    )
+
 
     //retorna valor para a div entries do card entradas dos dízimos de períodos em abertos
-    $.ajax({
-        type: "GET",
-        url: "sum?status=1&operation=1&caixa=1&closing_status=1",
-        dataType: "json",
-        success: function (response) {
-            entrie = response;
-            $("#entries").html('R$' + number_format(entrie,2,',','.'));
-        }
-    })
+    function entrada1(){
+        $.ajax({
+            type: "GET",
+            url: "sum?status=1&operation=1&caixa=1&closing_status=1",
+            dataType: "json",
+            success: function (response) {
+                entrie = response;
+                $("#entries").html('R$' + number_format(entrie,2,',','.'));
+                
+            }
+        })
+        return entrie;
+    }
 
     //retorna valor para a div exits do card saídas
-    $.ajax({
-        type: "GET",
-        url: "sum?status=1&operation=2&caixa=1&closing_status=1",
-        dataType: "json",
-        success: function (response) {
-            exit = response;
-            $("#exits").html('R$' + number_format(exit,2,',','.'));   
-        }
-    })
+    function saida1(){
+        $.ajax({
+            type: "GET",
+            url: "sum?status=1&operation=2&caixa=1&closing_status=1",
+            dataType: "json",
+            success: function (response) {
+                exit = response;
+                $("#exits").html('R$' + number_format(exit,2,',','.')); 
+                
+            }
+        })
+        return exit;  
+    } 
     
     //retorna o valor do card saldo dos dízímos de períodos em abertos
     $.ajax({
         success: function (response) {
-            result = entrie - exit;
+            result = entrada1()-saida1();
             $("#balance").html('R$' + number_format(result,2,',','.'));
         }
     })
+    
+
 
     //retorna valor para a div entries do card entradas das ofertas
-    $.ajax({
-        type: "GET",
-        url: "sum?status=1&operation=1&caixa=2&closing_status=1",
-        dataType: "json",
-        success: function (response) {
-            entrie_o = response;
-            $("#entries_o").html('R$' + number_format(entrie_o,2,',','.'));
-        }
-    })
+    function entrada2(){
+        $.ajax({
+            type: "GET",
+            url: "sum?status=1&operation=1&caixa=2&closing_status=1",
+            dataType: "json",
+            success: function (response) {
+                entrie_o = response;
+                $("#entries_o").html('R$' + number_format(entrie_o,2,',','.'));
+            }
+        })
+        return entrie_o
+    }
+    
 
     //retorna valor para a div exits do card saídas 
-    $.ajax({
-        type: "GET",
-        url: "sum?status=1&operation=2&caixa=2&closing_status=1",
-        dataType: "json",
-        success: function (response) {
-            exit_o = response;
-            $("#exits_o").html('R$' + number_format(exit_o,2,',','.'));
-            result_o = entrie_o - exit_o;
-            $("#balance_o").html('R$' + number_format(result_o,2,',','.'));
-        }
-    })
-
-
+    function saida2(){
+        $.ajax({
+            type: "GET",
+            url: "sum?status=1&operation=2&caixa=2&closing_status=1",
+            dataType: "json",
+            success: function (response) {
+                exit_o = response;
+                $("#exits_o").html('R$' + number_format(exit_o,2,',','.'));
+                
+            }
+        })
+        return exit_o
+    }
+    
     //retorna o valor do carda saldo das ofertas
     $.ajax({
         success: function (response) {
-            result_o = entrie_o - exit_o;
+            result_o = entrada2() - saida2();
             $("#balance_o").html('R$' + number_format(result_o,2,',','.'));
         }
     })
