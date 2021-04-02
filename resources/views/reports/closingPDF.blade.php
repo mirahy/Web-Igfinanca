@@ -58,6 +58,7 @@
                     <th>Nome</th>
                     <th>Valor</th>
                     <th>Caixa</th>
+                    <th>Tipo Pagamento</th>
                     <th>Coleta</th>
                 </tr>
             </thead>
@@ -79,6 +80,7 @@
                         {{number_format( $item->value, 2, ',', '.') }}
                       </th>
                     <th>{{ $item->caixa->name }}</th>
+                    <th>{{ $item->payment_type->name }}</th>
                     <th>{{ $item->dataOperation }}</th>
                 </tr>    
                 @endforeach

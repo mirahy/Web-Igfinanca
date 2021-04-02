@@ -27,8 +27,11 @@ class PdfController extends Controller
         $request->request->add(['status' => 1 ]);
         $tpCaixa    = TbTypeLaunch::where('id',$request['caixa'])->get('name')->toArray();
         $period     = TbClosing::where('id', $request['reference_month'])->get();
+        $numMes     = $this->serviceLaunch->number_month($period[0]['month'] );
+        $nomeArq    = $numMes.' '.$tpCaixa[0]['name'] . ' - ' . $period[0]['month']. '_' .$period[0]['year'];
 
         $dados      = $this->serviceLaunch->find_Parameters($request);
+        //dd($numMes);
 
         $request->request->add(['operation' => '1']);
         $entries    = $this->serviceLaunch->sum($request);
@@ -40,7 +43,7 @@ class PdfController extends Controller
 
         $pdf = PDF::loadView('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
 
-        return $pdf->setPaper('a4')->stream('fechamento');
+        return $pdf->setPaper('a4')->stream($nomeArq.'.pdf');
 
         
     }
