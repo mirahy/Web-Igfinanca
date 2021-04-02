@@ -355,6 +355,27 @@ class TbLaunchService
                       ->count();
        }
 
+       //retorna numero do mes
+       public function number_month($string){
+
+        switch ($string) {
+          case "Janeiro":      $mes = '01';   break;
+          case "Fevereiro":    $mes = '02';   break;
+          case "Março":        $mes = '03';   break;
+          case "Abril":        $mes = '04';   break;
+          case "Maio":         $mes = '05';   break;
+          case "Junho":        $mes = '06';   break;
+          case "Julho":        $mes = '07';   break;
+          case "Agosto":       $mes = '08';   break;
+          case "Setembro":     $mes = '09';   break;
+          case "Outubro":      $mes = '10';   break;
+          case "Novembro":     $mes = '11';   break;
+          case "Dezembro":     $mes = '12';   break;
+          default:             $mes = 'erro';
+        }
+        return $mes;
+       }
+
 
       
 
