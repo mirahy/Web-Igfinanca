@@ -19,8 +19,10 @@ jobs:
         password: ${{ secrets.ftp_password }}
         server-dir: public_html/
         exclude: .git*
+            - .env*
             - **.git*
             - .git*/**
             -  **/.git*/**
             - node_modules/**
             - node_modules/**/*
+            - vendor/**/*
