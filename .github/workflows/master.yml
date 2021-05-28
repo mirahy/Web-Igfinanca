@@ -18,19 +18,9 @@ jobs:
         username: ${{ secrets.ftp_user }}
         password: ${{ secrets.ftp_password }}
         server-dir: public_html/SystemFinance
-        exclude: 
-        - .env
-        - /vendor/
-        - /.idea
-        - /.vscode
-        - /.vagrant
-        - Homestead.json
-        - Homestead.yaml
-        - npm-debug.log
-        - package-lock.json
-        - yarn-error.log
-        - .phpunit.result.cache
-        - /node_modules
-        - /public/hot
-        - /public/storage
-        - /storage/*.key
+        exclude: .git*
+          - **.git*
+          - .git*/**
+          -  **/.git*/**
+          - node_modules/**
+          - node_modules/**/*
