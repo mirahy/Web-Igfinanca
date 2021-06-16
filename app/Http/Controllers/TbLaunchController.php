@@ -232,6 +232,8 @@ class TbLaunchController extends Controller
         $json["imput"]['idtb_closing'] = $launch['idtb_closing'];
         $json["imput"]['name'] = $launch['user']['name'];
         $json["imput"]['idtb_payment_type'] = $launch['payment_type']['id'];
+        $json["imput"]['idtb_caixa'] = $launch['idtb_caixa'];
+        
 
         echo json_encode($json);
 
