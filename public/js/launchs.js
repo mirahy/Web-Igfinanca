@@ -26,6 +26,8 @@ $(function () {
                 $("#id_user").val(0);
                 $("#name").show();
                 $("#name").parent().siblings(".control-label").show();
+                $("#idtb_caixa").hide();
+                $("#idtb_caixa").parent().siblings(".control-label").hide();
                 //$("#img")[0].attr("src", "");
                 $("#modal_launch").modal();
             }
@@ -45,6 +47,28 @@ $(function () {
                 $("#id_user").val(0);
                 $("#name").val('Oferta Local').hide();
                 $("#name").parent().siblings(".control-label").hide();
+                $("#idtb_caixa").hide();
+                $("#idtb_caixa").parent().siblings(".control-label").hide();
+                //$("#img")[0].attr("src", "");
+                $("#modal_launch").modal();
+            }
+        })
+    });
+
+     // botao laçamentos gerais
+     $("#btn_add_launch_others").click(function () {
+        $.ajax({
+            success: function (response) {
+                clearErrors();
+                $("#launch_form")[0].reset();
+                $("#idtb_operation").val(1);
+                $("#idtb_type_launch").val(5);
+                $("#idtb_base").val(1);
+                $("#id_user").val(0);
+                $("#name").show();
+                $("#name").parent().siblings(".control-label").show();
+                $("#idtb_caixa").show();
+                $("#idtb_caixa").parent().siblings(".control-label").show();
                 //$("#img")[0].attr("src", "");
                 $("#modal_launch").modal();
             }
@@ -542,6 +566,120 @@ $(function () {
         }
     });
 
+    /** 
+    * tabela Geral
+    **/
+     var dt_launch_others = $('#dt_launch_others').DataTable({
+        "oLanguage": DATATABLE_PTBR,
+        "autoWidth": false,
+        "processing": true,
+        // "serverSide": true,
+        "ajax": baseUrl + 'query?launch=5&closing_status=1&closing_status1=2',
+        "columns": [
+            { data: 'type_launch.name', name: 'launch.name' },
+            { data: 'user.name', name: 'user.name' },
+            {
+                data: 'value', name: 'value',
+                render: $.fn.dataTable.render.number('.', ',', 2, 'R$')
+            },
+            { data: 'caixa.name', name: 'caixa.name' },
+            { data: 'payment_type.name', name: 'payment_type.name' },
+            {
+                data: 'operation_date',
+
+                render: function (data, type, row) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data) :
+                        data;
+                }
+            },
+            {
+                "data": "status",
+                "render": function (data, type, row, meta) {
+                    return data == LANCAMENTO_PENDETE ? "<span class='badge badge-warning'>Pendente</span>" : data == LANCAMENTO_APROVADO ? "<span class='badge badge-success'>Aprovado</span>" : "<span class='badge badge-danger'>Reprovado</span>";
+                },
+                columnDefs: [
+                    { targets: "no-sort", orderable: false },
+                    { targets: "dt-center", ClassName: "dt-center" }
+                ]
+            },
+            { data: 'closing.MonthYear', name: 'closing.MonthYear' },
+            {
+                "data": "closing.status",
+                "render": function (data, type, row, meta) {
+                    data == FECHAMENTO_FECHADO ? edit = 'disabled' :  edit = '';
+                    return data == FECHAMENTO_PRE_FECHAMENTO ? "<span class='badge badge-warning'>Pré-Fechamento</span>" : data == FECHAMENTO_ABERTO ? "<span class='badge badge-success'>Aberto</span>" : "<span class='badge badge-danger'>Fechado</span>";
+                },
+                columnDefs: [
+                    { targets: "no-sort", orderable: false },
+                    { targets: "dt-center", ClassName: "dt-center" }
+                ]
+            },
+            {
+                data: 'created_at',
+                render: function (data, type, row) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data) :
+                        data;
+                }
+            },
+            {
+                data: 'updated_at',
+                render: function (data, type, row) {
+                    return type === "display" || type === "filter" ? Dataformat = FormatData(data) :
+                        data;
+                }
+            },
+            {
+                "data": "action",
+                "render": function (data, type, row, meta) {
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch ' + edit + '" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch ' + edit + '" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                },
+                columnDefs: [
+                    { targets: "no-sort", orderable: false },
+                    { targets: "dt-center", ClassName: "dt-center" }
+                ]
+            }
+        ],
+        "drawCallback": function () {
+            btn_edit_launch();
+        },
+
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '') * 1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column(2)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Total over this page
+            pageTotal = api
+                .column(2, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            $(api.column(8).footer()).html(
+                'R$' +  number_format(pageTotal, 2, ',', '.')  + ' ( R$' + number_format(total, 2, ',', '.') + ' total)'
+            );
+
+
+        }
+    });
+
+
 
     /** 
     * tabela Saidas compras
@@ -991,6 +1129,7 @@ $(function () {
                     dt_launch_o.ajax.reload();
                     dt_launch_buy.ajax.reload();
                     dt_launch_service.ajax.reload();
+                    dt_launch_others.ajax.reload();
 
                 } else {
                     showErrors(response["error_list"]);

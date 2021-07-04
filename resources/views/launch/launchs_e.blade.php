@@ -177,14 +177,14 @@
 
                             @include('templates.forms.input',['input' => 'text','value' => $status, 'class' => 'd-none', 'attributes' => [ 'name' => 'status', 'hidden', 'id' => 'status']])
 
-                            @include('templates.forms.input',['input' => 'text','value' => $caixa_list, 'class' => 'd-none', 'attributes' => [ 'name' => 'idtb_caixa', 'hidden', 'id' => 'idtb_caixa']])
-
                             
                             <!-- \ Imputs hidden -->
 
                             @include('templates.forms.input',['input' => 'text','label' => 'Nome ', 'attributes' => ['placeholder' => 'Nome','class' => 'form-control form-control-user ui-widget ', 'id' => 'name', 'name' => 'name',  'maxlength' => '100']])
 
                             @include('templates.forms.number',['input' => 'number', 'label' => 'Valor', 'attributes' => ['placeholder' => 'Valor', 'class' => 'form-control form-control-user', 'id' => 'value', 'name' => 'value',  'maxlength' => '100', 'step' => '0.01']])
+
+                            @include('templates.forms.select',['select' => 'Caixa', 'label' => 'Caixa', 'data' => $caixa_list, 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'idtb_caixa', 'name' => 'idtb_caixa']])
 
                             @include('templates.forms.select',['select' => 'tpPayment', 'label' => 'Tipo Pagamento', 'data' => $payment_type ,'attributes' => ['placeholder' => 'Tipo Pagamento', 'class' => 'form-control form-control-user', 'id' => 'idtb_payment_type', 'name' => 'idtb_payment_type']])
 

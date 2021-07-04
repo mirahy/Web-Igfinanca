@@ -164,7 +164,7 @@ class TbLaunchController extends Controller
             $request = $this->service->store($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;
            
-           
+           //dd($request);
                
              if(!$request['success']){
                 $i=0;
