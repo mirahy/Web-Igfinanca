@@ -214,6 +214,12 @@ $(function () {
                         $("#name").parent().siblings(".control-label").hide();
                         $("#name").val('Oferta Local').hide();
 
+                    }else if (response["imput"]['idtb_type_launch'] == 5) {
+                        $("#name").show();
+                        $("#name").parent().siblings(".control-label").show();
+                        $("#idtb_caixa").show();
+                        $("#idtb_caixa").parent().siblings(".control-label").show();
+
                     }
 
 
