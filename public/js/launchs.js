@@ -1082,17 +1082,14 @@ $(function () {
         },
         
     ],
-    "drawCallback": function () {
-        btn_edit_launch();
-    },
-
+    
     
     //função pesquisa por coluna
     initComplete: function () {
-        this.api().columns().every( function () {
+        this.api().columns([0,1,3,4,7]).every( function () {
             var column = this;
             var select = $('<select><option value=""></option></select>')
-                .appendTo( $(column.footer()).empty() )
+                .appendTo( $(column.header()) )
                 .on( 'change', function () {
                     var val = $.fn.dataTable.util.escapeRegex(
                         $(this).val()
@@ -1106,7 +1103,47 @@ $(function () {
             column.data().unique().sort().each( function ( d, j ) {
                 select.append( '<option value="'+d+'">'+d+'</option>' )
             } );
+
+            $( select ).click( function(e) {
+                e.stopPropagation();
+          });
         } );
+    },
+
+    //função retorna valor total no rodape da tabela
+    "footerCallback": function (row, data, start, end, display) {
+        var api = this.api(), data;
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function (i) {
+            return typeof i === 'string' ?
+                i.replace(/[\$,]/g, '') * 1 :
+                typeof i === 'number' ?
+                    i : 0;
+        };
+
+        // Total over all pages
+        total = api
+            .column(2)
+            .data()
+            .reduce(function (a, b) {
+                return intVal(a) + intVal(b);
+            }, 0);
+
+        // Total over this page
+        pageTotal = api
+            .column(2, { page: 'current' })
+            .data()
+            .reduce(function (a, b) {
+                return intVal(a) + intVal(b);
+            }, 0);
+
+        // Update footer
+        $(api.column(10).footer()).html(
+            'R$' +  number_format(pageTotal, 2, ',', '.')  + ' ( R$' + number_format(total, 2, ',', '.') + ' total)'
+        );
+
+
     }
 });
 
