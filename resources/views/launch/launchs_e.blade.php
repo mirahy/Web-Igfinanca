@@ -90,7 +90,7 @@
                                         <th>Status</th>
                                         <th data-orderable="false" >Período</th>
                                         <th>Status Período</th>
-                                        <th>Data echamenlançamento</th>
+                                        <th>Data lançamento</th>
                                         <th>Data Ataulização</th>
                                         <th data-orderable="false" >Ações</th>
                                     </tr>

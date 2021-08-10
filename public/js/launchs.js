@@ -1022,7 +1022,7 @@ $(function () {
      // Setup - add a text input to each header cell
     $('#dt_consult thead th').each(function() {
         var title = $('#dt_consult thead th').eq($(this).index()).text();
-        $(this).html('<input type="text" placeholder="Pesquisar '+title+'" />');
+        $(this).html(''+title+'<input type="text"  class="form-control mw-100" placeholder="'+title+'" />');
     });
 
 
