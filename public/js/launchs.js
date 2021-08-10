@@ -1033,6 +1033,7 @@ $(function () {
     "oLanguage": DATATABLE_PTBR,
     "autoWidth": false,
     "processing": true,
+    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
     // "serverSide": true,
     "ajax": baseUrl + 'query',
     "columns": [
