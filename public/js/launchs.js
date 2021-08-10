@@ -1018,6 +1018,14 @@ $(function () {
     });
 
 
+
+     // Setup - add a text input to each header cell
+    $('#dt_consult thead th').each(function() {
+        var title = $('#dt_consult thead th').eq($(this).index()).text();
+        $(this).html('<input type="text" placeholder="Pesquisar '+title+'" />');
+    });
+
+
      /** 
     * tabela consulta
     **/
@@ -1084,30 +1092,49 @@ $(function () {
     ],
     
     
-    //função pesquisa por coluna
+    // //função pesquisa por coluna select
+    // initComplete: function () {
+    //     this.api().columns([0,1,3,4,7]).every( function () {
+    //         var column = this;
+    //         var select = $('<select><option value=""></option></select>')
+    //             .appendTo( $(column.header()) )
+    //             .on( 'change', function () {
+    //                 var val = $.fn.dataTable.util.escapeRegex(
+    //                     $(this).val()
+    //                 );
+
+    //                 column
+    //                     .search( val ? '^'+val+'$' : '', true, false )
+    //                     .draw();
+    //             } );
+
+    //         column.data().unique().sort().each( function ( d, j ) {
+    //             select.append( '<option value="'+d+'">'+d.substr(0,10)+'</option>' )
+    //         } );
+
+    //         $( select ).click( function(e) {
+    //             e.stopPropagation();
+    //       });
+    //     } );
+    // },
+
+    //função pesquisa por coluna texto
     initComplete: function () {
-        this.api().columns([0,1,3,4,7]).every( function () {
-            var column = this;
-            var select = $('<select><option value=""></option></select>')
-                .appendTo( $(column.header()) )
-                .on( 'change', function () {
-                    var val = $.fn.dataTable.util.escapeRegex(
-                        $(this).val()
-                    );
-
-                    column
-                        .search( val ? '^'+val+'$' : '', true, false )
-                        .draw();
-                } );
-
-            column.data().unique().sort().each( function ( d, j ) {
-                select.append( '<option value="'+d+'">'+d+'</option>' )
-            } );
-
-            $( select ).click( function(e) {
+        // Apply the search
+        dt_consult.columns().eq(0).each(function(colIdx) {
+            $('input', dt_consult.column(colIdx).header()).on('keyup change', function() {
+                dt_consult
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+         
+            $('input', dt_consult.column(colIdx).header()).on('click', function(e) {
                 e.stopPropagation();
-          });
-        } );
+            });
+
+        });
+
     },
 
     //função retorna valor total no rodape da tabela
@@ -1139,7 +1166,7 @@ $(function () {
             }, 0);
 
         // Update footer
-        $(api.column(10).footer()).html(
+        $(api.column(9).footer()).html(
             'R$' +  number_format(pageTotal, 2, ',', '.')  + ' ( R$' + number_format(total, 2, ',', '.') + ' total)'
         );
 

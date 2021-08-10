@@ -43,23 +43,23 @@
                             <table id="dt_consult" class="table table-striped table-hover table-responsive display nowrap" >
                                 <thead>
                                     <tr >
-                                        <th>Tipo</th>
-                                        <th>Nome</th>
-                                        <th>Valor</th>
-                                        <th>Caixa</th>
-                                        <th>Tp Pagamento</th>
-                                        <th>Coleta</th>
-                                        <th>Status</th>
-                                        <th data-orderable="false" >Período</th>
-                                        <th>Status Período</th>
-                                        <th>Data lançamento</th>
-                                        <th>Data Ataulização</th>
+                                        <th>Tipo<br/></th>
+                                        <th>Nome<br/></th>
+                                        <th>Valor<br/></th>
+                                        <th>Caixa<br/></th>
+                                        <th>Tp Pagamento<br/></th>
+                                        <th>Coleta<br/></th>
+                                        <th>Status<br/></th>
+                                        <th data-orderable="false" >Período<br/></th>
+                                        <th>Status Período<br/></th>
+                                        <th>Data lançamento<br/></th>
+                                        <th>Data Ataulização<br/></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                                 <tfoot>
-                                    <tr>
+                                    <tr> 
                                     <th colspan="11"  style=" text-align:right">Total:</th>
                                     </tr>
                                 </tfoot>
