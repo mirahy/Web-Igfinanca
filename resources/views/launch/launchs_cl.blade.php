@@ -60,9 +60,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="8"  style=" text-align:right">Total:</th>
-                                        
-                                        <th></th>
+                                    <th colspan="11"  style=" text-align:right">Total:</th>
                                     </tr>
                                 </tfoot>
                             </table>
