@@ -178,7 +178,7 @@ $(function () {
 
                                 } else {
                                     $msg = "Mensagens: " + response["success"];
-                                    Swal.fire("Erro!", $msg, "error");
+                                    Swal.fire("Atenção!", $msg, "error");
                                     dt_launch_apr.ajax.reload();
                                 }
                             }
