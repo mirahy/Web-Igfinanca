@@ -65,9 +65,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="8"  style=" text-align:right">Total:</th>
-                                        
-                                        <th></th>
+                                        <th colspan="10"  style=" text-align:right">Total:</th>
+                                        <th colspan="2"></th>                                     
                                     </tr>
                                 </tfoot>
                             </table>
@@ -99,8 +98,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="8" style="text-align:right">Total:</th>
-                                        <th></th>
+                                        <th colspan="10"  style=" text-align:right">Total:</th>
+                                        <th colspan="2"></th>                                     
                                     </tr>
                                 </tfoot>
                             </table>
@@ -133,9 +132,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="8"  style=" text-align:right">Total:</th>
-                                        
-                                        <th></th>
+                                        <th colspan="10"  style=" text-align:right">Total:</th>
+                                        <th colspan="2"></th>                                     
                                     </tr>
                                 </tfoot>
                             </table>
