@@ -14,7 +14,7 @@ edit = "";
 $(function () {
 
     // botao laçamentos dizimos
-    $("#btn_add_launch_d").click(function () {
+    $("#btn_add_launch_d").on("click",function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
@@ -35,7 +35,7 @@ $(function () {
     });
 
     // botao laçamentos ofertas
-    $("#btn_add_launch_o").click(function () {
+    $("#btn_add_launch_o").on("click", function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
@@ -56,7 +56,7 @@ $(function () {
     });
 
      // botao laçamentos gerais
-     $("#btn_add_launch_others").click(function () {
+     $("#btn_add_launch_others").on("click", function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
@@ -76,7 +76,7 @@ $(function () {
     });
 
     // botao laçamentos compras
-    $("#btn_add_launch_buy").click(function () {
+    $("#btn_add_launch_buy").on("click", function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
@@ -93,7 +93,7 @@ $(function () {
 
 
     // botao laçamentos serviços
-    $("#btn_add_launch_service").click(function () {
+    $("#btn_add_launch_service").on("click", function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
@@ -111,7 +111,7 @@ $(function () {
     function btn_aprov() {
 
         //Click aprovar Lançamentos
-        $(".btn_apr").click(function () {
+        $(".btn_apr").on("click", function () {
 
             $.ajax({
                 headers: {
@@ -146,40 +146,48 @@ $(function () {
         });
 
         //Click reprovar Lançamentos
-        $(".btn_repr").click(function () {
+        $(".btn_repr").on("click", function () {
+            Swal.fire({
+                title: "Atenção!",
+                text: "Deseja reprovar este Lançamento?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "Sim",
+                cancelButtonText: "Não",
+            }).then((result) => {
+                if (result.value) {
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            type: "POST",
+                            url: "aprov",
+                            dataType: "json",
+                            data: {
+                                "id": $(this).attr("id_launch"),
+                                "status": $(this).attr("status")
+                            },
 
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: "POST",
-                url: "aprov",
-                dataType: "json",
-                data: {
-                    "id": $(this).attr("id_launch"),
-                    "status": $(this).attr("status")
-                },
+                            success: function (response) {
+                                clearErrors();
+                                if (response["status"]) {
+                                    $msg = "Lançamento " + response["success"] + "  com sucesso!";
+                                    Swal.fire("Sucesso!", $msg, "success");
+                                    dt_launch_apr.ajax.reload();
 
-                success: function (response) {
-                    clearErrors();
-                    if (response["status"]) {
-                        $msg = "Lançamento " + response["success"] + "  com sucesso!";
-                        Swal.fire("Sucesso!", $msg, "success");
-                        dt_launch_apr.ajax.reload();
+                                } else {
+                                    $msg = "Mensagens: " + response["success"];
+                                    Swal.fire("Atenção!", $msg, "error");
+                                    dt_launch_apr.ajax.reload();
+                                }
+                            }
 
-                    } else {
-                        $msg = "Mensagens: " + response["success"];
-                        Swal.fire("Erro!", $msg, "error");
-                        dt_launch_apr.ajax.reload();
+                        })
                     }
-                }
-
-
-            })
-
+                })
 
         });
-
 
     }
 
@@ -187,7 +195,7 @@ $(function () {
     function btn_edit_launch() {
 
         // botao editar entradas
-        $(".btn_edit_launch").click(function () {
+        $(".btn_edit_launch").on("click", function () {
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -233,7 +241,7 @@ $(function () {
 
 
         // botao excluir lançamentos de entradas
-        $(".btn_del_launch").click(function () {
+        $(".btn_del_launch").on("click", function () {
             course_id = $(this);
             Swal.fire({
                 title: "Atenção!",
@@ -272,7 +280,7 @@ $(function () {
     function btn_edit_launch_s() {
 
         // botao editar saídas
-        $(".btn_edit_launch_exits").click(function () {
+        $(".btn_edit_launch_exits").on("click", function () {
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -298,7 +306,7 @@ $(function () {
         });
 
         // botao excluir lançamentos de saídas
-        $(".btn_del_launch_exits").click(function () {
+        $(".btn_del_launch_exits").on("click", function () {
             course_id = $(this);
             Swal.fire({
                 title: "Atenção!",
@@ -1126,7 +1134,7 @@ $(function () {
             $('input', dt_consult.column(colIdx).header()).on('keyup change', function() {
                 dt_consult
                     .column(colIdx)
-                    .search(this.value)
+                    .search(this.value.replace (/;/g, "|"), true, false)
                     .draw();
             });
          
@@ -1178,7 +1186,7 @@ $(function () {
 
 
     //Click lançar/editar modal Lançamentos
-    $("#launch_form").submit(function () {
+    $("#launch_form").on("submit", function () {
 
         $.ajax({
             type: "POST",
