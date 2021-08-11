@@ -1126,7 +1126,7 @@ $(function () {
             $('input', dt_consult.column(colIdx).header()).on('keyup change', function() {
                 dt_consult
                     .column(colIdx)
-                    .search(this.value)
+                    .search(this.value.replace (/;/g, "|"), true, false)
                     .draw();
             });
          
