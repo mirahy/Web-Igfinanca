@@ -147,39 +147,47 @@ $(function () {
 
         //Click reprovar Lançamentos
         $(".btn_repr").on("click", function () {
+            Swal.fire({
+                title: "Atenção!",
+                text: "Deseja reprovar este Lançamento?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "Sim",
+                cancelButtonText: "Não",
+            }).then((result) => {
+                if (result.value) {
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            type: "POST",
+                            url: "aprov",
+                            dataType: "json",
+                            data: {
+                                "id": $(this).attr("id_launch"),
+                                "status": $(this).attr("status")
+                            },
 
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: "POST",
-                url: "aprov",
-                dataType: "json",
-                data: {
-                    "id": $(this).attr("id_launch"),
-                    "status": $(this).attr("status")
-                },
+                            success: function (response) {
+                                clearErrors();
+                                if (response["status"]) {
+                                    $msg = "Lançamento " + response["success"] + "  com sucesso!";
+                                    Swal.fire("Sucesso!", $msg, "success");
+                                    dt_launch_apr.ajax.reload();
 
-                success: function (response) {
-                    clearErrors();
-                    if (response["status"]) {
-                        $msg = "Lançamento " + response["success"] + "  com sucesso!";
-                        Swal.fire("Sucesso!", $msg, "success");
-                        dt_launch_apr.ajax.reload();
+                                } else {
+                                    $msg = "Mensagens: " + response["success"];
+                                    Swal.fire("Erro!", $msg, "error");
+                                    dt_launch_apr.ajax.reload();
+                                }
+                            }
 
-                    } else {
-                        $msg = "Mensagens: " + response["success"];
-                        Swal.fire("Erro!", $msg, "error");
-                        dt_launch_apr.ajax.reload();
+                        })
                     }
-                }
-
-
-            })
-
+                })
 
         });
-
 
     }
 
