@@ -65,9 +65,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="8"  style=" text-align:right">Total:</th>
-                                        
-                                        <th></th>
+                                        <th colspan="10"  style=" text-align:right">Total:</th>
+                                        <th colspan="2"></th>                                     
                                     </tr>
                                 </tfoot>
                             </table>
@@ -99,8 +98,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="8" style="text-align:right">Total:</th>
-                                        <th></th>
+                                        <th colspan="10"  style=" text-align:right">Total:</th>
+                                        <th colspan="2"></th>                                     
                                     </tr>
                                 </tfoot>
                             </table>
@@ -133,9 +132,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="8"  style=" text-align:right">Total:</th>
-                                        
-                                        <th></th>
+                                        <th colspan="10"  style=" text-align:right">Total:</th>
+                                        <th colspan="2"></th>                                     
                                     </tr>
                                 </tfoot>
                             </table>
@@ -188,7 +186,7 @@
 
                             @include('templates.forms.select',['select' => 'tpPayment', 'label' => 'Tipo Pagamento', 'data' => $payment_type ,'attributes' => ['placeholder' => 'Tipo Pagamento', 'class' => 'form-control form-control-user', 'id' => 'idtb_payment_type', 'name' => 'idtb_payment_type']])
 
-                            @include('templates.forms.select',['select' => 'mes', 'label' => 'Período', 'data' => $month ,'attributes' => ['placeholder' => 'Período', 'class' => 'form-control form-control-user', 'id' => 'reference_month', 'name' => 'reference_month']])
+                            @include('templates.forms.select',['select' => 'mes', 'label' => 'Período', 'data' => $month ,'attributes' => ['placeholder' => 'Período', 'class' => 'form-control form-control-user', 'id' => 'idtb_closing', 'name' => 'idtb_closing']])
                             
                             @include('templates.forms.date',['date' => 'date', 'label' => 'Data Coleta','attributes' => ['placeholder' => 'Data Coleta', 'class' => 'form-control form-control-user col-lg-5', 'id' => 'operation_date', 'name' => 'operation_date']])
                             
