@@ -46,10 +46,11 @@ class TbClosingValidator extends LaravelValidator
     public function validaPeriodo($data){
         
         $param = $data['year'].$data['id'];
+        
         $validator = Validator::make($data, 
               ['month'       => "uniqueperiodduple:{$param}"], 
               ['month.uniqueperiodduple' => 'Período já cadastrado!']);
-
+              
               if($validator->fails()){
                 return [
                   'success'     => false,

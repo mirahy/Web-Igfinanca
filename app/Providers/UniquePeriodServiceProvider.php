@@ -32,7 +32,7 @@ class UniquePeriodServiceProvider extends ServiceProvider
             
             $year = (string)(substr($parameters[0],-strlen($parameters[0]), 4));
             $id = (string)(substr($parameters[0],-(strlen($parameters[0])-4)));
-            //dd($id);
+            
             //create
             if(!$id){
                 $result = (TbClosing::where($attribute, $value)
@@ -53,6 +53,8 @@ class UniquePeriodServiceProvider extends ServiceProvider
             }
             return true;
         });
+
+        
     }
 
     
