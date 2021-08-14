@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Exception;
 use App\Entities\TbLaunch;
+use App\Entities\TbClosing;
 use App\Services\TbCadUserService;
 use App\Validators\TbLaunchValidator;
 use App\Repositories\TbLaunchRepository;
@@ -33,8 +34,28 @@ class TbLaunchService
         try {
 
             
-
+              // validando campos
               $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
+              
+              // validando se periodo ja esta fechado
+              $idClosing = $data['idtb_closing'];
+              $closing = TbClosing::Where('id', $idClosing)->get();
+              if($closing['0']['status'] == 0){
+                return[
+                       'success'  => false,
+                       'messages' => 'Período fechado não pode receber lançamentos!',
+                       'type'     => 'reference_month',
+                       'data'     => '',
+                      ];
+
+              }
+
+              //verifica se lançamento esta dentro do peíodo
+              $v = $this->validator->validaDataPeriodo($closing, $data);
+              if(!$v['success']){
+                return $v;
+              }
+
               $launch = $this->repository->create($data);
               $msg = $launch['value'];
 
@@ -65,19 +86,26 @@ class TbLaunchService
         try {
 
               $id = $data['id'];
-
+              // validando campos
               $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-              $closing = $this->repository->with('closing')->find($id)->toArray();
-              
-              if($closing['closing']['status'] == 0){
+              // validando se periodo ja esta fechado
+              $idClosing = $data['idtb_closing'];
+              $closing = TbClosing::Where('id', $idClosing)->get();
+              if($closing['0']['status'] == 0){
                 return[
-                       'success'  => 'closing',
-                       'messages' => 'Lançamento com período fechado não pode ser editado!',
+                       'success'  => false,
+                       'messages' => 'Período fechado não pode receber lançamentos!',
                        'type'     => 'reference_month',
                        'data'     => '',
                       ];
 
+              }
+
+              //verifica se lançamento esta dentro do peíodo
+              $v = $this->validator->validaDataPeriodo($closing, $data);
+              if(!$v['success']){
+                return $v;
               }
               
               $launch = $this->repository->update($data, $id);
@@ -92,6 +120,7 @@ class TbLaunchService
 
 
         } catch (Exception $e) {
+
 
               switch (get_class($e)) {               
                 case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => $e->getMessage()];
@@ -307,7 +336,6 @@ class TbLaunchService
       {
          $def = '%';
 
-         
 
          if ($request->isMethod('get')) {
              return (TbLaunch::query()
@@ -356,7 +384,7 @@ class TbLaunchService
        }
 
        //retorna numero do mes
-       public function number_month($string){
+       static public function number_month($string){
 
         switch ($string) {
           case "Janeiro":      $mes = '01';   break;
@@ -376,9 +404,16 @@ class TbLaunchService
         return $mes;
        }
 
+       //retorna saldo inicial
+       public function initial_value($request)
+       {
+        
+        
+         
+       }
+
 
       
-
 
 
 }
