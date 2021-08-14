@@ -136,16 +136,17 @@ class TbLaunchController extends Controller
     public function keep(Request $request)
     {
 
-        // dd($request);
+        //dd($request);
 
         $json  = array();
         $json["status"] = 1;
         $json["error_list"] = array();
         $json["success"] = array();
-        
+        $request->request->add(['idtb_closing' => $request['reference_month']]);
+
         $user = $this->service->find_User_name($request['name'])->toArray();
-        //dd($user);
-        if($user && count($user) == 1){
+
+        if($user){
             $request['id_user'] = $user[0]['id'];
 
         }else{
@@ -183,7 +184,7 @@ class TbLaunchController extends Controller
             
             $request = $this->service->update($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;
-            
+
             if($request['success'] === "closing"){
                 $request['success'] = false;
                 $json["status"] = 0;
