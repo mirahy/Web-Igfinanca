@@ -33,7 +33,6 @@ class TbClosingsService
               // validando campos
               $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
               // validando se período ja existe
-              
               $v = $this->validator->validaPeriodo($data);
               if(!$v['success']){
                 return $v;
@@ -92,7 +91,7 @@ class TbClosingsService
  
  
          } catch (Exception $e) {
-         
+          dd($e);
                switch (get_class($e)) {               
                  case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o período!', 'type'  => $e->getMessage()];
                  case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];

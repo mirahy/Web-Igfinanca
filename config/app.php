@@ -170,11 +170,8 @@ return [
         //DomPDF
         Barryvdh\DomPDF\ServiceProvider::class,
 
-        //valida período ja existe
+        //valida período
         App\Providers\UniquePeriodServiceProvider::class,
-
-        //valida lançamento esta dentro do período
-        App\Providers\PeriodServiceProvider::class,
 
     ],
 

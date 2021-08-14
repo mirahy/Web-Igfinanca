@@ -462,7 +462,7 @@ $(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(10).footer()).html(
+            $(api.column(8).footer()).html(
                 'R$' +  number_format(pageTotal, 2, ',', '.')  + ' ( R$' + number_format(total, 2, ',', '.') + ' total)'
             );
 
@@ -574,7 +574,7 @@ $(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(10).footer()).html(
+            $(api.column(8).footer()).html(
                 'R$' +  number_format(pageTotal, 2, ',', '.')  + ' ( R$' + number_format(total, 2, ',', '.') + ' total)'
             );
         }
@@ -685,7 +685,7 @@ $(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(10).footer()).html(
+            $(api.column(8).footer()).html(
                 'R$' +  number_format(pageTotal, 2, ',', '.')  + ' ( R$' + number_format(total, 2, ',', '.') + ' total)'
             );
 
@@ -799,7 +799,7 @@ $(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(10).footer()).html(
+            $(api.column(8).footer()).html(
                 'R$' +  number_format(pageTotal, 2, ',', '.')  + ' ( R$' + number_format(total, 2, ',', '.') + ' total)'
             );
         }
@@ -911,7 +911,7 @@ $(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(10).footer()).html(
+            $(api.column(8).footer()).html(
                 'R$' +  number_format(pageTotal, 2, ',', '.')  + ' ( R$' + number_format(total, 2, ',', '.') + ' total)'
             );
         }

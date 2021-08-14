@@ -5,8 +5,6 @@ namespace App\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
-use App\Services\TbLaunchService;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class TbClosing.
@@ -15,9 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class TbClosing extends Model implements Transformable
 {
-   use SoftDeletes;
-   use TransformableTrait;
-
+    use TransformableTrait;
 
      public     $timestamps   = true;
      protected  $table        = 'tb_closing';
@@ -31,35 +27,11 @@ class TbClosing extends Model implements Transformable
 
 
 
-     
-     protected $appends = ['MonthYear', 'InitPeriod', 'FinalPeriod'];
-
      //retorno "mes/ano"
+     protected $appends = ['MonthYear'];
      public function getMonthYearAttribute()
      {
       return $this->month . '/' . $this->year;
      }
-
-      //retorno inicio periodo
-      public function getInitPeriodAttribute()
-      {
-         $month = $this->month;
-         $month = TbLaunchService::number_month($month);
-         $year  = $this->year;
-         $data = $year.'-'.$month;
-         $data = new \DateTime($data);
-       return $data->format('Y-m-d');
-      }
-
-      //retorno final periodo
-      public function getFinalPeriodAttribute()
-      {
-         $month = $this->month;
-         $month = TbLaunchService::number_month($month);
-         $year  = $this->year;
-         $data = $year.'-'.$month;
-         $data = new \DateTime($data);    
-       return $data->format('Y-m-t');
-      }
 
 }
