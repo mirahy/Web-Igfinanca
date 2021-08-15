@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
         
               TbProfile::create([
                 'name'        => 'Desenvolvedor',
-                'description' => 'Perfil DEV_OP'
+                'description' => 'Perfil DEV_OP']
               );
 
                 TbProfile::create(
