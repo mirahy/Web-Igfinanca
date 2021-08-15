@@ -4,6 +4,10 @@ use Illuminate\Database\Seeder;
 use App\Entities\TbCadUser;
 use App\Entities\TbBase;
 use App\Entities\TbProfile;
+use App\Entities\TbCaixa;
+use App\Entities\TbPaymentType;
+use App\Entities\TbOperation;
+use App\Entities\TbTypeLaunc;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,7 +23,7 @@ class DatabaseSeeder extends Seeder
           //DB::table('Tb_Cad_User')->truncate();
 
           // Cria usuários admins (dados controlados)
-          $this->createAdmin();
+          $this->createInitialData();
           // Cria usuários demo (dados faker)
           //$this->createUsers();  
 
@@ -27,7 +31,7 @@ class DatabaseSeeder extends Seeder
   
 
 
-         private  function createAdmin()
+         private  function createInitialData()
         {
               TbBase::create([
                 'name'       => 'Vila Alta',
@@ -38,19 +42,75 @@ class DatabaseSeeder extends Seeder
 
               TbCaixa::create(
                 ['name'       => 'Dízimo',
-                'description' => 'Dízimo'],
+                'description' => 'Dízimo']
+                );
+                
+                TbCaixa::create(
                 ['name'       => 'Oferta',
                 'description' => 'Oferta']
                 );
         
+        
               TbProfile::create([
                 'name'        => 'Desenvolvedor',
-                'description' => 'Perfil DEV_OP'],
+                'description' => 'Perfil DEV_OP'
+              );
+
+                TbProfile::create(
                 [
                   'name'        => 'Básico',
-                  'description' => 'Usuario acesso basico'
-        
-              ]);
+                  'description' => 'Usuario acesso basico'     
+                  ]);
+
+
+                TbPaymentType::create([
+                    'name'        => 'Dinheiro',
+                    'descripion' => ''
+            
+                  ]);
+
+                TbPaymentType::create([
+                  'name'        => 'Cartão Debito',
+                  'descripion' => ''
+          
+                ]);
+                
+                TbPaymentType::create([
+                  'name'        => 'Cartão Crédito',
+                  'descripion' => ''
+          
+                ]);
+                
+                TbPaymentType::create([
+                  'name'        => 'PIX',
+                  'descripion' => ''
+          
+                ]);
+
+                TbOperation::create([
+                  'name'        => 'Dízimo',
+                  'descripion' => ''
+          
+                ]);
+
+                TbOperation::create([
+                  'name'        => 'Oferta',
+                  'descripion' => ''
+          
+                ]);
+
+                TbTypeLaunc::create([
+                  'name'        => 'Entrada',
+                  'descripion' => ''
+          
+                ]);
+                
+                TbTypeLaunc::create([
+                  'name'        => 'Saída',
+                  'descripion' => ''
+          
+                ]);
+
 
               TbCadUser::create([
                 'name'          => 'Mirahy Fonseca',
