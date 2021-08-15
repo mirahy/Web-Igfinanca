@@ -154,7 +154,7 @@
 
                             @include('templates.forms.select',['select' => 'tpPayment', 'label' => 'Tipo Pagamento', 'data' => $payment_type ,'attributes' => ['placeholder' => 'Tipo Pagamento', 'class' => 'form-control form-control-user', 'id' => 'idtb_payment_type', 'name' => 'idtb_payment_type']])
 
-                            @include('templates.forms.select',['select' => 'mes', 'label' => 'Período', 'data' => $month ,'attributes' => ['placeholder' => 'Período', 'class' => 'form-control form-control-user', 'id' => 'reference_month', 'name' => 'reference_month']])
+                            @include('templates.forms.select',['select' => 'mes', 'label' => 'Período', 'data' => $month ,'attributes' => ['placeholder' => 'Período', 'class' => 'form-control form-control-user', 'id' => 'idtb_closing', 'name' => 'idtb_closing']])
                             
                             @include('templates.forms.date',['date' => 'date', 'label' => 'Data Pagamento','attributes' => ['placeholder' => 'Data Coleta', 'class' => 'form-control form-control-user col-lg-5', 'id' => 'operation_date', 'name' => 'operation_date']])
                             
