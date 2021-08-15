@@ -174,7 +174,7 @@ class TbCadUserService
        public function find_User_name($name)
        {
          
-         $data =  TbCadUser::where('name', 'LIKE', '%' . $name. '%')->get();
+         $data =  TbCadUser::where('name', 'LIKE',  $name )->get();
          
          return  $data;
        }
