@@ -21,10 +21,11 @@ class TbLaunchValidator extends LaravelValidator
 
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-          'name'             => 'bail|required|min:10',
-          'value'            => 'bail|required|numeric|min:0|not_in:0',
-          'idtb_closing'     => 'bail|required|not_in:0',
-          'operation_date'   => 'bail|required|date'
+          'name'              => 'bail|required|min:10',
+          'value'             => 'bail|required|numeric|min:0|not_in:0',
+          'idtb_closing'      => 'bail|required|not_in:0',
+          'operation_date'    => 'bail|required|date',
+          'idtb_payment_type' => 'bail|required|not_in:0'
         ],
 
         
@@ -32,7 +33,8 @@ class TbLaunchValidator extends LaravelValidator
             'name'             => 'bail|required|min:10',
             'value'            => 'bail|required|numeric|min:0|not_in:0',
             'idtb_closing'     => 'bail|required|not_in:0',
-            'operation_date'   => 'bail|required|date'
+            'operation_date'   => 'bail|required|date',
+            'idtb_payment_type' => 'bail|required|not_in:0'
         ],
     ];
 
@@ -47,6 +49,8 @@ class TbLaunchValidator extends LaravelValidator
             'idtb_closing.not_in'              => 'Mês de referência deve ser informado!',
             'operation_date.required'          => 'Data de coleta deve ser informada!',
             'operation_date.date'              => 'Data de coleta deve ser informada!',
+            'idtb_payment_type.required'       => 'Tipo de pagamento deve ser informado!',
+            'idtb_payment_type.not_in'         => 'Tipo de pagamento deve ser informado!',
     ];
 
 
