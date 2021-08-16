@@ -338,32 +338,36 @@ class TbLaunchService
 
 
          if ($request->isMethod('get')) {
-             return (TbLaunch::query()
-                      ->whereHas('closing', function($q) use ($request, $def)
-                                  {   
-                                      $q->where([['status', 'like',  $request->query('closing_status', $def)],
-                                                 ['id', 'like',  $request->query('reference_month', $def)]]);
+           $value = TbLaunch::query()
+                          ->whereHas( 'closing', function($q) use ($request, $def)
+                                      {   
+                                          $q->where([['status', 'like',  $request->query('closing_status', $def)],
+                                                      ['id', 'like',  $request->query('reference_month', $def)]]);
 
-                                  })
-                      ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
-                               ['status', 'LIKE', $request->query('status', $def)],
-                               ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
-                               ['idtb_operation', 'LIKE', $request->query('operation', $def)]]))
-                               ->sum('value');             
+                                      })
+                          ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
+                                    ['status', 'LIKE', $request->query('status', $def)],
+                                    ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
+                                    ['idtb_operation', 'LIKE', $request->query('operation', $def)]])
+                                    ->sum('value');
+
+             return floatval($value);             
 
          }elseif ($request->isMethod('post')) {
-                  return  (TbLaunch::query()
-                             ->whereHas('closing', function($q) use ($request)
-                                        {   
-                                            $q->where([['status', 'like',  $request['closing_status']],
-                                            ['id', 'like',  $request['reference_month']]]);
+          $value =TbLaunch::query()
+                        ->whereHas('closing', function($q) use ($request)
+                                  {   
+                                      $q->where([['status', 'like',  $request['closing_status']],
+                                      ['id', 'like',  $request['reference_month']]]);
 
-                                        })
-                            ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
-                                    ['status', 'LIKE', $request['status']],
-                                    ['idtb_caixa', 'LIKE', $request['caixa']],
-                                    ['idtb_operation', 'LIKE', $request['operation']]]))
-                            ->sum('value');
+                                  })
+                      ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
+                              ['status', 'LIKE', $request['status']],
+                              ['idtb_caixa', 'LIKE', $request['caixa']],
+                              ['idtb_operation', 'LIKE', $request['operation']]])
+                      ->sum('value');
+
+            return floatval($value);
 
          }
 
@@ -384,7 +388,8 @@ class TbLaunchService
        }
 
        //retorna numero do mes
-       static public function number_month($string){
+       static public function number_month($string)
+       {
 
         switch ($string) {
           case "Janeiro":      $mes = '01';   break;
@@ -404,16 +409,93 @@ class TbLaunchService
         return $mes;
        }
 
-       //retorna saldo inicial
+       //retorna de valores para saldo inicial do período(para datas anteriores a 01/08/2021 retorna zero)
        public function initial_value($request)
        {
+
+        $closing = TbClosing::Where('status', 1)->count();
+
+        if(!$closing){
+          return 0;
+          
+        }else{
+            $closing = TbClosing::Where('status', 1)->get();
+            $initPeriod = new \DateTime($closing[0]['InitPeriod']);
+            $initDate = new \DateTime('2021/01/01');
+            $finalDate = $initPeriod->format('Y-m-d');
+            
+              $def = '%';
+            
+            if ($request->isMethod('get')) {
+
+              $entradas = TbLaunch::query()
+                            ->whereHas('closing', function($q) use ($request, $def)
+                                        {   
+                                            $q->where([['status', 'like',  $request->query('closing_status', $def)],
+                                                      ['id', 'like',  $request->query('reference_month', $def)]]);
+
+                                        })
+                            ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
+                                    ['status', 'LIKE', $request->query('status', $def)],
+                                    ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
+                                    ['idtb_operation', 'LIKE', 1],
+                                    ['operation_date', '>=', $initDate],
+                                    ['operation_date', '<', $finalDate]])
+                                    ->sum('value');
+
+              $saidas = TbLaunch::query()
+                            ->whereHas('closing', function($q) use ($request, $def)
+                                                {   
+                                                    $q->where([['status', 'like',  $request->query('closing_status', $def)],
+                                                              ['id', 'like',  $request->query('reference_month', $def)]]);
+            
+                                                })
+                                    ->where([['idtb_type_launch', 'LIKE', $request->query('launch', $def)], 
+                                            ['status', 'LIKE', $request->query('status', $def)],
+                                            ['idtb_caixa', 'LIKE', $request->query('caixa', $def) ],
+                                            ['idtb_operation', 'LIKE', 2],
+                                            ['operation_date', '>=', $initDate],
+                                            ['operation_date', '<', $finalDate]])
+                                            ->sum('value');
+
+                return floatval($entradas - $saidas);         
+
+              }elseif ($request->isMethod('post')) {
+
+                $entradas =TbLaunch::query()
+                                  ->whereHas('closing', function($q) use ($request)
+                                              {   
+                                                  $q->where([['status', 'like',  $request['closing_status']],
+                                                  ['id', 'like',  $request['reference_month']]]);
+
+                                              })
+                                  ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
+                                          ['status', 'LIKE', $request['status']],
+                                          ['idtb_caixa', 'LIKE', $request['caixa']],
+                                          ['idtb_operation', 'LIKE', 1],
+                                          ['operation_date', '<', $date]])
+                                  ->sum('value');
+                $saidas =TbLaunch::query()
+                                  ->whereHas('closing', function($q) use ($request)
+                                            {   
+                                                $q->where([['status', 'like',  $request['closing_status']],
+                                                ['id', 'like',  $request['reference_month']]]);
+
+                                            })
+                                ->where([['idtb_type_launch', 'LIKE', $request['launch']], 
+                                        ['status', 'LIKE', $request['status']],
+                                        ['idtb_caixa', 'LIKE', $request['caixa']],
+                                        ['idtb_operation', 'LIKE', 1],
+                                        ['operation_date', '<', $date]])
+                                ->sum('value');
+
+                                return floatval($entradas - $saidas);  
+
+              }
+              
+          }
+
+        }
         
-        
-         
-       }
-
-
-      
-
 
 }
