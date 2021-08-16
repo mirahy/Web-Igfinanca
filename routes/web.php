@@ -50,6 +50,7 @@ Route::middleware(['auth.unique.user'])->group(function () {
     *========================================================================
     */
     Route::get('/sum',['as' =>'sum', 'uses' => 'DashboardController@sum'])->middleware('auth');
+    Route::get('/init',['as' =>'init', 'uses' => 'DashboardController@init_value'])->middleware('auth');
     Route::get('/pend',['as' =>'pend', 'uses' => 'DashboardController@pend'])->middleware('auth');
 
 
@@ -121,4 +122,14 @@ Route::middleware(['auth.unique.user'])->group(function () {
 
 
 /**Finish group route */
+
+/**Test page */
+
+    Route::get('/teste', function () {
+        return view('teste');
+    });
+
+/**Finish test page */
+
+
 });
