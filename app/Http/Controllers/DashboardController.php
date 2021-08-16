@@ -84,6 +84,15 @@ class DashboardController extends Controller
 
   }
 
+   //funçao de retorno de valores para saldo inicial do período(para datas anteriores a 01/08/2021 retorna zero)
+   public function init_value(Request $request)
+   {
+     $value = $this->serviceLaunch->initial_value($request);
+    
+     echo json_encode($value);
+ 
+   }
+
   //funcçao de retorno de pendencias dos laçamentos para a view dashboard
   public function pend(Request $request)
   {

@@ -3,98 +3,102 @@ $(function () {
     var entrie = 0;
     var exit = 0;
     var entrie_o = 0;
-    var exit_o = 0;
-    var result = 0;
-    var result_o = 0;
-
-    $.ajax(
-        entrada1(),
-        saida1(),
-        entrada2(),
-        saida2()
-    )
+    var init_value_o = 0;
+    var exit_o = 0;    
 
 
-    //retorna valor para a div entries do card entradas dos dízimos de períodos em abertos
-    function entrada1(){
+    //retorna valor de entradas dos dízimos
+    function entrada_dizimo(){
         $.ajax({
             type: "GET",
             url: "sum?status=1&operation=1&caixa=1&closing_status=1",
             dataType: "json",
             success: function (response) {
-                entrie = response;
-                $("#entries").html('R$' + number_format(entrie,2,',','.'));
-                
+                entrie = response;              
             }
         })
-        return entrie;
+        return parseFloat(entrie);
     }
 
-    //retorna valor para a div exits do card saídas
-    function saida1(){
+    //retorna valor para de saidas dos dízimos
+    function saida_dizimo(){
         $.ajax({
             type: "GET",
             url: "sum?status=1&operation=2&caixa=1&closing_status=1",
             dataType: "json",
             success: function (response) {
-                exit = response;
-                $("#exits").html('R$' + number_format(exit,2,',','.')); 
-                
+                exit = response;            
             }
         })
-        return exit;  
+        return parseFloat(exit);  
     } 
     
-    //retorna o valor do card saldo dos dízímos de períodos em abertos
-    $.ajax({
-        success: function (response) {
-            result = entrada1()-saida1();
-            $("#balance").html('R$' + number_format(result,2,',','.'));
-        }
-    })
+
+    //retorna saldo dos meses anteriores para somar a entrada das ofertas
+    function saldo_inicial(){
+        $.ajax({
+            type: "GET",
+            url: "init?status=1&caixa=2&closing_status=0",
+            dataType: "json",
+            success: function (response) {
+                init_value_o = response;
+            }
+        })
+        return parseFloat(init_value_o);
+    }
     
 
 
-    //retorna valor para a div entries do card entradas das ofertas
-    function entrada2(){
+    //retorna valor entradas das ofertas
+    function entrada_ofertas(){
         $.ajax({
             type: "GET",
             url: "sum?status=1&operation=1&caixa=2&closing_status=1",
             dataType: "json",
             success: function (response) {
                 entrie_o = response;
-                $("#entries_o").html('R$' + number_format(entrie_o,2,',','.'));
             }
         })
-        return entrie_o
+        return parseFloat(entrie_o);
     }
     
 
-    //retorna valor para a div exits do card saídas 
-    function saida2(){
+    //retorna valor saídas de ofertas
+    function saida_ofertas(){
         $.ajax({
             type: "GET",
             url: "sum?status=1&operation=2&caixa=2&closing_status=1",
             dataType: "json",
             success: function (response) {
-                exit_o = response;
-                $("#exits_o").html('R$' + number_format(exit_o,2,',','.'));
-                
+                exit_o = response;    
             }
         })
-        return exit_o
+        return parseFloat(exit_o);
     }
-    
-    //retorna o valor do carda saldo das ofertas
-    $.ajax({
-        success: function (response) {
-            result_o = entrada2() - saida2();
-            $("#balance_o").html('R$' + number_format(result_o,2,',','.'));
-        }
-    })
 
-    
+    // setar valores nos cards
+    function set_values(){
+        $.ajax({
+            success: function (response) {
+                $("#entries").html('R$' + number_format(entrada_dizimo(),2,',','.'));
+                $("#exits").html('R$' + number_format(saida_dizimo(),2,',','.'));
+                $("#balance").html('R$' + number_format(entrada_dizimo() - saida_dizimo(),2,',','.')); 
+                $("#entries_o").html('R$' + number_format(entrada_ofertas() + saldo_inicial(),2,',','.'));
+                $("#exits_o").html('R$' + number_format(saida_ofertas(),2,',','.'));
+                $("#balance_o").html('R$' + number_format(entrada_ofertas() + saldo_inicial() - saida_ofertas(),2,',','.'));
+                
+            }
+        }); 
+    }
 
+    $.ajax(
+        entrada_dizimo(),
+        saida_dizimo(),
+        saldo_inicial(),
+        entrada_ofertas(),
+        saida_ofertas(),
+        set_values()
+    )
 
     //retorna lançamentos pendentes dos dízimos
     $.ajax({
@@ -115,7 +119,4 @@ $(function () {
             $("#pend_o").html(response);
         }
     })
-
-
-
 })
