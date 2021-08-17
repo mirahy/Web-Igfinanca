@@ -85,9 +85,9 @@ class DashboardController extends Controller
   }
 
    //funçao de retorno de valores para saldo inicial do período(para datas anteriores a 01/08/2021 retorna zero)
-   public function init_value(Request $request)
+   public function saldo(Request $request)
    {
-     $value = $this->serviceLaunch->initial_value($request);
+     $value = $this->serviceLaunch->saldo($request);
     
      echo json_encode($value);
  
