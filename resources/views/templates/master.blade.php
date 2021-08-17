@@ -11,7 +11,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
   <title>System Finance</title>
-
+  <link rel="shortcut icon" href="img/logo-ico 48x48.ico" >
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <!-- <link href="css/font-awesome.min.css" rel="stylesheet" > -->
