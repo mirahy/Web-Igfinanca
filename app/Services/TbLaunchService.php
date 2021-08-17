@@ -410,20 +410,20 @@ class TbLaunchService
        }
 
        //retorna de valores para saldo inicial do período(para datas anteriores a 01/08/2021 retorna zero)
-       public function initial_value($request)
+       public function saldo($request)
        {
 
         $closing = TbClosing::Where('status', 1)->count();
 
         if(!$closing){
           return 0;
-          
+
         }else{
             $closing = TbClosing::Where('status', 1)->get();
             $initPeriod = new \DateTime($closing[0]['InitPeriod']);
-            $initDate = new \DateTime('2021/01/01');
-            $finalDate = $initPeriod->format('Y-m-d');
-            
+            $initDate = $request->query('initDate') ? new \DateTime($closing[0]['InitPeriod']) : new \DateTime('2021/01/01');
+            $finalDate = $request->query('finalDate') ? new \DateTime($closing[0]['FinalPeriod']) :$initPeriod->format('Y-m-d');
+  
               $def = '%';
             
             if ($request->isMethod('get')) {
@@ -457,6 +457,7 @@ class TbLaunchService
                                             ['operation_date', '>=', $initDate],
                                             ['operation_date', '<', $finalDate]])
                                             ->sum('value');
+                        
 
                 return floatval($entradas - $saidas);         
 
