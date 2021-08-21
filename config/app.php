@@ -176,6 +176,9 @@ return [
         //valida lançamento esta dentro do período
         App\Providers\PeriodServiceProvider::class,
 
+        //valida senha no cadastro de usuário
+        App\Providers\PassValidateProvider::class,
+
     ],
 
     /*

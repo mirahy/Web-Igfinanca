@@ -149,7 +149,7 @@
                             
                             @include('templates.forms.password',['input' => 'password', 'label' => 'Senha', 'attributes' => ['placeholder' => 'Senha',  'class' => 'form-control form-control-user', 'id' => 'password', 'name' => 'password']])
                                 
-                            @include('templates.forms.password',['input' => 'Repeatpassword', 'label' => 'Repita a senha', 'attributes' => ['placeholder' => 'Repita a senha',  'class' => 'form-control form-control-user', 'id' => 'Repeatpassword', 'name' => 'Repeatpassword']])
+                            @include('templates.forms.password',['input' => 'password', 'label' => 'Repita a senha', 'attributes' => ['placeholder' => 'Repita a senha',  'class' => 'form-control form-control-user', 'id' => 'password_confirmation', 'name' => 'password_confirmation']])
                                 
 
                         </div>

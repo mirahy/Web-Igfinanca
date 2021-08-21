@@ -79,7 +79,7 @@ $(function () {
                         data: { "id": course_id.attr("id_user") },
                         success: function (response) {
                             console.log(response);
-                            $msg = "Usuário " + response["success"] + " removido com sucesso!";
+                            $msg = "Usuário " + response["messages"] + " removido com sucesso!";
                             Swal.fire("Sucesso!", $msg, "success");
                             dt_users.ajax.reload();
                             dt_users_inact.ajax.reload();
