@@ -29,7 +29,19 @@ class TbCadUserService
       {
         try {
 
+              if($data['password'] == null && $data['password_confirmation']  == null ){
+
+                $data['password'] = env('PATTERN_PASS');
+                $data['password_confirmation'] =env('PATTERN_PASS');
+              }
+               // validando campos
               $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
+              // validando campos senhas
+              $v = $this->validator->validaInputsPass($data);
+              if(!$v['success']){
+                return $v;
+              }
+
               $user = $this->repository->create($data);
 
               $name = explode(" ",$user['name']);
@@ -43,7 +55,7 @@ class TbCadUserService
 
 
         } catch (Exception $e) {
-
+      
               switch (get_class($e)) {               
                 case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
@@ -93,11 +105,12 @@ class TbCadUserService
 
         try {
 
+              $user = TbCadUserService::find_Id($id);
+            
+              $name = explode(" ",$user['data']['name']);
               
-              $user = $this->repository->delete($id);
-
-              $name = explode(" ",$user['name']);
-
+              $this->repository->delete($id);
+ 
               return [
                 'success'     => true,
                 'messages'    => [$name[0]],

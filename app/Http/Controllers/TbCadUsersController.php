@@ -79,8 +79,6 @@ class TbCadUsersController extends Controller
     public function keep(Request $request)
     {
 
-        
-
         $json  = array();
         $json["status"] = 1;
         $json["error_list"] = array();
@@ -93,6 +91,7 @@ class TbCadUsersController extends Controller
             
             $request = $this->service->store($request->all()); 
             $user = $request['success'] ? $request['data'] : null;
+
             
             session()->flash('success', [
                 'success'   =>  $request['success'],
@@ -100,7 +99,6 @@ class TbCadUsersController extends Controller
                 'usuario'   =>  $user,
              ]);
 
-             //dd($request['messages']);
 
              if(!$request['success']){
                 $i=0;

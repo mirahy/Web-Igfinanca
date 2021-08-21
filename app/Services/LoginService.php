@@ -43,10 +43,13 @@ class LoginService
             //validando campos
             $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
             //setando email e password em suas variaveis
+            
             $data=[
               'email'      => $request->get('email'),
               'password'   => $request->get('password')
             ];
+            
+            
             // setando o valor de do chekc lembre-me
             if($request->get('customCheck')){
               $remember     = 'true';
@@ -59,21 +62,27 @@ class LoginService
             //estrutura do login
             if( env("PASSWORD_HASH"))
             {
-
               $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
-              
-              if(!$user)
-                throw new Exception("Email inválido");
 
-              if ($user && Auth::attempt($data, $remember))
-                throw new Exception("Senha inválida");
+              if(!$user)
+              return [
+                'success'     => false,
+                'messages'    => ["Email e/ou senha inválidos"],
+                'data'        => $user,
+                'type'        => ["email","password"],                 
+              ];
+
+              if (!Auth::attempt($data, $remember))
+              return [
+                'success'     => false,
+                'messages'    => ["Email e/ou senha inválidos"],
+                'data'        => $user,
+                'type'        => ["email","password"],                 
+              ];
 
               Auth::attempt($data, $remember);
-        
 
-            }
-            else
-            {
+            }else{
               $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
 
               if(!$user)
@@ -92,10 +101,11 @@ class LoginService
                     'type'        => ["email","password"],  
                   ];
                   
-                  $user = Auth::login($user);
                   
+                  Auth::login($user);
 
             }
+
 
                 return [
                   'success'     => true,
