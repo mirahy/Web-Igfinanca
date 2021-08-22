@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
                 'birth'         => '1989-12-06',
-                'email'         => 'mirahy@admin.com.br',
+                'email'         => 'mirahy@vla.com.br',
                 'password'      =>  env("PASSWORD_HASH") ? bcrypt('adbvla123') : 'adbvla123',
                 'status'        => '1',
                 'permission'    => '2'
@@ -133,7 +133,7 @@ class DatabaseSeeder extends Seeder
             
               ]);
 
-              $this->command->info('Admin mirahy@admin.com.br user created');
+              $this->command->info('Admin mirahy@vla.com.br user created');
         }
 
           // private function createUsers()
