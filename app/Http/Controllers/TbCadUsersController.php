@@ -186,8 +186,10 @@ class TbCadUsersController extends Controller
             $json["error_list"]["#".$request['type'][$i]."_edit"] = $msg;
             $i++;
             } 
+        }else{
+            $json['messages'] = $request['messages'];
         }
-            
+        
         echo json_encode($json);
     }
 
