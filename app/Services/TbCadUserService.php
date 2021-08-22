@@ -34,16 +34,21 @@ class TbCadUserService
                 $data['password'] = env('PATTERN_PASS');
                 $data['password_confirmation'] =env('PATTERN_PASS');
               }
+
+              
                // validando campos
               $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
+              
               // validando campos senhas
               $v = $this->validator->validaInputsPass($data);
               if(!$v['success']){
                 return $v;
               }
+              //hash password?
+              $data['password'] = env("PASSWORD_HASH") ? bcrypt($data['password']) : $data['password'];
 
               $user = $this->repository->create($data);
-
+      
               $name = explode(" ",$user['name']);
 
               return [
@@ -55,7 +60,7 @@ class TbCadUserService
 
 
         } catch (Exception $e) {
-      
+
               switch (get_class($e)) {               
                 case QueryException::class      : return['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
                 case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];

@@ -28,10 +28,10 @@ class TbCadUser extends Authenticatable
      protected  $fillable     = ['id','name','idtb_profile','idtb_base','birth','email','password','status','permission','token_access', 'created_at', 'updated_at'];
      protected  $hidden       = ['password', 'rememberToken'];
 
-     public function setPasswordAttribute($value)
-     {
-       $this->attributes['password'] = env("PASSWORD_HASH") ? bcrypt($value) : $value;
-     }
+    //  public function setPasswordAttribute($value){
+         
+    //    $this->attributes['password'] = env("PASSWORD_HASH") ? bcrypt($value) : $value;
+    //  }
 
      public function base(){
 
