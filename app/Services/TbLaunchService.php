@@ -427,7 +427,7 @@ class TbLaunchService
             $initPeriod->modify('-1 day');
             $initDate = $request->query('initDate') ? new \DateTime($closing[0]['InitPeriod']) : new \DateTime('2021/01/01');
             $finalDate = $request->query('finalDate') ? new \DateTime($closing[0]['FinalPeriod']) :$initPeriod->format('Y-m-d');
-          dd($finalDate);
+            
               $def = '%';
             
             if ($request->isMethod('get')) {
