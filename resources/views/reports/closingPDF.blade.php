@@ -27,7 +27,7 @@
               <thead>
               </thead>
               <tbody>
-                <tr class="table-secondary">>
+                <tr class="table-secondary">
                   <td class="col-sm-1"><!-- Entrada dízimos -->
                       <div class="m-1">
                         <div class="text-xs font-weight-bold text-success text-uppercase">Entradas </div>
@@ -96,7 +96,7 @@
             <thead>
             </thead>
             <tbody>
-              <tr class="table-secondary">>
+              <tr class="table-secondary">
                 <td class="col-sm-1"><!-- Entrada dízimos -->
                     <div class="m-1">
                       <div class="col-md-4">__________________</div>
