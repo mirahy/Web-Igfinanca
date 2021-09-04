@@ -23,7 +23,7 @@ class PdfController extends Controller
     public function closing_pdf(Request $request)
     {
         
-        $request->request->add(['closing_status' => '%']);
+        
         $request->request->add(['status' => 1 ]);
         $tpCaixa    = TbTypeLaunch::where('id',$request['caixa'])->get('name')->toArray();
         $period     = TbClosing::where('id', $request['reference_month'])->get();
@@ -31,16 +31,21 @@ class PdfController extends Controller
         $nomeArq    = $numMes.' '.$tpCaixa[0]['name'] . ' - ' . $period[0]['month']. '_' .$period[0]['year'];
 
         $dados      = $this->serviceLaunch->find_Parameters($request);
-        //dd($numMes);
-
+        
         $request->request->add(['operation' => '1']);
         $entries    = $this->serviceLaunch->sum($request);
 
         $request->request->add(['operation' => '2']);
         $exits      = $this->serviceLaunch->sum($request);
+        
+        $request->request->remove('operation');
+        $request->request->add(['closing_status' => 0]);
+        $startBalance = $request['caixa'] == 2 ? $this->serviceLaunch->saldo($request) : 0;
+        $entries = $entries + $startBalance;
 
         $balance    = $entries - $exits;
 
+        // return View('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
         $pdf = PDF::loadView('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
 
         return $pdf->setPaper('a4')->stream($nomeArq.'.pdf');
