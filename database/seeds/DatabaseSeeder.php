@@ -88,26 +88,44 @@ class DatabaseSeeder extends Seeder
                 ]);
 
                 TbOperation::create([
-                  'name'        => 'Dízimo',
+                  'name'        => 'Entrada',
                   'descripion' => ''
           
                 ]);
 
                 TbOperation::create([
-                  'name'        => 'Oferta',
+                  'name'        => 'Saída',
                   'descripion' => ''
           
                 ]);
 
                 TbTypeLaunc::create([
-                  'name'        => 'Entrada',
-                  'descripion' => ''
+                  'name'        => 'Dízimo',
+                  'descripion' => 'Dízimo'
           
                 ]);
                 
                 TbTypeLaunc::create([
-                  'name'        => 'Saída',
-                  'descripion' => ''
+                  'name'        => 'Oferta',
+                  'descripion' => 'Oferta'
+          
+                ]);
+
+                TbTypeLaunc::create([
+                  'name'        => 'Compra',
+                  'descripion' => 'Compra'
+          
+                ]);
+
+                TbTypeLaunc::create([
+                  'name'        => 'Serviço',
+                  'descripion' => 'Serviço'
+          
+                ]);
+
+                TbTypeLaunc::create([
+                  'name'        => 'Entrada',
+                  'descripion' => 'Entradas gerais'
           
                 ]);
 
