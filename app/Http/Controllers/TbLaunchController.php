@@ -136,7 +136,6 @@ class TbLaunchController extends Controller
     public function keep(Request $request)
     {
 
-        // dd($request);
 
         $json  = array();
         $json["status"] = 1;
@@ -144,7 +143,7 @@ class TbLaunchController extends Controller
         $json["success"] = array();
         
         $user = $this->service->find_User_name($request['name'])->toArray();
-        //dd($user);
+       
         if($user && count($user) == 1){
             $request['id_user'] = $user[0]['id'];
 
@@ -163,7 +162,6 @@ class TbLaunchController extends Controller
             $request = $this->service->store($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;
            
-           //dd($request);
                
              if(!$request['success']){
                 $i=0;
@@ -274,7 +272,6 @@ class TbLaunchController extends Controller
 
         $request = $this->service->aprov_id($request->all());
 
-        //dd($request);
 
         $json["success"] = $request['messages'];
         $json["status"] = $request['success'];
