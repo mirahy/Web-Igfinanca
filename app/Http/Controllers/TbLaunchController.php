@@ -218,6 +218,7 @@ class TbLaunchController extends Controller
         
         $json["imput"]['id'] = $launch['id'];
         $json["imput"]['id_user'] = $launch['id_user'];
+        $json["imput"]['description'] = $launch['description'];
         $json["imput"]['value'] = $launch['value'];
         $json["imput"]['operation_date'] = $launch['operation_date'];
         $json["imput"]['reference_month'] = $launch['closing']['id'];

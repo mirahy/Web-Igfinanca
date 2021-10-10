@@ -24,6 +24,7 @@ class CreateTbLaunchTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('id_user');
+            $table->text('description')->nullable()->default(null);
             $table->date('operation_date');
             $table->decimal('value', 8, 2);
             $table->unsignedInteger('idtb_operation');

@@ -15,7 +15,7 @@ class TbLaunch extends Model implements Transformable
    
      public     $timestamps   = true;
      protected  $table        = 'tb_launch';
-     protected  $fillable     = ['id','id_user','value','operation_date','idtb_operation','status','idtb_type_launch', 'idtb_payment_type', 'idtb_caixa','idtb_base', 'idtb_closing', 'status', 'created_at', 'updated_at'];
+     protected  $fillable     = ['id','id_user', 'description', 'value','operation_date','idtb_operation','status','idtb_type_launch', 'idtb_payment_type', 'idtb_caixa','idtb_base', 'idtb_closing', 'status', 'created_at', 'updated_at'];
      
 
      public function user(){
