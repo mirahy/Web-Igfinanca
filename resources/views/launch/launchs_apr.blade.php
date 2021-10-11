@@ -74,5 +74,11 @@
     </div>
     <!-- /.container-fluid -->
 
+    <!-- Modal lançamentos -->
+
+    @extends('templates.forms.form-launch')
+    
+    <!-- /Modal lançamentos -->
+
    
 @endsection
