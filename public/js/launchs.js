@@ -18,6 +18,14 @@ $(function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
+                $("#name").prop( "disabled", false );
+                $("#value").prop( "disabled", false );
+                $("#description").prop( "disabled", false );
+                $("#idtb_caixa").prop( "disabled", false );
+                $("#idtb_payment_type").prop( "disabled", false );
+                $("#idtb_closing").prop( "disabled", false );
+                $("#operation_date").prop( "disabled", false );
+                $("#btn_save_launch").show();
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(1);
                 $("#idtb_type_launch").val(1);
@@ -39,6 +47,14 @@ $(function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
+                $("#name").prop( "disabled", false );
+                $("#value").prop( "disabled", false );
+                $("#description").prop( "disabled", false );
+                $("#idtb_caixa").prop( "disabled", false );
+                $("#idtb_payment_type").prop( "disabled", false );
+                $("#idtb_closing").prop( "disabled", false );
+                $("#operation_date").prop( "disabled", false );
+                $("#btn_save_launch").show();
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(1);
                 $("#idtb_type_launch").val(2);
@@ -60,6 +76,14 @@ $(function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
+                $("#name").prop( "disabled", false );
+                $("#value").prop( "disabled", false );
+                $("#description").prop( "disabled", false );
+                $("#idtb_caixa").prop( "disabled", false );
+                $("#idtb_payment_type").prop( "disabled", false );
+                $("#idtb_closing").prop( "disabled", false );
+                $("#operation_date").prop( "disabled", false );
+                $("#btn_save_launch").show();
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(1);
                 $("#idtb_type_launch").val(5);
@@ -80,6 +104,14 @@ $(function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
+                $("#name").prop( "disabled", false );
+                $("#value").prop( "disabled", false );
+                $("#description").prop( "disabled", false );
+                $("#idtb_caixa").prop( "disabled", false );
+                $("#idtb_payment_type").prop( "disabled", false );
+                $("#idtb_closing").prop( "disabled", false );
+                $("#operation_date").prop( "disabled", false );
+                $("#btn_save_launch").show();
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(2);
                 $("#idtb_type_launch").val(3);
@@ -97,6 +129,14 @@ $(function () {
         $.ajax({
             success: function (response) {
                 clearErrors();
+                $("#name").prop( "disabled", false );
+                $("#value").prop( "disabled", false );
+                $("#description").prop( "disabled", false );
+                $("#idtb_caixa").prop( "disabled", false );
+                $("#idtb_payment_type").prop( "disabled", false );
+                $("#idtb_closing").prop( "disabled", false );
+                $("#operation_date").prop( "disabled", false );
+                $("#btn_save_launch").show();
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(2);
                 $("#idtb_type_launch").val(4);
@@ -213,16 +253,40 @@ $(function () {
                         $("#" + id).val(value)
                     });
                     if (response["imput"]['idtb_type_launch'] == 1) {
+                        $("#name").prop( "disabled", false );
+                        $("#value").prop( "disabled", false );
+                        $("#description").prop( "disabled", false );
+                        $("#idtb_caixa").prop( "disabled", false );
+                        $("#idtb_payment_type").prop( "disabled", false );
+                        $("#idtb_closing").prop( "disabled", false );
+                        $("#operation_date").prop( "disabled", false );
+                        $("#btn_save_launch").show();
                         $("#idtb_caixa").val(1);
                         $("#name").parent().siblings(".control-label").show();
                         $("#name").show();
 
                     } else if (response["imput"]['idtb_type_launch'] == 2) {
+                        $("#name").prop( "disabled", false );
+                        $("#value").prop( "disabled", false );
+                        $("#description").prop( "disabled", false );
+                        $("#idtb_caixa").prop( "disabled", false );
+                        $("#idtb_payment_type").prop( "disabled", false );
+                        $("#idtb_closing").prop( "disabled", false );
+                        $("#operation_date").prop( "disabled", false );
+                        $("#btn_save_launch").show();
                         $("#idtb_caixa").val(2);
                         $("#name").parent().siblings(".control-label").hide();
                         $("#name").val('Oferta Local').hide();
 
                     }else if (response["imput"]['idtb_type_launch'] == 5) {
+                        $("#name").prop( "disabled", false );
+                        $("#value").prop( "disabled", false );
+                        $("#description").prop( "disabled", false );
+                        $("#idtb_caixa").prop( "disabled", false );
+                        $("#idtb_payment_type").prop( "disabled", false );
+                        $("#idtb_closing").prop( "disabled", false );
+                        $("#operation_date").prop( "disabled", false );
+                        $("#btn_save_launch").show();
                         $("#name").show();
                         $("#name").parent().siblings(".control-label").show();
                         $("#idtb_caixa").show();
@@ -297,6 +361,14 @@ $(function () {
                         $("#" + id).val(value)
 
                     });
+                    $("#name").prop( "disabled", false );
+                    $("#value").prop( "disabled", false );
+                    $("#description").prop( "disabled", false );
+                    $("#idtb_caixa").prop( "disabled", false );
+                    $("#idtb_payment_type").prop( "disabled", false );
+                    $("#idtb_closing").prop( "disabled", false );
+                    $("#operation_date").prop( "disabled", false );
+                    $("#btn_save_launch").show();
                     $("#modal_launch").modal();
 
                 }
@@ -305,6 +377,7 @@ $(function () {
 
         });
 
+        
         // botao excluir lançamentos de saídas
         $(".btn_del_launch_exits").on("click", function () {
             course_id = $(this);
@@ -339,6 +412,43 @@ $(function () {
         });
 
 
+    }
+
+    function btn_vizualizar() {
+
+        // botao editar saídas
+        $(".btn_vizualizar").on("click", function () {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "show-launch",
+                dataType: "json",
+                data: { "id": $(this).attr("idtb_launch") },
+                success: function (response) {
+
+                    clearErrors();
+                    $("#launch_form")[0].reset();
+                    $.each(response["imput"], function (id, value) {
+                        $("#" + id).val(value)
+
+                    });
+                    $("#name").prop( "disabled", true );
+                    $("#value").prop( "disabled", true );
+                    $("#description").prop( "disabled", true );
+                    $("#idtb_caixa").prop( "disabled", true );
+                    $("#idtb_payment_type").prop( "disabled", true );
+                    $("#idtb_closing").prop( "disabled", true );
+                    $("#operation_date").prop( "disabled", true );
+                    $("#btn_save_launch").hide();
+                    $("#modal_launch").modal();
+
+                }
+
+            })
+
+        });
     }
 
 
@@ -422,7 +532,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch ' + edit + '" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch ' + edit + '" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-secondary btn_vizualizar " id="btn_vizualizar" title="Vizualizar"><i class="fas fa-eye"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch ' + edit + '" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch ' + edit + '" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -432,6 +542,7 @@ $(function () {
         ],
         "drawCallback": function () {
             btn_edit_launch();
+            btn_vizualizar();
         },
 
         "footerCallback": function (row, data, start, end, display) {
@@ -534,7 +645,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch ' + edit + '" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch ' + edit + '" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-secondary btn_vizualizar " id="btn_vizualizar" title="Vizualizar"><i class="fas fa-eye"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch ' + edit + '" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch ' + edit + '" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -544,6 +655,7 @@ $(function () {
         ],
         "drawCallback": function () {
             btn_edit_launch();
+            btn_vizualizar();
         },
 
         "footerCallback": function (row, data, start, end, display) {
@@ -645,7 +757,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch ' + edit + '" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch ' + edit + '" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
+                    return ' <a idtb_launch="' + row.id + '" class="btn btn-xs btn-secondary btn_vizualizar " id="btn_vizualizar" title="Vizualizar"><i class="fas fa-eye"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch ' + edit + '" id="btn_edit_launch" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch ' + edit + '" id="btn_del_launch" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -655,6 +767,7 @@ $(function () {
         ],
         "drawCallback": function () {
             btn_edit_launch();
+            btn_vizualizar();
         },
 
         "footerCallback": function (row, data, start, end, display) {
@@ -759,7 +872,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch_exits ' + edit + '" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch_exits ' + edit + '" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-secondary btn_vizualizar " id="btn_vizualizar" title="Vizualizar"><i class="fas fa-eye"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch_exits ' + edit + '" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch_exits ' + edit + '" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -769,6 +882,7 @@ $(function () {
         ],
         "drawCallback": function () {
             btn_edit_launch_s();
+            btn_vizualizar();
         },
 
         "footerCallback": function (row, data, start, end, display) {
@@ -871,7 +985,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch_exits ' + edit + '" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch_exits ' + edit + '" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-secondary btn_vizualizar " id="btn_vizualizar" title="Vizualizar"><i class="fas fa-eye"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-primary btn_edit_launch_exits ' + edit + '" id="btn_edit_launch_exits" title="Editar laçamento"> <i class="fa fa-edit"></i></a> <a idtb_launch="' + row.id + '" class="btn btn-xs btn-danger btn_del_launch_exits ' + edit + '" id="btn_del_launch_exits" > <i class="fa fa-trash"></i></a>';
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -881,6 +995,7 @@ $(function () {
         ],
         "drawCallback": function () {
             btn_edit_launch_s();
+            btn_vizualizar();
         },
 
         "footerCallback": function (row, data, start, end, display) {
@@ -976,7 +1091,7 @@ $(function () {
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
-                    return '<a id_launch="' + row.id + '" status="1" class="btn btn-xs btn-success btn_apr" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i></a> <a id_launch="' + row.id + '" status="2" class="btn btn-xs btn-danger btn_repr" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i></a>';
+                    return '<a idtb_launch="' + row.id + '" class="btn btn-xs btn-secondary btn_vizualizar " id="btn_vizualizar" title="Vizualizar"><i class="fas fa-eye"></i></a> <a id_launch="' + row.id + '" status="1" class="btn btn-xs btn-success btn_apr" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i></a> <a id_launch="' + row.id + '" status="2" class="btn btn-xs btn-danger btn_repr" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i></a>';
                     /*'<form> <input name="id" id="id" value="'+row.id+'" hidden> <input name="status" id="status" value="1" hidden> <button type="submit" class="btn btn-xs btn-success btn_aprovar" id="btn_aprovar" title="Aprovar"> <i class="fa fa-check"></i> </button> <button type="submit" class="btn btn-xs btn-danger btn_reprovar" id="btn_reprovar" title="Reprovar"> <i class="fa fa-times fa-lg"></i> </button> </form> '*/
                 },
                 columnDefs: [
@@ -987,6 +1102,7 @@ $(function () {
         ],
         "drawCallback": function () {
             btn_aprov();
+            btn_vizualizar();
         },
 
         "footerCallback": function (row, data, start, end, display) {
