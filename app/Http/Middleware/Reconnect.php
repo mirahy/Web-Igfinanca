@@ -29,10 +29,10 @@ class Reconnect
 
         Config::set("database.connections.".$base, [
             "driver" => "mysql",
-            "host" => "127.0.0.1",
+            "host" => env('DB_HOST', '45.34.12.248'),
             "database" => $base,
-            "username" => "laravel",
-            "password" => "laravel@1"
+            "username" => env('DB_USERNAME_VLA', 'forge'),
+            "password" => env('DB_PASSWORD_VLA', ''),
         ]);
 
         Config::set('database.default',$base); //atribuir a conexão padrão  
