@@ -23,10 +23,10 @@ class ReconnectDbDefault
 
         Config::set("database.connections.adb_mtz", [
             "driver" => "mysql",
-            "host" => "127.0.0.1",
+            "host" => env('DB_HOST', '45.34.12.248'),
             "database" => "adb_mtz",
-            "username" => "laravel",
-            "password" => "laravel@1"
+            "username" => env('DB_USERNAME', 'forge'),
+            "password" => env('DB_PASSWORD', ''),
         ]);
 
         Config::set('database.default','adb_mtz'); //atribuir a conexão padrão
