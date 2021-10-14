@@ -127,12 +127,12 @@ class DatabaseSeeder extends Seeder
         
               ]);
               TCadUser::create([
-                'name'          => 'Administrador',
+                'name'          => 'Mirahy Fonseca',
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
                 'birth'         => '1989-12-06',
-                'email'         => 'admin@sys.com.br',
-                'password'      =>  env("PASSWORD_HASH") ? bcrypt('sys12345678') : 'sys12345678',
+                'email'         => 'mirahy@vla.com.br',
+                'password'      =>  env("PASSWORD_HASH") ? bcrypt('adbvla123') : 'adbvla123',
                 'status'        => '1',
                 'permission'    => '2'
             
@@ -147,7 +147,7 @@ class DatabaseSeeder extends Seeder
             
               ]);
 
-              $this->command->info('Admin admin@sys.com.br user created, password sys12345678');
+              $this->command->info('Admin mirahy@vla.com.br user created, password adbvla123');
         }
 
           // private function createUsers()
