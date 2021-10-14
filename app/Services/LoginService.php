@@ -12,6 +12,9 @@ use Illuminate\Database\QueryException;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Hash;
+use App\Entities\TbBase;
+use DB;
+use Schema;
 
 
 class LoginService
@@ -35,7 +38,12 @@ class LoginService
   public function auth(Request $request)
   {
       $data = $request->all();
-      
+
+
+      //recuperando sigla e name selecionada no login
+      $base = TbBase::Where('id', $data['base'])->get('sigla')->ToArray();
+      $db   =   strtoupper(substr($base[0]['sigla'],-3));
+
 
       try
         {
@@ -57,7 +65,8 @@ class LoginService
             }else{
               $remember     = 'false';
             }
-            
+
+
             
             //estrutura do login
             if( env("PASSWORD_HASH"))
@@ -111,7 +120,9 @@ class LoginService
                   'success'     => true,
                   'messages'    => ['Ok'],
                   'data'        => $user,
-                  'type'        => [null],  
+                  'type'        => [null],
+                  'base'        => $base, 
+                  'db'          => $db,
                 ];
 
         }

@@ -153,12 +153,14 @@ class TbCadUsersController extends Controller
 
         $request = $this->service->find_Id($request["id"]); 
         $user = $request['success'] ? $request['data'] : null;
-        $json["imput"]['id'] = $user['id'];
-        $json["imput"]['name'] = $user['name'];
-        $json["imput"]['email'] = $user['email'];
-        $json["imput"]['idtb_profile'] = $user['idtb_profile'];
-        $json["imput"]['idtb_base'] = $user['idtb_base'];
-        $json["imput"]['status'] = $user['status'];
+        //dd($user['0']['base']['name']);
+        $json["imput"]['id'] = $user['0']['id'];
+        $json["imput"]['name'] = $user['0']['name'];
+        $json["imput"]['email'] = $user['0']['email'];
+        $json["imput"]['idtb_profile'] = $user['0']['idtb_profile'];
+        $json["imput"]['idtb_base'] = $user['0']['idtb_base'];
+        $json["imput"]['status'] = $user['0']['status'];
+        $json["imput"]['birth'] = $user['0']['birth'];
 
         echo json_encode($json);
 

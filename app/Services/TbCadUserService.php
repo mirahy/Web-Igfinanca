@@ -11,6 +11,8 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
 use Yajra\Datatables\Datatables;
 use DB;
+
+
 class TbCadUserService
 {
 
@@ -143,7 +145,11 @@ class TbCadUserService
 
         try {
 
-         $user = $this->repository->find($id)->toArray();
+
+         $user = TbCadUser::query()
+                          ->with('base')
+                          ->where('id', 'LIKE', $id )
+                          ->get();
 
           return [
             'success'     => true,

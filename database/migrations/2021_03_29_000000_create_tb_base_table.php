@@ -24,7 +24,7 @@ class CreateTbBaseTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name', 45);
-            $table->string('sigla', 3);
+            $table->string('sigla', 7);
             $table->longText('descripion')->nullable()->default(null);
             $table->softDeletes();
             $table->nullableTimestamps();

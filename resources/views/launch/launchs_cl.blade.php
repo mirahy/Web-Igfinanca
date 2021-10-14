@@ -46,6 +46,7 @@
                                         <th>Tipo<br/></th>
                                         <th>Nome<br/></th>
                                         <th>Valor<br/></th>
+                                        <th class="col-xs-2">Descrição <br/></th>
                                         <th>Caixa<br/></th>
                                         <th>Tp Pagamento<br/></th>
                                         <th>Coleta<br/></th>

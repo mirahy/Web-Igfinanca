@@ -32,12 +32,20 @@ class DatabaseSeeder extends Seeder
 
 
          private  function createInitialData()
-        {
+        {     
+              
               TbBase::create([
                 'name'       => 'Vila Alta',
-                'sigla'      => 'VLA',
+                'sigla'      => 'adb_vla',
                 'descripion' => 'Base Vila Alta'
         
+              ]);
+
+              TbBase::create([
+                'name'       => 'Matriz',
+                'sigla'      => 'adb_mtz',
+                'descripion' => 'Base Matriz'
+              
               ]);
 
               TbCaixa::create(
@@ -45,98 +53,86 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Dízimo']
                 );
                 
-                TbCaixa::create(
-                ['name'       => 'Oferta',
-                'description' => 'Oferta']
-                );
-        
+               TbCaixa::create(
+               ['name'       => 'Oferta',
+               'description' => 'Oferta']
+               );
+      
         
               TbProfile::create([
                 'name'        => 'Desenvolvedor',
                 'description' => 'Perfil DEV_OP']
               );
-
-                TbProfile::create(
-                [
-                  'name'        => 'Básico',
-                  'description' => 'Usuario acesso basico'     
-                  ]);
-
-
-                TbPaymentType::create([
-                    'name'        => 'Dinheiro',
-                    'descripion' => ''
-            
-                  ]);
-
-                TbPaymentType::create([
-                  'name'        => 'Cartão Debito',
+              TbProfile::create(
+              [
+                'name'        => 'Básico',
+                'description' => 'Usuario acesso basico'     
+                ]);
+              TbPaymentType::create([
+                  'name'        => 'Dinheiro',
                   'descripion' => ''
           
                 ]);
-                
-                TbPaymentType::create([
-                  'name'        => 'Cartão Crédito',
-                  'descripion' => ''
-          
-                ]);
-                
-                TbPaymentType::create([
-                  'name'        => 'PIX',
-                  'descripion' => ''
-          
-                ]);
-
-                TbOperation::create([
-                  'name'        => 'Entrada',
-                  'descripion' => ''
-          
-                ]);
-
-                TbOperation::create([
-                  'name'        => 'Saída',
-                  'descripion' => ''
-          
-                ]);
-
-                TbTypeLaunc::create([
-                  'name'        => 'Dízimo',
-                  'descripion' => 'Dízimo'
-          
-                ]);
-                
-                TbTypeLaunc::create([
-                  'name'        => 'Oferta',
-                  'descripion' => 'Oferta'
-          
-                ]);
-
-                TbTypeLaunc::create([
-                  'name'        => 'Compra',
-                  'descripion' => 'Compra'
-          
-                ]);
-
-                TbTypeLaunc::create([
-                  'name'        => 'Serviço',
-                  'descripion' => 'Serviço'
-          
-                ]);
-
-                TbTypeLaunc::create([
-                  'name'        => 'Entrada',
-                  'descripion' => 'Entradas gerais'
-          
-                ]);
-
-
-              TbCadUser::create([
-                'name'          => 'Mirahy Fonseca',
+              TbPaymentType::create([
+                'name'        => 'Cartão Debito',
+                'descripion' => ''
+        
+              ]);
+              
+              TbPaymentType::create([
+                'name'        => 'Cartão Crédito',
+                'descripion' => ''
+        
+              ]);
+              
+              TbPaymentType::create([
+                'name'        => 'PIX',
+                'descripion' => ''
+        
+              ]);
+              TbOperation::create([
+                'name'        => 'Entrada',
+                'descripion' => ''
+        
+              ]);
+              TbOperation::create([
+                'name'        => 'Saída',
+                'descripion' => ''
+        
+              ]);
+              TbTypeLaunc::create([
+                'name'        => 'Dízimo',
+                'descripion' => 'Dízimo'
+        
+              ]);
+              
+              TbTypeLaunc::create([
+                'name'        => 'Oferta',
+                'descripion' => 'Oferta'
+        
+              ]);
+              TbTypeLaunc::create([
+                'name'        => 'Compra',
+                'descripion' => 'Compra'
+        
+              ]);
+              TbTypeLaunc::create([
+                'name'        => 'Serviço',
+                'descripion' => 'Serviço'
+        
+              ]);
+              TbTypeLaunc::create([
+                'name'        => 'Entrada',
+                'descripion' => 'Entradas gerais'
+        
+              ]);
+              TCadUser::create([
+                'name'          => 'Administrador',
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
                 'birth'         => '1989-12-06',
-                'email'         => 'mirahy@vla.com.br',
-                'password'      =>  env("PASSWORD_HASH") ? bcrypt('adbvla123') : 'adbvla123',
+                'email'         => 'admin@sys.com.br',
+                'password'      =>  env("PASSWORD_HASH") ? bcrypt('sys12345678') : 'sys12345678',
                 'status'        => '1',
                 'permission'    => '2'
             
@@ -151,7 +147,7 @@ class DatabaseSeeder extends Seeder
             
               ]);
 
-              $this->command->info('Admin mirahy@vla.com.br user created');
+              $this->command->info('Admin admin@sys.com.br user created, password sys12345678');
         }
 
           // private function createUsers()
