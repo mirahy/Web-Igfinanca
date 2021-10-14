@@ -11,13 +11,15 @@
 |
 */
 
+//garantindo que as rotas abaixo somente acessem a base matriz atravez da middlaware reconnectdbdefault
+Route::middleware(['reconnectdbdefault'])->group(function () {
 
     /**
     * Routes to acess home page
     *========================================================================
     */
-
     Route::get('/',['uses' => 'Controller@homepage']);
+    
 
     /**
     * Routes to user auth
@@ -39,33 +41,38 @@
     *========================================================================
     */
     Route::get('/forgot-password',['uses' => 'TbCadUsersController@forgotPassword']);
+
+
+     //Init group unique users route and user autenticated
+   Route::middleware(['auth.unique.user', 'auth'])->group(function () {
+       /**
+       * Routes to dashboard nav users
+       *========================================================================
+       */
+       #Route::get('/user',['as' =>'user.index', 'uses' => 'TbCadUsersController@index']);
+       Route::resource('user', 'TbCadUsersController');
+       Route::get('/edit-users', ['as' =>'edit-users', 'uses' => 'TbCadUsersController@query_DataTables']);
+       Route::post('/keep', ['as' =>'keep', 'uses' => 'TbCadUsersController@keep']);
+       Route::post('/show-user', ['as' =>'show-user', 'uses' => 'TbCadUsersController@show_user']);
+       Route::post('/destroy', ['as' =>'destroy', 'uses' => 'TbCadUsersController@destroy']);
+       Route::get('/autocomplete', ['as' =>'autocomplete', 'uses' => 'TbCadUsersController@autocomplete']);
+
+   });
+});
     
 
-    //Init group unique users route
-Route::middleware(['auth.unique.user'])->group(function () {
-    Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index'])->middleware('auth');
+//Init group unique users route, user autenticated and reconnect data base seletion on login
+Route::middleware(['auth.unique.user', 'auth', 'reconnect'])->group(function () {
+    Route::get('/dashboard',['as' =>'dashboard', 'uses' => 'DashboardController@index']);
 
     /**
     * Routes return values dashboard
     *========================================================================
     */
-    Route::get('/sum',['as' =>'sum', 'uses' => 'DashboardController@sum'])->middleware('auth');
-    Route::get('/init',['as' =>'init', 'uses' => 'DashboardController@saldo'])->middleware('auth');
-    Route::get('/balance',['as' =>'balance', 'uses' => 'DashboardController@saldo'])->middleware('auth');
-    Route::get('/pend',['as' =>'pend', 'uses' => 'DashboardController@pend'])->middleware('auth');
-
-
-    /**
-    * Routes to dashboard nav users
-    *========================================================================
-    */
-    #Route::get('/user',['as' =>'user.index', 'uses' => 'TbCadUsersController@index']);
-    Route::resource('user', 'TbCadUsersController');
-    Route::get('/edit-users', ['as' =>'edit-users', 'uses' => 'TbCadUsersController@query_DataTables'])->middleware('auth');
-    Route::post('/keep', ['as' =>'keep', 'uses' => 'TbCadUsersController@keep']);
-    Route::post('/show-user', ['as' =>'show-user', 'uses' => 'TbCadUsersController@show_user'])->middleware('auth');
-    Route::post('/destroy', ['as' =>'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('auth');
-    Route::get('/autocomplete', ['as' =>'autocomplete', 'uses' => 'TbCadUsersController@autocomplete'])->middleware('auth');
+    Route::get('/sum',['as' =>'sum', 'uses' => 'DashboardController@sum']);
+    Route::get('/init',['as' =>'init', 'uses' => 'DashboardController@saldo']);
+    Route::get('/balance',['as' =>'balance', 'uses' => 'DashboardController@saldo']);
+    Route::get('/pend',['as' =>'pend', 'uses' => 'DashboardController@pend']);
 
 
     /**
@@ -75,27 +82,27 @@ Route::middleware(['auth.unique.user'])->group(function () {
 
     /**entries*/
     Route::resource('launch', 'TbLaunchController');
-    Route::get('/launchs-e', ['as' =>'launchs-e', 'uses' => 'TbLaunchController@index'])->middleware('auth');
+    Route::get('/launchs-e', ['as' =>'launchs-e', 'uses' => 'TbLaunchController@index']);
 
 
     /**exits */
-    Route::get('/launchs-s', ['as' =>'launchs-s', 'uses' => 'TbLaunchController@index_s'])->middleware('auth');
+    Route::get('/launchs-s', ['as' =>'launchs-s', 'uses' => 'TbLaunchController@index_s']);
 
     
     /**consult launches */
-    Route::get('/launchs-cl', ['as' =>'launchs-cl', 'uses' => 'TbLaunchController@index_cl'])->middleware('auth');
+    Route::get('/launchs-cl', ['as' =>'launchs-cl', 'uses' => 'TbLaunchController@index_cl']);
 
 
     /**approvals*/
-    Route::get('/apr-l', ['as' =>'apr-l', 'uses' => 'TbLaunchController@index_l'])->middleware('auth');
-    Route::get('/apr-f', ['as' =>'apr-f', 'uses' => 'TbLaunchController@apr_f'])->middleware('auth');
-    Route::post('/aprov', ['as' =>'aprov', 'uses' => 'TbLaunchController@aprov_id'])->middleware('auth');
+    Route::get('/apr-l', ['as' =>'apr-l', 'uses' => 'TbLaunchController@index_l']);
+    Route::get('/apr-f', ['as' =>'apr-f', 'uses' => 'TbLaunchController@apr_f']);
+    Route::post('/aprov', ['as' =>'aprov', 'uses' => 'TbLaunchController@aprov_id']);
 
     /**crud lauches*/
-    Route::get('/query', ['as' =>'query', 'uses' => 'TbLaunchController@query_DataTables'])->middleware('auth');
-    Route::post('/keep-lauch', ['as' =>'keep-lauch', 'uses' => 'TbLaunchController@keep'])->middleware('auth');
-    Route::post('/show-launch', ['as' =>'show-lauch', 'uses' => 'TbLaunchController@show_launch'])->middleware('auth');
-    Route::post('/destroy-launch', ['as' =>'destroy-launch', 'uses' => 'TbLaunchController@destroy'])->middleware('auth');
+    Route::get('/query', ['as' =>'query', 'uses' => 'TbLaunchController@query_DataTables']);
+    Route::post('/keep-lauch', ['as' =>'keep-lauch', 'uses' => 'TbLaunchController@keep']);
+    Route::post('/show-launch', ['as' =>'show-lauch', 'uses' => 'TbLaunchController@show_launch']);
+    Route::post('/destroy-launch', ['as' =>'destroy-launch', 'uses' => 'TbLaunchController@destroy']);
 
 
     /**
@@ -103,9 +110,9 @@ Route::middleware(['auth.unique.user'])->group(function () {
     *========================================================================
     */
 
-    Route::get('/reports-f', ['as' =>'reports-f', 'uses' => 'TbLaunchController@index_reports'])->middleware('auth');
-    //Route::get('/closingPDF', ['as' =>'closingPDF', 'uses' => 'PdfController@closing_pdf'])->middleware('auth');
-    Route::post('/closingPDF', ['as' =>'closingPDF', 'uses' => 'PdfController@closing_pdf'])->middleware('auth');
+    Route::get('/reports-f', ['as' =>'reports-f', 'uses' => 'TbLaunchController@index_reports']);
+    //Route::get('/closingPDF', ['as' =>'closingPDF', 'uses' => 'PdfController@closing_pdf']);
+    Route::post('/closingPDF', ['as' =>'closingPDF', 'uses' => 'PdfController@closing_pdf']);
 
 
     /**
@@ -113,13 +120,13 @@ Route::middleware(['auth.unique.user'])->group(function () {
     *========================================================================
     */
     /**Closings */
-    Route::get('/closing', ['as' =>'closing', 'uses' => 'TbClosingsController@index'])->middleware('auth');
+    Route::get('/closing', ['as' =>'closing', 'uses' => 'TbClosingsController@index']);
 
     /**crud closing*/
-    Route::get('/query-closing', ['as' =>'query-closing', 'uses' => 'TbClosingsController@query_DataTables'])->middleware('auth');
-    Route::post('/keep-closing', ['as' =>'keep-closing', 'uses' => 'TbClosingsController@keep'])->middleware('auth');
-    Route::post('/show-closing', ['as' =>'show-closing', 'uses' => 'TbClosingsController@show_closing'])->middleware('auth');
-    Route::post('/destroy-closing', ['as' =>'destroy-closing', 'uses' => 'TbClosingsController@destroy'])->middleware('auth');
+    Route::get('/query-closing', ['as' =>'query-closing', 'uses' => 'TbClosingsController@query_DataTables']);
+    Route::post('/keep-closing', ['as' =>'keep-closing', 'uses' => 'TbClosingsController@keep']);
+    Route::post('/show-closing', ['as' =>'show-closing', 'uses' => 'TbClosingsController@show_closing']);
+    Route::post('/destroy-closing', ['as' =>'destroy-closing', 'uses' => 'TbClosingsController@destroy']);
 
 
 /**Finish group route */

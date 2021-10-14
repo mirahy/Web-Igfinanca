@@ -39,10 +39,13 @@
 												<span class="help-block"></span>
 										</div>
 
-										@include('templates.forms.email',['input' => 'email', 'attributes' => ['placeholder' => 'Email', 'required','class' => 'form-control form-control-user ', 'id' => 'email', 'name' => 'email',  'maxlength' => '100']])
+										@include('templates.forms.email',['input' => 'email', 'class' =>'input-login', 'attributes' => ['placeholder' => 'Email', 'required','class' => 'form-control form-control-user ', 'id' => 'email', 'name' => 'email',  'maxlength' => '100']])
 										
-										@include('templates.forms.password',['input' => 'password', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user', 'id' => 'password', 'name' => 'password']])
-										<div class="form-group " >
+										@include('templates.forms.password',['input' => 'password', 'class' =>'input-login', 'attributes' => ['placeholder' => 'Senha', 'required', 'class' => 'form-control form-control-user 	', 'id' => 'password', 'name' => 'password']])
+
+										@include('templates.forms.select',['select' => 'Base',  'data' => $base_list, 'class' =>'input-login' , 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'base', 'name' => 'base']])
+										
+										<div class="col-lg-12 input-recaptcha" >
 											<div class="col-sm-12 ">
 												<label  id="g-recaptcha" class="g-recaptcha " data-sitekey="6LfXo1gUAAAAAB2V2SVQCXpHZC4-i5SgQFQcUjAM" data-size="normal" style="transform:scale(0.93);transform-origin:0 0">
 												</label><!-- data-theme="dark" valida/acess.php -->

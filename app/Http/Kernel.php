@@ -20,6 +20,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Session\Middleware\StartSession::class,
+
     ];
 
     /**
@@ -63,6 +64,9 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.unique.user' => \App\Http\Middleware\CheckUserUniqueAuth::class,
+        'reconnect' => \App\Http\Middleware\Reconnect::class,
+        'reconnectdbdefault' => \App\Http\Middleware\ReconnectDbDefault::class,
+        'reconnectbeforelogin' => \App\Http\Middleware\ReconnectBeforeLogin::class,
 
     ];
 }

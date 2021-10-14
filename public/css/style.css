@@ -66,3 +66,12 @@
   .btn_vizualizar{
     margin-right: 4px;
   }
+
+  .input-login{
+    height: 60px !important;
+  }
+
+  .input-recaptcha{
+    margin-top: 20px;
+    margin-bottom: 2px;
+  }
