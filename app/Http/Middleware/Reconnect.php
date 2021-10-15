@@ -20,25 +20,22 @@ class Reconnect
      */
      public function handle($request, Closure $next)
     {
-        $base = session()->get('base');
-        $base = $base[0]['sigla'];
-        
-        // Apaga a conexão db, forçando o Laravel a voltar suas configurações de conexão para o padrão.
-        DB::purge($base);
-        
 
-        Config::set("database.connections.".$base, [
-            "driver" => "mysql",
-            "host" => env('DB_HOST', '45.34.12.248'),
-            "database" => $base,
-            "username" => env('DB_USERNAME_VLA', 'forge'),
-            "password" => env('DB_PASSWORD_VLA', ''),
-        ]);
-
-        Config::set('database.default',$base); //atribuir a conexão padrão  
+        if ($request->session()->has('base')) //veirifica se o item base existe e não é null
+        {
+            $base = session()->get('base');
+            $base = $base[0]['sigla'];
+            
+                if(DB::connection()->getDatabaseName() != $base)//verifica se a conexão ja existe
+                {
         
-        // Conecta no banco
-        DB::reconnect($base);
+                Config::set('database.default',$base); //atribuir a conexão padrão  
+                
+                // Conecta no banco
+                DB::reconnect($base);
+                
+                }
+            }
        
         return $next($request);
     }
