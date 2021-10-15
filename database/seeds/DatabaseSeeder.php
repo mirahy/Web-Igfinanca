@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
               ]);
               
               TbPaymentType::create([
-                'name'        => 'Cartão Crédito',
+                'name'        => 'Cheque',
                 'descripion' => ''
         
               ]);
@@ -90,6 +90,26 @@ class DatabaseSeeder extends Seeder
                 'descripion' => ''
         
               ]);
+
+              TbPaymentType::create([
+                'name'        => 'DOC',
+                'descripion' => ''
+        
+              ]);
+
+              TbPaymentType::create([
+                'name'        => 'TED',
+                'descripion' => ''
+        
+              ]);
+
+              TbPaymentType::create([
+                'name'        => 'Cartão Crédito',
+                'descripion' => ''
+        
+              ]);
+
+
               TbOperation::create([
                 'name'        => 'Entrada',
                 'descripion' => ''
