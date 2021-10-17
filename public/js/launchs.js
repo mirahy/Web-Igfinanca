@@ -856,6 +856,7 @@ $(function () {
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
+            { data: 'base.name', name: 'base.name' },
             { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
                 "data": "closing.status",
@@ -974,6 +975,7 @@ $(function () {
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
+            { data: 'base.name', name: 'base.name' },
             { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
                 "data": "closing.status",
@@ -1094,6 +1096,7 @@ $(function () {
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
+            { data: 'base.name', name: 'base.name' },
             { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
                 "data": "closing.status",
@@ -1219,6 +1222,7 @@ $(function () {
                 { targets: "dt-center", ClassName: "dt-center" }
             ]
         },
+        { data: 'base.name', name: 'base.name' },
         { data: 'closing.MonthYear', name: 'closing.MonthYear' },
         {
             "data": "closing.status",
