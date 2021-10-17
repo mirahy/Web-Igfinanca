@@ -35,18 +35,18 @@ class DashboardController extends Controller
     $json["status"] = 1;
     $json["error_list"] = array();
  
-   
+    
     $request = $this->service->auth($request);
-  
+
     session([
        'success'        =>  $request['success'],
        'messages'       =>  $request['messages'],
        'user'           =>  $request['data'],
        'base'           =>  $request['base'],
        'db'             =>  $request['db'],
-       'id_base'        =>  $request['id_base']
     ]);
-    
+
+
 
     if(!$request['success']){
       $json["status"] = 0;
