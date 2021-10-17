@@ -23,6 +23,12 @@ class CreateTbLaunchTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+
+            // Criar o campo id_mtz somente nas bases filiais
+            $table->unsignedInteger('id_mtz')->nullable()->default(null);
+            // Criar o campo id_filial somente nas base Matriz
+            //$table->unsignedInteger('id_filial');
+
             $table->unsignedInteger('id_user');
             $table->text('description')->nullable()->default(null);
             $table->date('operation_date');
