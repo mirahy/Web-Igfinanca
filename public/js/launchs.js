@@ -29,7 +29,6 @@ $(function () {
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(1);
                 $("#idtb_type_launch").val(1);
-                $("#idtb_base").val(1);
                 $("#idtb_caixa").val(1);
                 $("#id_user").val(0);
                 $("#name").show();
@@ -58,7 +57,6 @@ $(function () {
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(1);
                 $("#idtb_type_launch").val(2);
-                $("#idtb_base").val(1);
                 $("#idtb_caixa").val(2);
                 $("#id_user").val(0);
                 $("#name").val('Oferta Local').hide();
@@ -87,7 +85,6 @@ $(function () {
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(1);
                 $("#idtb_type_launch").val(5);
-                $("#idtb_base").val(1);
                 $("#id_user").val(0);
                 $("#name").show();
                 $("#name").parent().siblings(".control-label").show();
@@ -115,7 +112,6 @@ $(function () {
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(2);
                 $("#idtb_type_launch").val(3);
-                $("#idtb_base").val(1);
                 $("#id_user").val(0);
                 //$("#img")[0].attr("src", "");
                 $("#modal_launch").modal();
@@ -140,7 +136,6 @@ $(function () {
                 $("#launch_form")[0].reset();
                 $("#idtb_operation").val(2);
                 $("#idtb_type_launch").val(4);
-                $("#idtb_base").val(1);
                 $("#id_user").val(0);
                 //$("#img")[0].attr("src", "");
                 $("#modal_launch").modal();
@@ -466,7 +461,6 @@ $(function () {
 
 
 
-
     /** 
     * tabela dizimos
     **/
@@ -504,6 +498,7 @@ $(function () {
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
+            { data: 'base.name', name: 'base.name' },
             { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
                 "data": "closing.status",
@@ -622,6 +617,7 @@ $(function () {
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
+            { data: 'base.name', name: 'base.name' },
             { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
                 "data": "closing.status",
@@ -739,6 +735,7 @@ $(function () {
                     { targets: "dt-center", ClassName: "dt-center" }
                 ]
             },
+            { data: 'base.name', name: 'base.name' },
             { data: 'closing.MonthYear', name: 'closing.MonthYear' },
             {
                 "data": "closing.status",
