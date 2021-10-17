@@ -5,8 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use App\Entities\TbBase;
 
 
 class Reconnect
@@ -18,25 +16,24 @@ class Reconnect
      * @param  \Closure  $next
      * @return mixed
      */
-     public function handle($request, Closure $next)
+    public function handle($request, Closure $next)
     {
 
         if ($request->session()->has('base')) //veirifica se o item base existe e não é null
         {
             $base = session()->get('base');
             $base = $base[0]['sigla'];
-            
-                if(DB::connection()->getDatabaseName() != $base)//verifica se a conexão ja existe
-                {
-        
-                Config::set('database.default',$base); //atribuir a conexão padrão  
-                
+
+            if (DB::connection()->getDatabaseName() != $base) //verifica se a conexão ja existe
+            {
+
+                Config::set('database.default', $base); //atribuir a conexão padrão  
+
                 // Conecta no banco
                 DB::reconnect($base);
-                
-                }
             }
-       
+        }
+
         return $next($request);
     }
 }
