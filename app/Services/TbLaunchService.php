@@ -260,6 +260,7 @@ class TbLaunchService
       ->with('type_launch')
       ->with('closing')
       ->with('payment_type')
+      ->with('operation')
       ->orwhereHas('closing', function ($q) use ($request, $def) {
         $q->where([
           ['status', 'like',  $request->query('closing_status', $def)],
