@@ -39,11 +39,13 @@ class LoginService
   {
       $data = $request->all();
 
+      
+      //recuperando sigla, name e id selecionada no login
+      $base    = TbBase::Where('id', $data['base'])->get('sigla')->ToArray();
+      $db      =   strtoupper(substr($base[0]['sigla'],-3));
+      $id_base = $data['base'];
 
-      //recuperando sigla e name selecionada no login
-      $base = TbBase::Where('id', $data['base'])->get('sigla')->ToArray();
-      $db   =   strtoupper(substr($base[0]['sigla'],-3));
-
+      //dd($db);
 
       try
         {
@@ -78,7 +80,10 @@ class LoginService
                 'success'     => false,
                 'messages'    => ["Email e/ou senha inválidos"],
                 'data'        => $user,
-                'type'        => ["email","password"],                 
+                'type'        => ["email","password"],
+                'base'        => $base, 
+                'db'          => $db,
+                'id_base'     => $id_base,       
               ];
 
               if (!Auth::attempt($data, $remember))
@@ -86,7 +91,10 @@ class LoginService
                 'success'     => false,
                 'messages'    => ["Email e/ou senha inválidos"],
                 'data'        => $user,
-                'type'        => ["email","password"],                 
+                'type'        => ["email","password"],
+                'base'        => $base, 
+                'db'          => $db,
+                'id_base'     => $id_base,                 
               ];
 
               Auth::attempt($data, $remember);
@@ -99,7 +107,11 @@ class LoginService
                     'success'     => false,
                     'messages'    => ["Email e/ou senha inválidos"],
                     'data'        => $user,
-                    'type'        => ["email","password"],                 
+                    'type'        => ["email","password"],
+                    'base'        => $base, 
+                    'db'          => $db,
+                    'id_base'     => $id_base, 
+                                     
                   ];
 
               if($user->password != $request->get('password'))
@@ -107,7 +119,10 @@ class LoginService
                     'success'     => false,
                     'messages'    => ["Email e/ou senha inválidos"],
                     'data'        => $user,
-                    'type'        => ["email","password"],  
+                    'type'        => ["email","password"],
+                    'base'        => $base, 
+                    'db'          => $db,
+                    'id_base'     => $id_base,  
                   ];
                   
                   
@@ -123,16 +138,17 @@ class LoginService
                   'type'        => [null],
                   'base'        => $base, 
                   'db'          => $db,
+                  'id_base'     => $id_base, 
                 ];
 
         }
         catch (Exception $e)
         {
           switch (get_class($e)) {
-            case QueryException::class      : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => ''];
-            case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys(), 'data'   => ''];
-            case Exception::class           : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => ''];
-            default                         : return['success' => false, 'messages' => 'Preencher campos!'];
+            case QueryException::class      : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => ''];
+            case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys(), 'data'   => '', 'base' => '', 'db' => '', 'id_base' => ''];
+            case Exception::class           : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => ''];
+            default                         : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => ''];
           }
         }
 

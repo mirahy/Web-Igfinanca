@@ -12,7 +12,12 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
 use Yajra\Datatables\Datatables;
+<<<<<<< HEAD
 use DB;
+=======
+use App\Http\Controllers\ConnectDbController;
+use Illuminate\Support\Arr;
+>>>>>>> parent of b3b28fa (Revert "Adicionando rotinas de replicação de alterações nos lançamentos para a base matriz")
 
 class TbLaunchService
 {
@@ -20,12 +25,23 @@ class TbLaunchService
   private $repository;
   private $validator;
   private $serviceUser;
+<<<<<<< HEAD
 
   public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator, TbCadUserService $serviceUser)
   {
     $this->repository   = $repository;
     $this->validator    = $validator;
     $this->serviceUser  = $serviceUser;
+=======
+  private $ConnectDbController;
+
+  public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator, TbCadUserService $serviceUser, ConnectDbController $ConnectDbController)
+  {
+    $this->repository           = $repository;
+    $this->validator            = $validator;
+    $this->serviceUser          = $serviceUser;
+    $this->ConnectDbController  = $ConnectDbController;
+>>>>>>> parent of b3b28fa (Revert "Adicionando rotinas de replicação de alterações nos lançamentos para a base matriz")
   }
 
   //função cadastar lançamento
@@ -55,8 +71,29 @@ class TbLaunchService
         return $v;
       }
 
+<<<<<<< HEAD
       // registra no banco de dados filial
       $launch = $this->repository->create($data);
+=======
+      // registra lançamento no banco de dados filial
+      $launch = $this->repository->create($data);
+      //recupera id gerado na base filial para inserir na coluna id_filial na base matriz
+      $data['id_filial'] = $launch['id'];
+      //altera a conexão para base matriz
+      $this->ConnectDbController->connectMatriz();
+      // registra lançamento no banco de dados matriz
+      $launch_mtz = $this->repository->create($data);
+      //remove a chave e valor de id_filias, insere id filial e recupera id gerado na base matriz para inserir na coluna id_mtz na base filial
+      Arr::forget($data, 'id_filial');
+      $data['id'] = $launch['id'];
+      $data['id_mtz'] = $launch_mtz['id'];
+      //altera a conexão para base Local
+      $this->ConnectDbController->connectBase();
+      // atualiza a coluna id_mtz na base filial
+      $this->repository->update($data, $launch['id']);
+
+
+>>>>>>> parent of b3b28fa (Revert "Adicionando rotinas de replicação de alterações nos lançamentos para a base matriz")
       $msg = $launch['value'];
 
       return [
@@ -107,7 +144,24 @@ class TbLaunchService
         return $v;
       }
 
+<<<<<<< HEAD
       $launch = $this->repository->update($data, $id);
+=======
+
+      //atualiza lançamento no banco de dados filial
+      $launch = $this->repository->update($data, $id);
+      //recupera id_mtz
+      $data['id']= $launch['id_mtz'];
+      $id_mtz = $launch['id_mtz'];
+      //altera a conexão para base matriz
+      $this->ConnectDbController->connectMatriz();
+      // atualiza lançamento no banco de dados matriz
+      $launch = $this->repository->update($data, $id_mtz);
+      //altera a conexão para base Local
+      $this->ConnectDbController->connectBase();
+
+
+>>>>>>> parent of b3b28fa (Revert "Adicionando rotinas de replicação de alterações nos lançamentos para a base matriz")
       $msg = $launch['value'];
 
       return [
@@ -137,6 +191,7 @@ class TbLaunchService
   {
 
     try {
+<<<<<<< HEAD
 
 
       $launch = $this->repository->delete($id);
@@ -145,6 +200,24 @@ class TbLaunchService
       return [
         'success'     => true,
         'messages'    => ["excluído"],
+=======
+      //recupera id_mtz
+      $data = $this->repository->find($id);
+      //exclui o registro da base local
+      $launch = $this->repository->delete($id);
+      //altera a conexão para base matriz
+      $this->ConnectDbController->connectMatriz();
+      //exclui o registro da base matriz
+      $launch_mtz = $this->repository->delete($data['id_mtz']);
+      //altera a conexão para base Local
+      $this->ConnectDbController->connectBase();
+      
+      $msg = $data['value'];
+
+      return [
+        'success'     => true,
+        'messages'    => [$msg . " excluído"],
+>>>>>>> parent of b3b28fa (Revert "Adicionando rotinas de replicação de alterações nos lançamentos para a base matriz")
         'data'        => $launch,
         'type'        => [""],
       ];
@@ -159,6 +232,7 @@ class TbLaunchService
           return ['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
         default:
           return ['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
+<<<<<<< HEAD
       }
     }
   }
@@ -245,6 +319,102 @@ class TbLaunchService
         default:
           return ['success' => false, 'messages' => 'Não foi possível aprovar!', 'type'  => $e->getMessage()];
       }
+=======
+      }
+    }
+  }
+
+  //retorna usuário pelo nome
+  public function find_User_name($name)
+  {
+
+    return  $this->serviceUser->find_User_name($name);
+  }
+
+  //retorna lançamento pelo id
+  public function find_Id($id)
+  {
+
+    try {
+
+      $launch = $this->repository->with('user')
+        ->with('closing')
+        ->with('payment_type')
+        ->find($id)
+        ->toArray();
+
+      return [
+        'success'     => true,
+        'messages'    => null,
+        'data'        => $launch,
+        'type'        => null,
+      ];
+    } catch (Exception $e) {
+
+      switch (get_class($e)) {
+        case QueryException::class:
+          return ['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+        case ValidatorException::class:
+          return ['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => null];
+        case Exception::class:
+          return ['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+        default:
+          return ['success' => false, 'messages' => $e->getMessage(), 'type'  => null];
+      }
+    }
+  }
+
+  //função aprovar/reprovar lançamentos
+  public function aprov_id($data)
+  {
+    try {
+
+      $id      = $data['id'];
+      $id_mtz  = TbLaunch::where('id', $id)->get('id_mtz');
+      $id_mtz = $id_mtz[0]['id_mtz'];
+      
+      $closing = $this->repository->with('closing')->find($id)->toArray();
+
+      if ($closing['closing']['status'] == 0) {
+        return [
+          'success'  => false,
+          'messages' => 'Lançamento com período fechado não pode ser Aprovado/Reprovado!',
+          'type'     => '',
+          'data'     => '',
+        ];
+      }
+      //Ataliza campo status na base local
+      $launch = TbLaunch::Where('id', $id)->update(['status' => $data['status']]);
+      //altera a conexão para base matriz
+      $this->ConnectDbController->connectMatriz();
+      //Ataliza campo status na base matriz
+      TbLaunch::where('id', $id_mtz)->update(['status' => $data['status']]);
+      //altera a conexão para base Local
+      $this->ConnectDbController->connectBase();
+
+
+      if (!$launch) {
+        throw new Exception('');
+      }
+      return [
+        'success'     => true,
+        'messages'    => $data['status'] == 1 ? [" Aprovado"] : [" Reprovado"],
+        'data'        => $launch,
+        'type'        => [""],
+      ];
+    } catch (Exception $e) {
+
+      switch (get_class($e)) {
+        case QueryException::class:
+          return ['success' => false, 'messages' => 'Não foi possível aprovar!', 'type'  => $e->getMessage()];
+        case ValidatorException::class:
+          return ['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+        case Exception::class:
+          return ['success' => false, 'messages' => 'Não foi possível aprovar!', 'type'  => $e->getMessage()];
+        default:
+          return ['success' => false, 'messages' => 'Não foi possível aprovar!', 'type'  => $e->getMessage()];
+      }
+>>>>>>> parent of b3b28fa (Revert "Adicionando rotinas de replicação de alterações nos lançamentos para a base matriz")
     }
   }
 
@@ -260,7 +430,11 @@ class TbLaunchService
       ->with('type_launch')
       ->with('closing')
       ->with('payment_type')
+<<<<<<< HEAD
       ->with('operation')
+=======
+      ->with('base')
+>>>>>>> parent of b3b28fa (Revert "Adicionando rotinas de replicação de alterações nos lançamentos para a base matriz")
       ->orwhereHas('closing', function ($q) use ($request, $def) {
         $q->where([
           ['status', 'like',  $request->query('closing_status', $def)],
