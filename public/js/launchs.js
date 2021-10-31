@@ -1194,7 +1194,8 @@ $(function () {
     // "serverSide": true,
     "ajax": baseUrl + 'query',
     "columns": [
-        { data: 'type_launch.name', name: 'launch.name' },
+        { data: 'operation.name', name: 'operation.name' },
+        { data: 'type_launch.name', name: 'type_launch.name' },
         { data: 'user.name', name: 'user.name' },
         {
             data: 'value', name: 'value',
@@ -1313,7 +1314,7 @@ $(function () {
 
         // Total over all pages
         total = api
-            .column(2)
+            .column(3)
             .data()
             .reduce(function (a, b) {
                 return intVal(a) + intVal(b);
@@ -1321,14 +1322,14 @@ $(function () {
 
         // Total over this page
         pageTotal = api
-            .column(2, { page: 'current' })
+            .column(3, { page: 'current' })
             .data()
             .reduce(function (a, b) {
                 return intVal(a) + intVal(b);
             }, 0);
 
         // Update footer
-        $(api.column(9).footer()).html(
+        $(api.column(10).footer()).html(
             'R$' +  number_format(pageTotal, 2, ',', '.')  + ' ( R$' + number_format(total, 2, ',', '.') + ' total)'
         );
 

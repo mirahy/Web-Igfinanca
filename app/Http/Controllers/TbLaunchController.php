@@ -59,7 +59,7 @@ class TbLaunchController extends Controller
         return view('launch.launchs_e', [
             'operation'    => 0,
             'type_launch'  => 0,
-            'base'         => session()->get('id_base'),
+            'base'         => 0,
             'closing'      => 0,
             'status'       => 0,
             'id_user'      => 0,
@@ -80,7 +80,7 @@ class TbLaunchController extends Controller
         return view('launch.launchs_s', [
             'operation'    => 0,
             'type_launch'  => 0,
-            'base'         => session()->get('id_base'),
+            'base'         => 0,
             'closing'      => 0,
             'status'       => 0,
             'caixa_list'   => $caixa_list,
@@ -108,7 +108,7 @@ class TbLaunchController extends Controller
         return view('launch.launchs_apr', [
             'operation'    => 0,
             'type_launch'  => 0,
-            'base'         => session()->get('id_base'),
+            'base'         => 0,
             'closing'      => 0,
             'status'       => 0,
             'caixa_list'   => $caixa_list,
@@ -175,7 +175,7 @@ class TbLaunchController extends Controller
             $request = $this->service->store($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;
            
-            
+               
              if(!$request['success']){
                 $i=0;
                 $json["status"] = 0;
@@ -283,7 +283,9 @@ class TbLaunchController extends Controller
     //função para aprovar/reprovar laçamentos pelo id
     public function aprov_id(Request $request)
     {
+
         $request = $this->service->aprov_id($request->all());
+
 
         $json["success"] = $request['messages'];
         $json["status"] = $request['success'];

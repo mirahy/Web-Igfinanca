@@ -43,6 +43,7 @@
                             <table id="dt_consult" class="table table-striped table-hover table-responsive display nowrap" >
                                 <thead>
                                     <tr >
+                                        <th>Entrada/Saída<br/></th>
                                         <th>Tipo<br/></th>
                                         <th>Nome<br/></th>
                                         <th>Valor<br/></th>
