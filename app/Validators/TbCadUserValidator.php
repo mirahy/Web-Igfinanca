@@ -20,7 +20,7 @@ class TbCadUserValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-          'name'                    => 'bail|required|min:10|unique:tb_cad_user,name',
+          'name'                    => 'bail|required|min:2|unique:tb_cad_user,name',
           'idtb_profile'            => 'bail|required',
           'idtb_base'               => 'bail|required',
           'status'                  => 'bail|required',
@@ -31,7 +31,7 @@ class TbCadUserValidator extends LaravelValidator
 
         
         ValidatorInterface::RULE_UPDATE => [
-          'name'            => 'bail|required|min:10|unique:tb_cad_user,name',
+          'name'            => 'bail|required|min:2|unique:tb_cad_user,name',
           'idtb_profile'    => 'required',
           'idtb_base'       => 'required',
           'status'          => 'required',

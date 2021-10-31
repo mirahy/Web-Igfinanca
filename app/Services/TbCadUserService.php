@@ -4,12 +4,14 @@ namespace App\Services;
 
 use Exception;
 use App\Entities\TbCadUser;
+use App\Entities\TbBase;
 use App\Validators\TbCadUserValidator;
 use App\Repositories\TbCadUserRepository;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
 use Yajra\Datatables\Datatables;
+use App\Http\Controllers\ConnectDbController;
 use DB;
 
 
@@ -18,11 +20,13 @@ class TbCadUserService
 
       private $repository;
       private $validator;
+      private $ConnectDbController;
 
-      public function __construct(TbCadUserRepository $repository, TbCadUserValidator $validator)
+      public function __construct(TbCadUserRepository $repository, TbCadUserValidator $validator, ConnectDbController $ConnectDbController)
       {
-          $this->repository   = $repository;
-          $this->validator    = $validator;
+          $this->repository             = $repository;
+          $this->validator              = $validator;
+          $this->ConnectDbController    = $ConnectDbController;
 
       }
 
@@ -46,10 +50,31 @@ class TbCadUserService
               if(!$v['success']){
                 return $v;
               }
+
               //hash password?
               $data['password'] = env("PASSWORD_HASH") ? bcrypt($data['password']) : $data['password'];
 
-              $user = $this->repository->create($data);
+
+               // registra no banco de dados matriz
+               $user = $this->repository->create($data);
+
+               //recupera o nome das bases
+               $bases = TbBase::query()->select('sigla')->get();
+
+               foreach($bases as $base){
+                $base = $base['sigla'];
+                if($base != 'adb_mtz'){
+                  //connecta banco
+                  $this->ConnectDbController->connectBases($base);
+                  // registra no banco de dados das filiais
+                  $this->repository->create($data);
+                }
+                
+               }
+
+               //altera a conexão para base matriz
+               $this->ConnectDbController->connectBase();
+              
       
               $name = explode(" ",$user['name']);
 
@@ -82,7 +107,25 @@ class TbCadUserService
               $id = $data['id'];
 
               $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+
               $user = $this->repository->update($data, $id);
+
+               //recupera o nome das bases
+               $bases = TbBase::query()->select('sigla')->get();
+               
+               foreach($bases as $base){
+                $base = $base['sigla'];
+                if($base != 'adb_mtz'){
+                  //connecta banco
+                  $this->ConnectDbController->connectBases($base);
+                  // atualiza no banco de dados das filiais
+                  $this->repository->update($data, $id);
+                }
+                
+               }
+
+               //altera a conexão para base matriz
+               $this->ConnectDbController->connectBase();
 
               $name = explode(" ",$user['name']);
 
@@ -112,11 +155,27 @@ class TbCadUserService
 
         try {
 
-              $user = TbCadUserService::find_Id($id);
-            
-              $name = explode(" ",$user['data']['name']);
+              $user = TbCadUser::query()->where('id', $id)->select('name')->get(); 
+              $name = explode(" ",$user[0]['name']);
               
               $this->repository->delete($id);
+
+               //recupera o nome das bases
+               $bases = TbBase::query()->select('sigla')->get();
+
+               foreach($bases as $base){
+                $base = $base['sigla'];
+                if($base != 'adb_mtz'){
+                  //connecta banco
+                  $this->ConnectDbController->connectBases($base);
+                  // deleta no banco de dados das filiais
+                  $this->repository->delete($id);
+                }
+                
+               }
+
+               //altera a conexão para base matriz
+               $this->ConnectDbController->connectBase();
  
               return [
                 'success'     => true,
@@ -127,6 +186,8 @@ class TbCadUserService
 
 
         } catch (Exception $e) {
+
+          dd($e);
 
               switch (get_class($e)) {               
                 case QueryException::class      : return['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
