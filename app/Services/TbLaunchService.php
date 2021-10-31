@@ -13,6 +13,9 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Database\QueryException;
 use Yajra\Datatables\Datatables;
 use DB;
+use App\Http\Controllers\ConnectDbController;
+use Illuminate\Support\Arr;
+
 
 class TbLaunchService
 {
@@ -20,12 +23,14 @@ class TbLaunchService
   private $repository;
   private $validator;
   private $serviceUser;
+  private $ConnectDbController;
 
-  public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator, TbCadUserService $serviceUser)
+  public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator, TbCadUserService $serviceUser, ConnectDbController $ConnectDbController)
   {
-    $this->repository   = $repository;
-    $this->validator    = $validator;
-    $this->serviceUser  = $serviceUser;
+    $this->repository           = $repository;
+    $this->validator            = $validator;
+    $this->serviceUser          = $serviceUser;
+    $this->ConnectDbController  = $ConnectDbController;
   }
 
   //função cadastar lançamento
@@ -55,8 +60,25 @@ class TbLaunchService
         return $v;
       }
 
-      // registra no banco de dados filial
+
+      // registra lançamento no banco de dados filial
       $launch = $this->repository->create($data);
+      //recupera id gerado na base filial para inserir na coluna id_filial na base matriz
+      $data['id_filial'] = $launch['id'];
+      //altera a conexão para base matriz
+      $this->ConnectDbController->connectMatriz();
+      // registra lançamento no banco de dados matriz
+      $launch_mtz = $this->repository->create($data);
+      //remove a chave e valor de id_filias, insere id filial e recupera id gerado na base matriz para inserir na coluna id_mtz na base filial
+      Arr::forget($data, 'id_filial');
+      $data['id'] = $launch['id'];
+      $data['id_mtz'] = $launch_mtz['id'];
+      //altera a conexão para base Local
+      $this->ConnectDbController->connectBase();
+      // atualiza a coluna id_mtz na base filial
+      $this->repository->update($data, $launch['id']);
+      
+
       $msg = $launch['value'];
 
       return [
@@ -107,7 +129,21 @@ class TbLaunchService
         return $v;
       }
 
+
+      //atualiza lançamento no banco de dados filial
       $launch = $this->repository->update($data, $id);
+      //recupera id_mtz
+      $data['id']= $launch['id_mtz'];
+      $id_mtz = $launch['id_mtz'];
+      //altera a conexão para base matriz
+      $this->ConnectDbController->connectMatriz();
+      // atualiza lançamento no banco de dados matriz
+      $launch = $this->repository->update($data, $id_mtz);
+      //altera a conexão para base Local
+      $this->ConnectDbController->connectBase();
+
+
+
       $msg = $launch['value'];
 
       return [
@@ -138,13 +174,22 @@ class TbLaunchService
 
     try {
 
-
+      //recupera id_mtz
+      $data = $this->repository->find($id);
+      //exclui o registro da base local
       $launch = $this->repository->delete($id);
-
+      //altera a conexão para base matriz
+      $this->ConnectDbController->connectMatriz();
+      //exclui o registro da base matriz
+      $launch_mtz = $this->repository->delete($data['id_mtz']);
+      //altera a conexão para base Local
+      $this->ConnectDbController->connectBase();
+      
+      $msg = $data['value'];
 
       return [
         'success'     => true,
-        'messages'    => ["excluído"],
+        'messages'    => [$msg . " excluído"],
         'data'        => $launch,
         'type'        => [""],
       ];
@@ -208,8 +253,10 @@ class TbLaunchService
   {
     try {
 
-      $id = $data['id'];
-
+      $id      = $data['id'];
+      $id_mtz  = TbLaunch::where('id', $id)->get('id_mtz');
+      $id_mtz = $id_mtz[0]['id_mtz'];
+      
       $closing = $this->repository->with('closing')->find($id)->toArray();
 
       if ($closing['closing']['status'] == 0) {
@@ -220,8 +267,14 @@ class TbLaunchService
           'data'     => '',
         ];
       }
-
-      $launch = TbLaunch::where('id', $id)->update(['status' => $data['status']]);
+      //Ataliza campo status na base local
+      $launch = TbLaunch::Where('id', $id)->update(['status' => $data['status']]);
+      //altera a conexão para base matriz
+      $this->ConnectDbController->connectMatriz();
+      //Ataliza campo status na base matriz
+      TbLaunch::where('id', $id_mtz)->update(['status' => $data['status']]);
+      //altera a conexão para base Local
+      $this->ConnectDbController->connectBase();
 
 
       if (!$launch) {
@@ -245,6 +298,7 @@ class TbLaunchService
         default:
           return ['success' => false, 'messages' => 'Não foi possível aprovar!', 'type'  => $e->getMessage()];
       }
+
     }
   }
 
@@ -261,6 +315,7 @@ class TbLaunchService
       ->with('closing')
       ->with('payment_type')
       ->with('operation')
+      ->with('base')
       ->orwhereHas('closing', function ($q) use ($request, $def) {
         $q->where([
           ['status', 'like',  $request->query('closing_status', $def)],

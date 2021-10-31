@@ -51,6 +51,9 @@
                                         <th>Tp Pagamento</th>
                                         <th>Coleta</th>
                                         <th>Status</th>
+                                        @if (session()->get('db') == 'MTZ')
+                                        <th>Base</th>
+                                        @endif
                                         <th data-orderable="false" >Período</th>
                                         <th>Status Período</th>
                                         <th>Data Ataulização</th>
