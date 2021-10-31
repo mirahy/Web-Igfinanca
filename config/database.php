@@ -41,7 +41,7 @@ return [
 
         'adb_mtz' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
@@ -56,11 +56,26 @@ return [
 
         'adb_vla' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE_VLA', 'forge'),
             'username' => env('DB_USERNAME_VLA', 'forge'),
             'password' => env('DB_PASSWORD_VLA', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
+        'adb_sed' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE_SED', 'forge'),
+            'username' => env('DB_USERNAME_SED', 'forge'),
+            'password' => env('DB_PASSWORD_SED', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
