@@ -67,6 +67,9 @@ class Kernel extends HttpKernel
         'reconnect' => \App\Http\Middleware\Reconnect::class,
         'reconnectdbdefault' => \App\Http\Middleware\ReconnectDbDefault::class,
         'reconnectbeforelogin' => \App\Http\Middleware\ReconnectBeforeLogin::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
 
     ];
 }
