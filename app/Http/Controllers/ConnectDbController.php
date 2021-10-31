@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ConnectDbController extends Controller
 {
 
-<<<<<<< HEAD
+
     //conecta a base matriz
     public function connectMatriz()
     {
@@ -20,9 +20,8 @@ class ConnectDbController extends Controller
     }
 
     //conecta a base especificada na session
-=======
 
->>>>>>> parent of b3b28fa (Revert "Adicionando rotinas de replicação de alterações nos lançamentos para a base matriz")
+
     public function connectBase()
     {
 
@@ -42,7 +41,6 @@ class ConnectDbController extends Controller
         }
     }
 
-<<<<<<< HEAD
     //recebe a uma base como parametro para conexão
     public function connectBases($base)
     {
@@ -61,18 +59,4 @@ class ConnectDbController extends Controller
         }
     }
 
-
-
-    
-=======
-
-
-    public function connectMatriz()
-    {
-        Config::set('database.default', 'adb_mtz'); //atribuir a conexão padrão
-
-        // Conecta no banco
-        DB::reconnect('adb_mtz');
-    }
->>>>>>> parent of b3b28fa (Revert "Adicionando rotinas de replicação de alterações nos lançamentos para a base matriz")
 }
