@@ -7,6 +7,7 @@ use App\Entities\Access;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Class TbCadUser.
@@ -17,6 +18,7 @@ class TbCadUser extends Authenticatable
 {
     use SoftDeletes;
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.

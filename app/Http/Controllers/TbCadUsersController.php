@@ -17,6 +17,7 @@ use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\TbBaseRepository;
 use App\Repositories\TbProfileRepository;
+use Spatie\Permission\Models\Role;
 
 
 class TbCadUsersController extends Controller

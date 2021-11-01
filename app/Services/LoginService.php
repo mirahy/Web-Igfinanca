@@ -15,6 +15,7 @@ use Hash;
 use App\Entities\TbBase;
 use DB;
 use Schema;
+use App\Http\Controllers\ConnectDbController;
 
 
 class LoginService
@@ -23,12 +24,17 @@ class LoginService
   Private $repository;
   Private $validator;
   Private $reCaptcha;
+  private $ConnectDbController;
 
-  public function __construct(ReCaptcha $reCaptcha, LoginValidator $validator, TbCadUserRepository $repository)
+  public function __construct(ReCaptcha $reCaptcha,
+                              LoginValidator $validator,
+                              TbCadUserRepository $repository,
+                              ConnectDbController $ConnectDbController)
   {
       $this->reCaptcha   = $reCaptcha->verify("KEY_SECRET_RECAPTCHA");
       $this->validator   = $validator;
       $this->repository  = $repository;
+      $this->ConnectDbController  = $ConnectDbController;
 
   }
 
@@ -44,8 +50,13 @@ class LoginService
       $base    = TbBase::Where('id', $data['base'])->get('sigla')->ToArray();
       $db      =   strtoupper(substr($base[0]['sigla'],-3));
       $id_base = $data['base'];
+      $sigla = $base[0]['sigla'];
 
-      //dd($db);
+      if($sigla != 'adb_mtz'){
+        //connecta banco selecionado no login
+        $this->ConnectDbController->connectBases($sigla);
+      }
+
 
       try
         {

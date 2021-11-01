@@ -52,11 +52,11 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
          */
         #Route::get('/user',['as' =>'user.index', 'uses' => 'TbCadUsersController@index']);
         Route::resource('user', 'TbCadUsersController');
-        Route::get('/edit-users', ['as' => 'edit-users', 'uses' => 'TbCadUsersController@query_DataTables']);
-        Route::post('/keep', ['as' => 'keep', 'uses' => 'TbCadUsersController@keep']);
-        Route::post('/show-user', ['as' => 'show-user', 'uses' => 'TbCadUsersController@show_user']);
-        Route::post('/destroy', ['as' => 'destroy', 'uses' => 'TbCadUsersController@destroy']);
-        Route::get('/autocomplete', ['as' => 'autocomplete', 'uses' => 'TbCadUsersController@autocomplete']);
+        Route::get('/edit-users', ['as' => 'edit-users', 'uses' => 'TbCadUsersController@query_DataTables'])->middleware('accesses_matriz');
+        Route::post('/keep', ['as' => 'keep', 'uses' => 'TbCadUsersController@keep'])->middleware('accesses_matriz');
+        Route::post('/show-user', ['as' => 'show-user', 'uses' => 'TbCadUsersController@show_user'])->middleware('accesses_matriz');
+        Route::post('/destroy', ['as' => 'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('accesses_matriz');
+        Route::get('/autocomplete', ['as' => 'autocomplete', 'uses' => 'TbCadUsersController@autocomplete'])->middleware('accesses_matriz');
 
 
         /**
@@ -64,19 +64,24 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
          *========================================================================
          */
         /**Closings */
-        Route::get('/closing', ['as' => 'closing', 'uses' => 'TbClosingsController@index']);
+        Route::get('/closing', ['as' => 'closing', 'uses' => 'TbClosingsController@index'])->middleware('accesses_matriz');
 
         /**crud closing*/
-        Route::get('/query-closing', ['as' => 'query-closing', 'uses' => 'TbClosingsController@query_DataTables']);
-        Route::post('/keep-closing', ['as' => 'keep-closing', 'uses' => 'TbClosingsController@keep']);
-        Route::post('/show-closing', ['as' => 'show-closing', 'uses' => 'TbClosingsController@show_closing']);
-        Route::post('/destroy-closing', ['as' => 'destroy-closing', 'uses' => 'TbClosingsController@destroy']);
+        Route::get('/query-closing', ['as' => 'query-closing', 'uses' => 'TbClosingsController@query_DataTables'])->middleware('accesses_matriz');
+        Route::post('/keep-closing', ['as' => 'keep-closing', 'uses' => 'TbClosingsController@keep'])->middleware('accesses_matriz');
+        Route::post('/show-closing', ['as' => 'show-closing', 'uses' => 'TbClosingsController@show_closing'])->middleware('accesses_matriz');
+        Route::post('/destroy-closing', ['as' => 'destroy-closing', 'uses' => 'TbClosingsController@destroy'])->middleware('accesses_matriz');
 
-        /**Finish group route base matriz authenticated */
+        /**approvals*/
+        Route::get('/apr-f', ['as' => 'apr-f', 'uses' => 'TbLaunchController@apr_f'])->middleware('accesses_matriz');
+
+       
     });
-
-    /**Finish group route base matriz */
+     /**Finish group route base matriz authenticated */
+    
 });
+
+/**Finish group route base matriz */
 
 
 //Init group unique users route, user autenticated and reconnect data base seletion on login
@@ -100,11 +105,11 @@ Route::middleware(['auth.unique.user', 'auth', 'reconnect'])->group(function () 
 
     /**entries*/
     Route::resource('launch', 'TbLaunchController');
-    Route::get('/launchs-e', ['as' => 'launchs-e', 'uses' => 'TbLaunchController@index']);
+    Route::get('/launchs-e', ['as' => 'launchs-e', 'uses' => 'TbLaunchController@index'])->middleware('accesses_filial');
 
 
     /**exits */
-    Route::get('/launchs-s', ['as' => 'launchs-s', 'uses' => 'TbLaunchController@index_s']);
+    Route::get('/launchs-s', ['as' => 'launchs-s', 'uses' => 'TbLaunchController@index_s'])->middleware('accesses_filial');
 
 
     /**consult launches */
@@ -112,15 +117,14 @@ Route::middleware(['auth.unique.user', 'auth', 'reconnect'])->group(function () 
 
 
     /**approvals*/
-    Route::get('/apr-l', ['as' => 'apr-l', 'uses' => 'TbLaunchController@index_l']);
-    Route::get('/apr-f', ['as' => 'apr-f', 'uses' => 'TbLaunchController@apr_f']);
-    Route::post('/aprov', ['as' => 'aprov', 'uses' => 'TbLaunchController@aprov_id']);
+    Route::get('/apr-l', ['as' => 'apr-l', 'uses' => 'TbLaunchController@index_l'])->middleware('accesses_filial');
+    Route::post('/aprov', ['as' => 'aprov', 'uses' => 'TbLaunchController@aprov_id'])->middleware('accesses_filial');
 
     /**crud lauches*/
     Route::get('/query', ['as' => 'query', 'uses' => 'TbLaunchController@query_DataTables']);
-    Route::post('/keep-lauch', ['as' => 'keep-lauch', 'uses' => 'TbLaunchController@keep']);
+    Route::post('/keep-lauch', ['as' => 'keep-lauch', 'uses' => 'TbLaunchController@keep'])->middleware('accesses_filial');
     Route::post('/show-launch', ['as' => 'show-lauch', 'uses' => 'TbLaunchController@show_launch']);
-    Route::post('/destroy-launch', ['as' => 'destroy-launch', 'uses' => 'TbLaunchController@destroy']);
+    Route::post('/destroy-launch', ['as' => 'destroy-launch', 'uses' => 'TbLaunchController@destroy'])->middleware('accesses_filial');
 
 
     /**
@@ -134,7 +138,7 @@ Route::middleware(['auth.unique.user', 'auth', 'reconnect'])->group(function () 
 
 
 
-    /**Finish group route base local authenticated */
+    
 
     /**Test page */
 
@@ -144,3 +148,5 @@ Route::middleware(['auth.unique.user', 'auth', 'reconnect'])->group(function () 
 
     /**Finish test page */
 });
+
+/**Finish group route base local authenticated */
