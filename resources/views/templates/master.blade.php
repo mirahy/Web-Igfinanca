@@ -57,6 +57,8 @@
       <hr class="sidebar-divider">
 
       <!-- Heading -->
+
+      <!-- acesso somente logado na base matriz -->
       @if (session()->get('db') == 'MTZ')
       <div class="sidebar-heading">
         Cadastros
@@ -82,7 +84,7 @@
           </div>
         </div>
       </li>
-      @endif
+      
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
@@ -102,6 +104,7 @@
 
       <!-- Divider -->
       <hr class="sidebar-divider">
+      @endif
 
       <!-- Heading -->
       <div class="sidebar-heading">
@@ -116,15 +119,19 @@
         </a>
         <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <!-- acesso somente logado nas bases filiais -->
+             @if (session()->get('db') != 'MTZ')
             <h6 class="collapse-header">Lançamentos:</h6>
             <a class="collapse-item" href="{{ asset('/launchs-e')}}">Entradas</a>
             <a class="collapse-item" href="{{ asset('/launchs-s')}}">Saídas</a>
+            @endif
             <h6 class="collapse-header">Consulta:</h6>
             <a class="collapse-item " href="{{ asset('/launchs-cl')}}">Lançamentos</a>
 
           </div>
         </div>
       </li>
+      
 
       <!-- Nav Item - Aproved -->
       <li class="nav-item">
@@ -135,18 +142,28 @@
         <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Aprovar:</h6>
+            <!-- acesso somente logado nas bases filiais -->
+            @if (session()->get('db') != 'MTZ')
             <a class="collapse-item" href="{{ asset('/apr-l')}}">Lançamentos</a>
-            <a class="collapse-item" href="{{ asset('/apr-f')}}">Fechamentos</a>
+            @endif
+             <!-- acesso somente logado na base matriz -->
+            @if (session()->get('db') == 'MTZ')
+            <a class="collapse-item" href="#">Fechamentos</a> <!--"{{ asset('/apr-f')}}" -->
+            @endif
           </div>
         </div>
       </li>
+ 
 
       <!-- Nav Item - Charts -->
+      <!-- acesso somente logado na base matriz -->
+      @if (session()->get('db') == 'MTZ')
       <li class="nav-item">
         <a class="nav-link" href="{{ asset('/closing')}}">
           <i class="fas fa-file-signature fa-lg"></i>
           <span>Fechamentos</span></a>
       </li>
+      @endif
 
       <!-- Nav Item - Relatories -->
       <li class="nav-item">

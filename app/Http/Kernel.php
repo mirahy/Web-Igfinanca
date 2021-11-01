@@ -70,6 +70,8 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+        'accesses_matriz' => \App\Http\Middleware\RouteAccessesMatriz::class,
+        'accesses_filial' => \App\Http\Middleware\RouteAccessesFilial::class,
 
     ];
 }

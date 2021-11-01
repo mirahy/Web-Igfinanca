@@ -25,7 +25,10 @@ class TbLaunchService
   private $serviceUser;
   private $ConnectDbController;
 
-  public function __construct(TbLaunchRepository $repository, TbLaunchValidator $validator, TbCadUserService $serviceUser, ConnectDbController $ConnectDbController)
+  public function __construct(TbLaunchRepository $repository,
+                              TbLaunchValidator $validator,
+                              TbCadUserService $serviceUser,
+                              ConnectDbController $ConnectDbController)
   {
     $this->repository           = $repository;
     $this->validator            = $validator;

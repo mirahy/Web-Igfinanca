@@ -18,6 +18,20 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
+    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+    @if(Session::has('alert-' . $msg))
+        <div class="alert alert-{{ $msg }} alert-dismissible fade show" role="alert">
+            {{ Session::get('alert-' . $msg) }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        {{Session::forget('alert-danger')}}
+    @endif
+    @endforeach
+    
+
       <!-- Page Heading -->
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Painel</h1>
