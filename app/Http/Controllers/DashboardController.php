@@ -63,12 +63,13 @@ class DashboardController extends Controller
   }
 
   // função para logout do usuário
-  public function logout()
+  public function logout(Request $request)
   {
     
     if(Auth::check())
     {
       Auth::logout();
+      $request->session()->flush();
 
     }
 
@@ -105,7 +106,6 @@ class DashboardController extends Controller
   //função redirecionamento para a view dashboard
   public function index()
   {
- 
     return view('dashboard.dashboard', [
                 'pend'      => 'Atualizando...',
                 'entries'   => 'Calculando...',
