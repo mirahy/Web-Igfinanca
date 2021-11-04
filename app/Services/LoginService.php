@@ -52,11 +52,6 @@ class LoginService
       $id_base = $data['base'];
       $sigla = $base[0]['sigla'];
 
-      if($sigla != 'adb_mtz'){
-        //connecta banco selecionado no login
-        $this->ConnectDbController->connectBases($sigla);
-      }
-
 
       try
         {
@@ -85,6 +80,7 @@ class LoginService
             if( env("PASSWORD_HASH"))
             {
               $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
+              
 
               if(!$user)
               return [
@@ -112,7 +108,7 @@ class LoginService
 
             }else{
               $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
-
+              
               if(!$user)
               return [
                     'success'     => false,
@@ -141,6 +137,8 @@ class LoginService
 
             }
 
+            $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
+            
 
                 return [
                   'success'     => true,
