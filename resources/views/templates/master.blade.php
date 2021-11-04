@@ -67,21 +67,21 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-      
+
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas  fa-users-cog fa-lg"></i>
           <span>Gerenciar Usuários</span>
         </a>
-        
+
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Opções:</h6>
-            
+
             <a class="collapse-item" href="{{ asset('/edit-users')}}">
               <i class="fas fa-users fa-lg"></i>&nbsp
               <span>Usuários</span>
             </a>
-           
+
             @role('Admin|Edit')
             <a class="collapse-item" href="#">
               <i class="fas fa-lock fa-lg"></i>&nbsp&nbsp
@@ -93,7 +93,7 @@
               <i class="fas fa-user-tag fa-lg"></i>&nbsp
               <span>Funções</span>
             </a>
-            
+
             <a class="collapse-item" href="{{ asset('/permission')}}">
               <i class="fas fa-user-shield fa-lg"></i>&nbsp
               <span>Permissões</span>
@@ -102,8 +102,8 @@
           </div>
         </div>
       </li>
-      
-        @role('Admin')
+
+      @role('Admin')
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -142,21 +142,21 @@
         <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!-- acesso somente logado nas bases filiais -->
-             @if (session()->get('db') != 'MTZ')
-             @role('Admin|Edit|launch-manager')
+            @if (session()->get('db') != 'MTZ')
+            @role('Admin|Edit|launch-manager')
             <h6 class="collapse-header">Lançamentos:</h6>
             <a class="collapse-item" href="{{ asset('/launchs-e')}}">Entradas</a>
             <a class="collapse-item" href="{{ asset('/launchs-s')}}">Saídas</a>
             @endrole
             @endif
-            
+
             <h6 class="collapse-header">Consulta:</h6>
             <a class="collapse-item " href="{{ asset('/launchs-cl')}}">Lançamentos</a>
           </div>
         </div>
       </li>
       @endrole
-      
+
 
       <!-- Nav Item - Aproved -->
       @role('Admin|launche-approver')
@@ -172,14 +172,15 @@
             @if (session()->get('db') != 'MTZ')
             <a class="collapse-item" href="{{ asset('/apr-l')}}">Lançamentos</a>
             @endif
-             <!-- acesso somente logado na base matriz -->
+            <!-- acesso somente logado na base matriz -->
             @if (session()->get('db') == 'MTZ')
-            <a class="collapse-item" href="#">Fechamentos</a> <!--"{{ asset('/apr-f')}}" -->
+            <a class="collapse-item" href="#">Fechamentos</a>
+            <!--"{{ asset('/apr-f')}}" -->
             @endif
           </div>
         </div>
       </li>
-    @endrole
+      @endrole
 
       <!-- Nav Item - Charts -->
       <!-- acesso somente logado na base matriz -->
