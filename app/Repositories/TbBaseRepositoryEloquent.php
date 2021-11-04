@@ -17,7 +17,7 @@ class TbBaseRepositoryEloquent extends BaseRepository implements TbBaseRepositor
 {
     public function selectBoxList(string $descrição = 'name', string $chave = 'id'){
 
-        return $this->model->pluck($descrição, $chave);
+        return $this->model->orderBy('name')->pluck($descrição, $chave);
     }
     /**
      * Specify Model class name

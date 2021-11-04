@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Auth;
 
 class CheckUserUniqueAuth
 {
@@ -15,19 +16,22 @@ class CheckUserUniqueAuth
      */
     public function handle($request, Closure $next)
     {
-        /* Verifica se o valor da coluna/sessão "token_access" NÃO é compatível com o valor da sessão que criamos quando o usuário fez login
-        */
         
-        if(isset( $_SESSION )){
-            if (auth()->user()->token_access != session()->get('access_token')) {
-                // Faz o logout do usuário
-                \Auth::logout();
-        
-                // Redireciona o usuário para a página de login, com session flash "message"
-                return redirect()
-                            ->route('user.login')
-                            ->with('message', 'A sessão deste usuário está ativa em outro local!');
+        //Verifica se existe "access_token" na sessão
+        if(session()->get('access_token')){
+
+            /* Verifica se o valor da coluna/sessão "token_access" NÃO é compatível com o valor da sessão que criamos quando o usuário fez login*/  
+            if (auth()->user()->token_access != session()->get('access_token')){
+                    // Faz o logout do usuário
+                    Auth::logout();
+                    $request->session()->flush();
+                    // Redireciona o usuário para a página de login, com session "message"
+                    $request->session()->put('alert-danger', 'A sessão deste usuário está ativa em outro local!');
+
+                    return redirect()->route('user.login');
             }
+                
+            
         }
         
     

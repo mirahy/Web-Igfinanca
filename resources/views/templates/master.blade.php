@@ -73,19 +73,35 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Opções:</h6>
+            @can('user-list')
             <a class="collapse-item" href="{{ asset('/edit-users')}}">
               <i class="fas fa-users fa-lg"></i>&nbsp
               <span>Usuários</span>
             </a>
+            @endcan
+            @can('user-edit')
             <a class="collapse-item" href="#">
               <i class="fas fa-lock fa-lg"></i>&nbsp&nbsp
               <span>Senhas</span>
             </a>
+            @endcan
+            @can('role-list')
+            <a class="collapse-item" href="{{ asset('/roles')}}">
+              <i class="fas fa-user-tag fa-lg"></i>&nbsp
+              <span>Funções</span>
+            </a>
+            @endcan
+            @can('permission-list')
+            <a class="collapse-item" href="{{ asset('/permission')}}">
+              <i class="fas fa-user-shield fa-lg"></i>&nbsp
+              <span>Permissões</span>
+            </a>
+            @endcan
           </div>
         </div>
       </li>
       
-
+    @can('tables-list')
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -101,7 +117,7 @@
           </div>
         </div>
       </li>
-
+      @endcan
       <!-- Divider -->
       <hr class="sidebar-divider">
       @endif

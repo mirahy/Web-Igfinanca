@@ -29,7 +29,7 @@ class Controller extends BaseController
     public function homepage()
     {
       
-      if(Auth::check()){
+      if(Auth::check() && session()->get('user')){
         return redirect('/dashboard');
 
         }else{
@@ -51,7 +51,7 @@ class Controller extends BaseController
     */
     public function telalogin()
     {
-      if(Auth::check()){
+      if(Auth::check() && session()->get('user')){
         return redirect('/dashboard');
 
       }else{
