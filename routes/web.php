@@ -44,7 +44,7 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
 
 
     //Init group unique users route and user authenticated
-    Route::middleware(['auth.unique.user', 'auth'])->group(function () {
+    Route::middleware(['auth.unique.user', 'auth', 'auth_session'])->group(function () {
 
         /**
          * Routes to dashboard nav users
@@ -56,7 +56,7 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
         Route::post('/keep', ['as' => 'keep', 'uses' => 'TbCadUsersController@keep'])->middleware('accesses_matriz');
         Route::post('/show-user', ['as' => 'show-user', 'uses' => 'TbCadUsersController@show_user'])->middleware('accesses_matriz');
         Route::post('/destroy', ['as' => 'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('accesses_matriz');
-        Route::get('/autocomplete', ['as' => 'autocomplete', 'uses' => 'TbCadUsersController@autocomplete'])->middleware('accesses_matriz');
+        
 
 
         /**
@@ -75,17 +75,43 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
         /**approvals*/
         Route::get('/apr-f', ['as' => 'apr-f', 'uses' => 'TbLaunchController@apr_f'])->middleware('accesses_matriz');
 
-       
+
+        /**
+         * Routes to dashboard nav roles
+         *========================================================================
+         */
+
+        /**Roles */
+        Route::get('/roles', ['as' => 'roles', 'uses' => 'RoleController@index'])->middleware('accesses_matriz');
+
+        /**crud roles*/
+        Route::get('/query-roles', ['as' => 'query-roles', 'uses' => 'RoleController@query_DataTables'])->middleware('accesses_matriz');
+        Route::post('/keep-roles', ['as' => 'keep-roles', 'uses' => 'RoleController@keep'])->middleware('accesses_matriz');
+        Route::post('/show-roles', ['as' => 'show-roles', 'uses' => 'RoleController@show_roles'])->middleware('accesses_matriz');
+        Route::post('/destroy-roles', ['as' => 'destroy-roles', 'uses' => 'RoleController@destroy'])->middleware('accesses_matriz');
+
+        /**
+         * Routes to dashboard nav roles
+         *========================================================================
+         */
+
+        /**Roles */
+        Route::get('/permission', ['as' => 'permission', 'uses' => 'PermissionController@index'])->middleware('accesses_matriz');
+
+        /**crud roles*/
+        Route::get('/query-permission', ['as' => 'query-permission', 'uses' => 'PermissionController@query_DataTables'])->middleware('accesses_matriz');
+        Route::post('/keep-permission', ['as' => 'keep-permission', 'uses' => 'PermissionController@keep'])->middleware('accesses_matriz');
+        Route::post('/show-permission', ['as' => 'show-permission', 'uses' => 'PermissionController@show_PermissionController'])->middleware('accesses_matriz');
+        Route::post('/destroy-permission', ['as' => 'destroy-permission', 'uses' => 'PermissionController@destroy'])->middleware('accesses_matriz');
     });
-     /**Finish group route base matriz authenticated */
-    
+    /**Finish group route base matriz authenticated */
 });
 
 /**Finish group route base matriz */
 
 
 //Init group unique users route, user autenticated and reconnect data base seletion on login
-Route::middleware(['auth.unique.user', 'auth', 'reconnect'])->group(function () {
+Route::middleware(['auth.unique.user', 'auth', 'auth_session', 'reconnect'])->group(function () {
     Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
 
     /**
@@ -126,6 +152,9 @@ Route::middleware(['auth.unique.user', 'auth', 'reconnect'])->group(function () 
     Route::post('/show-launch', ['as' => 'show-lauch', 'uses' => 'TbLaunchController@show_launch']);
     Route::post('/destroy-launch', ['as' => 'destroy-launch', 'uses' => 'TbLaunchController@destroy'])->middleware('accesses_filial');
 
+    /**return name user as input name for modal of launchs*/
+    Route::get('/autocomplete', ['as' => 'autocomplete', 'uses' => 'TbCadUsersController@autocomplete']);
+
 
     /**
      * Routes to dashboard nav reports
@@ -138,7 +167,7 @@ Route::middleware(['auth.unique.user', 'auth', 'reconnect'])->group(function () 
 
 
 
-    
+
 
     /**Test page */
 

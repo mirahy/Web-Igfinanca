@@ -34,6 +34,15 @@ class TbCadUsersController extends Controller
         $this->repository           = $repository;
         $this->service              = $service;
 
+        $this->middleware('permission:user-list', ['only' => ['index']]);
+        $this->middleware('permission:user-create|user-update', ['only' => ['keep']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:launch-create|launch-edit', ['only' => ['autocomplete']]);
+        // $this->middleware('permission:user-list|user-create|user-update', ['only' => ['index','query_DataTables','keep']]);
+        // $this->middleware('permission:role-edit', ['only' => ['show_user','keep', 'query_DataTables']]);
+        // $this->middleware('permission:role-delete', ['only' => ['destroy', 'query_DataTables']]);
+
     }
 
     //redireciona para a view edit-user
@@ -64,13 +73,17 @@ class TbCadUsersController extends Controller
             return $this->service->find_DataTables($request);
         }
 
-        
+        //dd($this->service->find_DataTables($request));
+
+        $roles        = Role::pluck('name','id')->all();
         $perfil_list  = $this->TbProfileRepository->selectBoxList();
         $base_list    = $this->TbBaseRepository->selectBoxList();
 
         return view('user.edit-users',[
             'perfil_list'  => $perfil_list,
             'base_list'    => $base_list,
+            'roles'        =>$roles,
+            'userRole'     =>"",
         ]);
 
     }
@@ -85,12 +98,13 @@ class TbCadUsersController extends Controller
         $json["error_list"] = array();
         $json["success"] = array();
         
+        
 
         if(!$request["id"]){
 
             
             
-            $request = $this->service->store($request->all()); 
+            $request = $this->service->store($request); 
             $user = $request['success'] ? $request['data'] : null;
 
             
@@ -117,7 +131,7 @@ class TbCadUsersController extends Controller
         }else{
             
 
-            $request = $this->service->update($request->all()); 
+            $request = $this->service->update($request); 
             $user = $request['success'] ? $request['data'] : null;
 
             session()->flash('success', [
@@ -152,9 +166,11 @@ class TbCadUsersController extends Controller
         $json["imput"] = array();
 
 
-        $request = $this->service->find_Id($request["id"]); 
-        $user = $request['success'] ? $request['data'] : null;
-        //dd($user['0']['base']['name']);
+        $request    = $this->service->find_Id($request["id"]); 
+        $user       = $request['success'] ? $request['data'] : null;
+        $userRole   = $request['success'] ? $request['data2'] : null;
+        
+        
         $json["imput"]['id'] = $user['0']['id'];
         $json["imput"]['name'] = $user['0']['name'];
         $json["imput"]['email'] = $user['0']['email'];
@@ -162,6 +178,7 @@ class TbCadUsersController extends Controller
         $json["imput"]['idtb_base'] = $user['0']['idtb_base'];
         $json["imput"]['status'] = $user['0']['status'];
         $json["imput"]['birth'] = $user['0']['birth'];
+        $json["imput"]['roles'] = key($userRole);
 
         echo json_encode($json);
 

@@ -78,7 +78,6 @@ $(function () {
                         dataType: "json",
                         data: { "id": course_id.attr("id_user") },
                         success: function (response) {
-                            console.log(response);
                             $msg = "Usuário " + response["messages"] + " removido com sucesso!";
                             Swal.fire("Sucesso!", $msg, "success");
                             dt_users.ajax.reload();
@@ -106,6 +105,27 @@ $(function () {
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
             { data: 'profile.name', name: 'profile.name' },
+            {
+                "data": 'Role',
+                "render": function (data, type, row, meta) {
+                    return "<span class='badge badge-success'>" + data + "</span>"
+                },
+                columnDefs: [
+                    { targets: "no-sort", orderable: false },
+                    { targets: "dt-center", ClassName: "dt-center" }
+                ]
+            },
+            {
+                "data": "RolePermission",
+                "render": function (data, type, row, meta) {
+                    if (data != 'Indefinidas') {
+                        return "<span class='badge badge-success'>" + data[0] + ", " + data[data.length - 1] + "</span>"
+                    } else {
+                        return "<span class='badge badge-success'>" + data + "</span>"
+                    }
+                },
+
+            },
             { data: 'base.name', name: 'base.name' },
             {
                 "data": "status",
@@ -142,9 +162,21 @@ $(function () {
                 }
             },
             {
-                "data": "action",
+                "data": "RolePermission",
                 "render": function (data, type, row, meta) {
-                    return '<a id_user="' + row.id + '" class="btn btn-xs btn-primary btn_edit_user" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a id_user="' + row.id + '" class="btn btn-xs btn-danger btn_del_user" id="btn_del_user" > <i class="fa fa-trash"></i></a>';
+
+                    for (var i = 0; i <= data.length; i++) {
+                        $btn = '';
+                        if (data[i] = 'user-edit') {
+                            $btn = '<a id_user="' + row.id + '" class="btn btn-xs btn-primary btn_edit_user mr-1" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a>'
+                        }
+                        if (data[i] = 'user-delete') {
+                            $btn += '<a id_user="' + row.id + '" class="btn btn-xs btn-danger btn_del_user mr-1" id="btn_del_user" > <i class="fa fa-trash"></i></a>'
+                        }
+
+                        return $btn
+                    }
+
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -171,6 +203,27 @@ $(function () {
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
             { data: 'profile.name', name: 'profile.name' },
+            {
+                "data": 'Role',
+                "render": function (data, type, row, meta) {
+                    return "<span class='badge badge-success'>" + data + "</span>"
+                },
+                columnDefs: [
+                    { targets: "no-sort", orderable: false },
+                    { targets: "dt-center", ClassName: "dt-center" }
+                ]
+            },
+            {
+                "data": "RolePermission",
+                "render": function (data, type, row, meta) {
+                    if (data != 'Indefinida') {
+                        return "<span class='badge badge-success'>" + data[0] + ", " + data[data.length - 1] + "</span>"
+                    } else {
+                        return  "<span class='badge badge-success'>" + data + "</span>"
+                    }
+                },
+
+            },
             { data: 'base.name', name: 'base.name' },
             {
                 "data": "status",
@@ -207,9 +260,21 @@ $(function () {
                 }
             },
             {
-                "data": "action",
+                "data": "RolePermission",
                 "render": function (data, type, row, meta) {
-                    return '<a id_user="' + row.id + '" class="btn btn-xs btn-primary btn_edit_user" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a id_user="' + row.id + '" class="btn btn-xs btn-danger btn_del_user" id="btn_del_user" > <i class="fa fa-trash"></i></a>';
+
+                    for (var i = 0; i <= data.length; i++) {
+                        $btn = '';
+                        if (data[i] = 'user-edit') {
+                            $btn = '<a id_user="' + row.id + '" class="btn btn-xs btn-primary btn_edit_user mr-1" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a>'
+                        }
+                        if (data[i] = 'user-delete') {
+                            $btn += '<a id_user="' + row.id + '" class="btn btn-xs btn-danger btn_del_user mr-1" id="btn_del_user" > <i class="fa fa-trash"></i></a>'
+                        }
+
+                        return $btn
+                    }
+
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },
@@ -237,6 +302,27 @@ $(function () {
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
             { data: 'profile.name', name: 'profile.name' },
+            {
+                "data": 'Role',
+                "render": function (data, type, row, meta) {
+                    return "<span class='badge badge-success'>" + data + "</span>"
+                },
+                columnDefs: [
+                    { targets: "no-sort", orderable: false },
+                    { targets: "dt-center", ClassName: "dt-center" }
+                ]
+            },
+            {
+                "data": "RolePermission",
+                "render": function (data, type, row, meta) {
+                    if (data != 'Indefinida') {
+                        return "<span class='badge badge-success'>" + data[0] + ", " + data[data.length - 1] + "</span>"
+                    } else {
+                        return "<span class='badge badge-success'>" + data + "</span>"
+                    }
+                },
+
+            },
             { data: 'base.name', name: 'base.name' },
             {
                 "data": "status",
@@ -273,9 +359,21 @@ $(function () {
                 }
             },
             {
-                "data": "action",
+                "data": "RolePermission",
                 "render": function (data, type, row, meta) {
-                    return '<a id_user="' + row.id + '" class="btn btn-xs btn-primary btn_edit_user" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a> <a id_user="' + row.id + '" class="btn btn-xs btn-danger btn_del_user" id="btn_del_user" > <i class="fa fa-trash"></i></a>';
+
+                    for (var i = 0; i <= data.length; i++) {
+                        $btn = '';
+                        if (data[i] = 'user-edit') {
+                            $btn = '<a id_user="' + row.id + '" class="btn btn-xs btn-primary btn_edit_user mr-1" id="btn_edit_user" title="Editar Pessoa"> <i class="fa fa-edit"></i></a>'
+                        }
+                        if (data[i] = 'user-delete') {
+                            $btn += '<a id_user="' + row.id + '" class="btn btn-xs btn-danger btn_del_user mr-1" id="btn_del_user" > <i class="fa fa-trash"></i></a>'
+                        }
+
+                        return $btn
+                    }
+
                 },
                 columnDefs: [
                     { targets: "no-sort", orderable: false },

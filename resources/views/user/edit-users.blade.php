@@ -39,19 +39,25 @@
             <div id="tab_users_active" class="tab-pane active">
                 <div class="container-fluid">
                     <h2 class="text-center"><strong>Usuários Ativos</strong></h2>
+                    @can('user-create')
                         <a id="btn_add_user" class="btn btn-primary my-1"><i class="fas fa-plus ">&nbsp Adicionar Usuário</i></a>
+                        @endcan
                             <table id="dt_users" class="table table-striped table-bordered table-hover table-responsive display nowrap" >
                                 <thead>
                                     <tr >
                                         <th>Nome</th>
                                         <th>Email</th>
                                         <th>Perfil</th>
+                                        <th>Função</th>
+                                        <th>Permissões</th>
                                         <th>Base</th>
                                         <th data-orderable="false" >Status</th>
                                         <th>Data Nascimento</th>
                                         <th>Criado</th>
                                         <th>Editado</th>
+                                        @can('user-create')
                                         <th data-orderable="false" >Ações</th>
+                                        @endcan
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -70,6 +76,8 @@
                                         <th>Nome</th>
                                         <th>Email</th>
                                         <th>Perfil</th>
+                                        <th>Função</th>
+                                        <th>Permissões</th>
                                         <th>Base</th>
                                         <th data-orderable="false" >Status</th>
                                         <th>Data Nascimento</th>
@@ -95,6 +103,8 @@
                                         <th>Nome</th>
                                         <th>Email</th>
                                         <th>Perfil</th>
+                                        <th>Função</th>
+                                        <th>Permissões</th>
                                         <th>Base</th>
                                         <th data-orderable="false" >Status</th>
                                         <th>Data Nascimento</th>
@@ -122,7 +132,9 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title">Usuário</h5>
+                    @can('role-create')
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    @endcan
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -140,6 +152,8 @@
                             @include('templates.forms.email',['input' => 'email', 'label' => 'Email', 'attributes' => ['placeholder' => 'Email', 'class' => 'form-control form-control-user', 'id' => 'email', 'name' => 'email',  'maxlength' => '100']])
 
                             @include('templates.forms.select',['select' => 'Perfil', 'label' => 'Perfil', 'data' => $perfil_list, 'attributes' => [ 'class' => 'form-control form-control-user', 'id' => 'idtb_profile', 'name' => 'idtb_profile']])
+
+                            @include('templates.forms.select',['select' => 'roles', 'label' => 'Função', 'data' => $roles, 'attributes' => [ 'class' => 'form-control form-control-user', 'id' => 'roles', 'name' => 'roles']])
 
                             @include('templates.forms.select',['select' => 'Base', 'label' => 'Base', 'data' => $base_list, 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'idtb_base', 'name' => 'idtb_base']])
 
@@ -194,6 +208,8 @@
                             @include('templates.forms.email',['input' => 'email', 'label' => 'Email', 'attributes' => ['placeholder' => 'Email', 'class' => 'form-control form-control-user', 'id' => 'email_edit', 'name' => 'email',  'maxlength' => '100']])
 
                             @include('templates.forms.select',['select' => 'Perfil', 'label' => 'Perfil', 'data' => $perfil_list, 'attributes' => [ 'class' => 'form-control form-control-user', 'id' => 'idtb_profile_edit', 'name' => 'idtb_profile']])
+
+                            @include('templates.forms.select',['select' => 'roles', 'label' => 'Função', 'data' => $roles, 'attributes' => [ 'class' => 'form-control form-control-user', 'id' => 'roles_edit', 'name' => 'roles']])
 
                             @include('templates.forms.select',['select' => 'Base', 'label' => 'Base', 'data' => $base_list, 'attributes' => ['class' => 'form-control form-control-user', 'id' => 'idtb_base_edit', 'name' => 'idtb_base']])
 

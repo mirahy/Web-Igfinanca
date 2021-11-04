@@ -47,12 +47,11 @@ class TbCadUserService
         $data['password_confirmation'] = env('PATTERN_PASS');
       }
 
-
       // validando campos
-      $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
+      $this->validator->with($data->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
       // validando campos senhas
-      $v = $this->validator->validaInputsPass($data);
+      $v = $this->validator->validaInputsPass($data->all());
       if (!$v['success']) {
         return $v;
       }
@@ -60,12 +59,12 @@ class TbCadUserService
       //hash password?
       $data['password'] = env("PASSWORD_HASH") ? bcrypt($data['password']) : $data['password'];
 
-
       // registra no banco de dados matriz
-      $user = $this->repository->create($data);
+      $user = $this->repository->create($data->all());
+      $user->assignRole($data->input('roles'));
 
       // registra no banco de dados das filiais
-      $this->ReplicaDbService->create($data, $this->repository);
+      $this->ReplicaDbService->createUser($data, $this->repository);
 
       //altera a conexão para base matriz
       $this->ConnectDbController->connectBase();
@@ -80,7 +79,7 @@ class TbCadUserService
         'type'        => ["id"],
       ];
     } catch (Exception $e) {
-
+   
       switch (get_class($e)) {
         case QueryException::class:
           return ['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
@@ -101,13 +100,16 @@ class TbCadUserService
 
       $id = $data['id'];
 
-      $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+      $this->validator->with($data->all())->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-      $user = $this->repository->update($data, $id);
+      // registra no banco de dados matriz
+      $user = $this->repository->update($data->all(), $id);
+      DB::table('model_has_roles')->where('model_id',$id)->delete();
+      $user->assignRole($data->input('roles'));
 
       // registra no banco de dados das filiais
-      $this->ReplicaDbService->update($data, $id, $this->repository);
-
+      $this->ReplicaDbService->updateUser($data, $id, $this->repository);
+      
       //altera a conexão para base matriz
       $this->ConnectDbController->connectBase();
 
@@ -120,7 +122,7 @@ class TbCadUserService
         'type'        => [""],
       ];
     } catch (Exception $e) {
-
+      dd($e);
       switch (get_class($e)) {
         case QueryException::class:
           return ['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
@@ -184,10 +186,14 @@ class TbCadUserService
         ->where('id', 'LIKE', $id)
         ->get();
 
+      $userId = TbCadUser::find($id);
+      $userRole = $userId->roles->pluck('name','id')->all();
+      
       return [
         'success'     => true,
         'messages'    => null,
         'data'        => $user,
+        'data2'       => $userRole,
         'type'        => null,
       ];
     } catch (Exception $e) {
