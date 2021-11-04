@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://www.adbfinace.com/'),
+    'url' => env('APP_URL', 'https://adbnfinanca.com/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'pt-br',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'pt-br',
 
     /*
     |--------------------------------------------------------------------------
@@ -178,6 +178,8 @@ return [
 
         //valida senha no cadastro de usuário
         App\Providers\PassValidateProvider::class,
+
+        Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 
