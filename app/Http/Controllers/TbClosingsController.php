@@ -26,7 +26,8 @@ class TbClosingsController extends Controller
    
     public function __construct(TbClosingRepository $repository, TbClosingValidator $validator, TbClosingsService $service)
     {
-        $this->middleware('role:Admin', ['only' => ['index', 'query_DataTables', 'keep', 'show_closing', 'destroy']]);
+
+        $this->middleware('role:Admin|Edit|launche-approver', ['only' => ['index', 'query_DataTables', 'keep', 'show_closing', 'destroy']]);
         $this->repository       = $repository;
         $this->validator        = $validator;
         $this->service          = $service;
