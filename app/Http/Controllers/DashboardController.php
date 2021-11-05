@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Services\TbLaunchService;
 use Exception;
 use Auth;
+use App\Entities\TbCadUser;
 
 class DashboardController extends Controller
 {
@@ -25,6 +26,9 @@ class DashboardController extends Controller
       $this->validator      = $validator;
       $this->service        = $service;
       $this->serviceLaunch  = $serviceLaunch;
+
+      //$this->middleware('permission:launch-create|launch-edit|launch-delete|launch-list', ['only' => ['index']]);
+      
   }
 
   // função para login do usuário
@@ -106,6 +110,8 @@ class DashboardController extends Controller
   //função redirecionamento para a view dashboard
   public function index()
   {
+
+    
     return view('dashboard.dashboard', [
                 'pend'      => 'Atualizando...',
                 'entries'   => 'Calculando...',
