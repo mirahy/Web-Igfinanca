@@ -34,14 +34,11 @@ class TbCadUsersController extends Controller
         $this->repository           = $repository;
         $this->service              = $service;
 
-        $this->middleware('permission:user-list', ['only' => ['index']]);
-        $this->middleware('permission:user-create|user-update', ['only' => ['keep']]);
-        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:user-list', ['only' => ['index', 'query_DataTables']]);
+        $this->middleware('permission:user-create|user-update', ['only' => ['keep', 'show_user']]);
         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
         $this->middleware('permission:launch-create|launch-edit', ['only' => ['autocomplete']]);
-        // $this->middleware('permission:user-list|user-create|user-update', ['only' => ['index','query_DataTables','keep']]);
-        // $this->middleware('permission:role-edit', ['only' => ['show_user','keep', 'query_DataTables']]);
-        // $this->middleware('permission:role-delete', ['only' => ['destroy', 'query_DataTables']]);
+       
 
     }
 

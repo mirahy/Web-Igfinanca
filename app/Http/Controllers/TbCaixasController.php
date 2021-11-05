@@ -12,40 +12,22 @@ use App\Http\Requests\TbCaixaUpdateRequest;
 use App\Repositories\TbCaixaRepository;
 use App\Validators\TbCaixaValidator;
 
-/**
- * Class TbCaixasController.
- *
- * @package namespace App\Http\Controllers;
- */
+
 class TbCaixasController extends Controller
 {
-    /**
-     * @var TbCaixaRepository
-     */
+    
     protected $repository;
-
-    /**
-     * @var TbCaixaValidator
-     */
     protected $validator;
 
-    /**
-     * TbCaixasController constructor.
-     *
-     * @param TbCaixaRepository $repository
-     * @param TbCaixaValidator $validator
-     */
+
     public function __construct(TbCaixaRepository $repository, TbCaixaValidator $validator)
     {
+        $this->middleware('role:Admin', ['only' => ['index', 'store', 'show', 'edit', 'update', 'destroy']]);
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
@@ -61,15 +43,7 @@ class TbCaixasController extends Controller
         return view('tbCaixas.index', compact('tbCaixas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  TbCaixaCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+   
     public function store(TbCaixaCreateRequest $request)
     {
         try {
@@ -101,13 +75,7 @@ class TbCaixasController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
         $tbCaixa = $this->repository->find($id);
@@ -122,13 +90,7 @@ class TbCaixasController extends Controller
         return view('tbCaixas.show', compact('tbCaixa'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit($id)
     {
         $tbCaixa = $this->repository->find($id);
@@ -136,16 +98,7 @@ class TbCaixasController extends Controller
         return view('tbCaixas.edit', compact('tbCaixa'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  TbCaixaUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+   
     public function update(TbCaixaUpdateRequest $request, $id)
     {
         try {
@@ -180,13 +133,6 @@ class TbCaixasController extends Controller
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $deleted = $this->repository->delete($id);

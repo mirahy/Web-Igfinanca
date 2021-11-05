@@ -41,6 +41,13 @@ class TbLaunchController extends Controller
                                 TbClosingRepository $TbClosingRepository,
                                 TbPaymentTypeRepository $TbPaymentTypeRepository)
     {
+        $this->middleware('permission:launch-list', ['only' => ['index_cl', 'query_DataTables']]);
+        $this->middleware('permission:launch-create|launch-update', ['only' => ['index', 'index_s', 'keep', 'show_launch']]);
+        $this->middleware('permission:launch-delete', ['only' => ['destroy']]);
+        $this->middleware('role:Admin|Edit|launche-approver|launch-manager', ['only' => ['index_reports', 'query_DataTables']]);
+        $this->middleware('role:launche-approver', ['only' => ['aprov_id']]);
+        
+
         $this->TbClosingRepository      = $TbClosingRepository;
         $this->TbCaixaRepository        = $TbCaixaRepository;
         $this->repository               = $repository;

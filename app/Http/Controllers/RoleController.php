@@ -15,9 +15,7 @@ class RoleController extends Controller
 
     function __construct(RoleService $service)
     {
-        $this->middleware('permission:role-list', ['only' => ['index', 'query_DataTables']]);
-        $this->middleware('permission:role-create|role-edit', ['only' => ['keep', 'show_roles']]);
-        $this->middleware('permission:role-delete', ['only' => ['destroy', 'query_DataTables', 'show_roles']]);
+        $this->middleware('role:Admin', ['only' => ['index', 'query_DataTables', 'keep', 'show_roles', 'destroy']]);
         $this->service  = $service;
     }
 
