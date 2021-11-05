@@ -60,7 +60,7 @@
 
       <!-------------------------------------------------- acesso somente logado na base matriz -------------------------------------------------->
       @if (session()->get('db') == 'MTZ')
-      @role('Admin|Edit|View|launch-manager')
+      @role('Admin|Edit|launch-manager')
       <div class="sidebar-heading">
         Cadastros
       </div>
