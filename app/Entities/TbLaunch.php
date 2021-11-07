@@ -27,9 +27,9 @@ class TbLaunch extends Model implements Transformable
     //vevntos que acionan o log
     protected static $recordEvents                 = ['created', 'updated', 'deleted'];
     //Atributos que sera registrada a alteração
-    protected static $logAttributes                = ['id','id_user','id_filial','id_mtz', 'description', 'value','operation_date',
-                                                      'idtb_operation', 'idtb_type_launch', 'idtb_payment_type', 'idtb_caixa',
-                                                      'idtb_base', 'idtb_closing', 'status'];
+    protected static $logAttributes                = ['id','user.name','id_mtz', 'description', 'value','operation_date',
+                                                      'operation.name', 'type_launch.name', 'payment_type.name', 'caixa.name',
+                                                      'base.name', 'closing.MonthYear', 'status'];
     //Atributo que sera ignorado a alteração        
     protected static $ignoreChangedAttributes      = [];
     //Registrando log apenas de atributos alterados

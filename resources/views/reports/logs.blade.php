@@ -34,9 +34,9 @@
                 <table id="dt_logs" class="table table-striped table-bordered table-hover table-responsive display nowrap">
                     <thead>
                         <tr>
-                            <th>Código</th>
                             <th>Tabela</th>
                             <th>Descrição</th>
+                            <th>ID</th>
                             <th>Alteração</th>
                             <th>Usuário Alteração</th>
                             <th>Data Alteração</th>
@@ -44,14 +44,14 @@
                     </thead>
                     <tbody>
                         @foreach ($activies as $activie)
-                            <tr>
-                                <th>{{$activie->id}}</th>
-                                <th>{{$activie->log_name}}</th>
-                                <th>{{$activie->description}}</th>
-                                <th>{{$activie->properties}}</th>
-                                <th>{{$activie->causer_id}}</th>
-                                <th>{{$activie->created_at}}</th>
-                            </tr>
+                        <tr>
+                            <th>{{$activie->log_name}}</th>
+                            <th>{{$activie->description}}</th>
+                            <th>{{$activie->subject_id}}</th>
+                            <th>{{$activie->properties}}</th>
+                            <th>{{$activie->causer_id}}</th>
+                            <th>{{$activie->created_at}}</th>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

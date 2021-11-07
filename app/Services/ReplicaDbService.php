@@ -18,8 +18,7 @@ class ReplicaDbService
     private $ConnectDbController;
     private $bases;
 
-    public function __construct(
-        ConnectDbController $ConnectDbController)
+    public function __construct(ConnectDbController $ConnectDbController)
     {
 
         $this->ConnectDbController    = $ConnectDbController;
