@@ -399,7 +399,7 @@
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Configurações
                 </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{{ asset('/log')}}">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logs de Atividades
                 </a>

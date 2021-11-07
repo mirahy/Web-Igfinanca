@@ -106,10 +106,10 @@ class TbCadUserService
       $user = $this->repository->update($data->all(), $id);
       DB::table('model_has_roles')->where('model_id',$id)->delete();
       $user->assignRole($data->input('roles'));
-
+    
       // registra no banco de dados das filiais
       $this->ReplicaDbService->updateUser($data, $id, $this->repository);
-      
+
       //altera a conexão para base matriz
       $this->ConnectDbController->connectBase();
 

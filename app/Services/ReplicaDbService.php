@@ -4,17 +4,22 @@ namespace App\Services;
 
 use App\Http\Controllers\ConnectDbController;
 use App\Entities\TbBase;
+use App\Entities\TbCadUser;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Activitylog\Traits\LogsActivity;
 use DB;
 
 
 class ReplicaDbService
 {
+    use LogsActivity;
+
     private $ConnectDbController;
     private $bases;
 
-    public function __construct(ConnectDbController $ConnectDbController)
+    public function __construct(
+        ConnectDbController $ConnectDbController)
     {
 
         $this->ConnectDbController    = $ConnectDbController;
@@ -31,7 +36,8 @@ class ReplicaDbService
 
     public function create($data, $repository)
     {
-
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -41,10 +47,14 @@ class ReplicaDbService
                 $repository->create($data);
             }
         }
+         //ativando registro de log
+         activity()->enableLogging();
     }
 
     public function update($data, $id, $repository)
     {
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -54,10 +64,14 @@ class ReplicaDbService
                 $repository->update($data, $id);
             }
         }
+         //ativando registro de log
+         activity()->enableLogging();
     }
 
     public function delete($id, $repository)
     {
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -67,6 +81,8 @@ class ReplicaDbService
                 $repository->delete($id);
             }
         }
+         //ativando registro de log
+         activity()->enableLogging();
     }
 
 
@@ -79,7 +95,8 @@ class ReplicaDbService
 
     public function createRole($data)
     {
-
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -90,10 +107,14 @@ class ReplicaDbService
                 $role->syncPermissions($data->input('permission'));
             }
         }
+         //ativando registro de log
+         activity()->enableLogging();
     }
 
     public function updateRole($data, $id)
     {
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -108,10 +129,14 @@ class ReplicaDbService
                 $role->syncPermissions($data->input('permission'));
             }
         }
+         //ativando registro de log
+         activity()->enableLogging();
     }
 
     public function deleteRole($id)
     {
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -121,6 +146,8 @@ class ReplicaDbService
                 DB::table("roles")->where('id',$id)->delete();
             }
         }
+        //ativando registro de log
+        activity()->enableLogging();
     }
 
 
@@ -132,7 +159,8 @@ class ReplicaDbService
 
     public function createUser($data, $repository)
     {
-
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -143,10 +171,14 @@ class ReplicaDbService
                 $user->assignRole($data->input('roles'));
             }
         }
+        //ativando registro de log
+        activity()->enableLogging();
     }
 
     public function updateUser($data, $id, $repository)
     {
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -158,6 +190,8 @@ class ReplicaDbService
                 $user->assignRole($data->input('roles'));
             }
         }
+        //ativando registro de log
+        activity()->enableLogging();
     }
 
 
@@ -170,7 +204,8 @@ class ReplicaDbService
 
     public function createPermission($data)
     {
-
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -180,10 +215,14 @@ class ReplicaDbService
                 $role = Permission::create(['name' => $data->input('name')]);
             }
         }
+         //ativando registro de log
+         activity()->enableLogging();
     }
 
     public function updatePermission($data, $id)
     {
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -196,10 +235,14 @@ class ReplicaDbService
 
             }
         }
+         //ativando registro de log
+         activity()->enableLogging();
     }
 
     public function deletePermission($id)
     {
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
         foreach ($this->bases as $base) {
             $base = $base['sigla'];
             if ($base != 'adb_mtz') {
@@ -209,6 +252,8 @@ class ReplicaDbService
                 DB::table("permissions")->where('id',$id)->delete();
             }
         }
+         //ativando registro de log
+         activity()->enableLogging();
     }
 
 }

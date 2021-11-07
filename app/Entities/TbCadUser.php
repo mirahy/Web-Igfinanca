@@ -11,6 +11,8 @@ use Spatie\Permission\Traits\HasRoles;
 use DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class TbCadUser.
@@ -22,16 +24,39 @@ class TbCadUser extends Authenticatable
     use SoftDeletes;
     use Notifiable;
     use HasRoles;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    public     $timestamps   = true;
-    protected  $table        = 'tb_cad_user';
-    protected  $fillable     = ['id', 'name', 'idtb_profile', 'idtb_base', 'birth', 'email', 'password', 'status', 'permission', 'token_access', 'created_at', 'updated_at'];
-    protected  $hidden       = ['password', 'rememberToken'];
+    public     $timestamps                         = true;
+    protected  $table                              = 'tb_cad_user';
+    protected  $fillable                           = ['id', 'name', 'idtb_profile', 'idtb_base', 'birth', 'email', 'password', 
+                                                        'status', 'permission', 'token_access', 'created_at', 'updated_at'];
+    protected  $hidden                             = ['password', 'rememberToken'];
+    protected  $appends                            = ['Role', 'RolePermission'];
+    //Alterando nome do evento 
+    protected static $logName                      = 'User';
+    //vevntos que acionan o log
+    protected static $recordEvents                 = ['created', 'updated', 'deleted'];
+    //Atributos que sera registrada a alteração
+    protected static $logAttributes                = ['name', 'profile.name', 'base.name', 'birth', 'email', 'status', 'permission'];
+    //Atributo que sera ignorado a alteração        
+    protected static $ignoreChangedAttributes      = ['password', 'rememberToken', 'token_access'];
+    //Registrando log apenas de atributos alterados
+    protected static $logOnlyDirty                 = true;
+    //impedir registro de log vazio ao alterar atributos não listados no 'logAttributes'
+    protected static $submitEmptyLogs              = false;
+    
+    //função para descrição do log
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "This model has been {$eventName}";
+    }
+
+
 
     //  public function setPasswordAttribute($value){
 
@@ -70,9 +95,7 @@ class TbCadUser extends Authenticatable
             'user_id'   => $this->id,
             'datetime'  => date('YmdHis'),
         ]);
-    }
-
-    protected $appends = ['Role', 'RolePermission'];
+    } 
 
     // Retorna nome da função
     public function getRoleAttribute()
@@ -120,4 +143,6 @@ class TbCadUser extends Authenticatable
             return 'Indefinidas';
         }
     }
+
+
 }
