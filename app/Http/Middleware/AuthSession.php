@@ -22,7 +22,7 @@ class AuthSession
             Auth::logout();
             $request->session()->flush();
             // Redireciona o usuário para a página de login, com session "message"
-            $request->session()->put('alert-danger', 'A sessão deste usuário expirou!');
+            $request->session()->put('alert-danger', 'Sua sessão expirou!');
 
             return redirect()->route('user.login');
         }

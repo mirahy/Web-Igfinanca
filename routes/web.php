@@ -43,6 +43,8 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
     Route::get('/forgot-password', ['uses' => 'TbCadUsersController@forgotPassword']);
 
 
+
+
     //Init group unique users route and user authenticated
     Route::middleware(['auth.unique.user', 'auth', 'auth_session'])->group(function () {
 
@@ -56,7 +58,7 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
         Route::post('/keep', ['as' => 'keep', 'uses' => 'TbCadUsersController@keep'])->middleware('accesses_matriz');
         Route::post('/show-user', ['as' => 'show-user', 'uses' => 'TbCadUsersController@show_user'])->middleware('accesses_matriz');
         Route::post('/destroy', ['as' => 'destroy', 'uses' => 'TbCadUsersController@destroy'])->middleware('accesses_matriz');
-        
+
 
 
         /**
@@ -103,10 +105,15 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
         Route::post('/keep-permission', ['as' => 'keep-permission', 'uses' => 'PermissionController@keep'])->middleware('accesses_matriz');
         Route::post('/show-permission', ['as' => 'show-permission', 'uses' => 'PermissionController@show_PermissionController'])->middleware('accesses_matriz');
         Route::post('/destroy-permission', ['as' => 'destroy-permission', 'uses' => 'PermissionController@destroy'])->middleware('accesses_matriz');
+
+        /**
+         * Routes to user forgot-password
+         *========================================================================
+         */
+        Route::get('/log', ['uses' => 'LogsController@index'])->middleware('accesses_matriz');
     });
     /**Finish group route base matriz authenticated */
 });
-
 /**Finish group route base matriz */
 
 

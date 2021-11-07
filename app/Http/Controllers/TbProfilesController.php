@@ -12,40 +12,22 @@ use App\Http\Requests\TbProfileUpdateRequest;
 use App\Repositories\TbProfileRepository;
 use App\Validators\TbProfileValidator;
 
-/**
- * Class TbProfilesController.
- *
- * @package namespace App\Http\Controllers;
- */
+
 class TbProfilesController extends Controller
 {
-    /**
-     * @var TbProfileRepository
-     */
+    
     protected $repository;
-
-    /**
-     * @var TbProfileValidator
-     */
     protected $validator;
 
-    /**
-     * TbProfilesController constructor.
-     *
-     * @param TbProfileRepository $repository
-     * @param TbProfileValidator $validator
-     */
+   
     public function __construct(TbProfileRepository $repository, TbProfileValidator $validator)
     {
+        $this->middleware('role:Admin', ['only' => ['index', 'store', 'show', 'edit', 'update', 'destroy']]);
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
@@ -61,15 +43,7 @@ class TbProfilesController extends Controller
         return view('tbProfiles.index', compact('tbProfiles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  TbProfileCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+   
     public function store(TbProfileCreateRequest $request)
     {
         try {
@@ -101,13 +75,7 @@ class TbProfilesController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
         $tbProfile = $this->repository->find($id);
@@ -122,13 +90,7 @@ class TbProfilesController extends Controller
         return view('tbProfiles.show', compact('tbProfile'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit($id)
     {
         $tbProfile = $this->repository->find($id);
@@ -136,16 +98,7 @@ class TbProfilesController extends Controller
         return view('tbProfiles.edit', compact('tbProfile'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  TbProfileUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+    
     public function update(TbProfileUpdateRequest $request, $id)
     {
         try {
@@ -180,13 +133,6 @@ class TbProfilesController extends Controller
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $deleted = $this->repository->delete($id);

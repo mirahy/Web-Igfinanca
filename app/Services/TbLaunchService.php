@@ -15,10 +15,13 @@ use Yajra\Datatables\Datatables;
 use DB;
 use App\Http\Controllers\ConnectDbController;
 use Illuminate\Support\Arr;
+use Spatie\Activitylog\Traits\LogsActivity;
+
 
 
 class TbLaunchService
 {
+  use LogsActivity;
 
   private $repository;
   private $validator;
@@ -70,8 +73,12 @@ class TbLaunchService
       $data['id_filial'] = $launch['id'];
       //altera a conexão para base matriz
       $this->ConnectDbController->connectMatriz();
+      //destivando registro de log para as replicações
+      activity()->disableLogging();
       // registra lançamento no banco de dados matriz
       $launch_mtz = $this->repository->create($data);
+      //ativando registro de log
+      activity()->enableLogging();
       //remove a chave e valor de id_filias, insere id filial e recupera id gerado na base matriz para inserir na coluna id_mtz na base filial
       Arr::forget($data, 'id_filial');
       $data['id'] = $launch['id'];
@@ -109,6 +116,7 @@ class TbLaunchService
   public function update($data)
   {
     try {
+      
 
       $id = $data['id'];
       // validando campos
@@ -140,8 +148,12 @@ class TbLaunchService
       $id_mtz = $launch['id_mtz'];
       //altera a conexão para base matriz
       $this->ConnectDbController->connectMatriz();
+       //destivando registro de log para as replicações
+       activity()->disableLogging();
       // atualiza lançamento no banco de dados matriz
       $launch = $this->repository->update($data, $id_mtz);
+      //ativando registro de log
+      activity()->enableLogging();
       //altera a conexão para base Local
       $this->ConnectDbController->connectBase();
 
@@ -183,8 +195,12 @@ class TbLaunchService
       $launch = $this->repository->delete($id);
       //altera a conexão para base matriz
       $this->ConnectDbController->connectMatriz();
+       //destivando registro de log para as replicações
+       activity()->disableLogging();
       //exclui o registro da base matriz
       $launch_mtz = $this->repository->delete($data['id_mtz']);
+      //ativando registro de log
+      activity()->enableLogging();
       //altera a conexão para base Local
       $this->ConnectDbController->connectBase();
       
@@ -256,9 +272,15 @@ class TbLaunchService
   {
     try {
 
-      $id      = $data['id'];
-      $id_mtz  = TbLaunch::where('id', $id)->get('id_mtz');
-      $id_mtz = $id_mtz[0]['id_mtz'];
+      $id       = $data['id'];
+      $launch   = TbLaunch::where('id', $id)->get();
+      $id_mtz   = $launch[0]['id_mtz'];
+      $launch[0]['status'] = $data['status'];
+      $launch[0]['name'] = DB::table('tb_cad_user')->where('id', $launch[0]['id_user'])->get('name')->toArray();
+      $launch[0]['name'] = $launch[0]['name'][0]->name;
+      
+      
+     
       
       $closing = $this->repository->with('closing')->find($id)->toArray();
 
@@ -270,12 +292,22 @@ class TbLaunchService
           'data'     => '',
         ];
       }
-      //Ataliza campo status na base local
-      $launch = TbLaunch::Where('id', $id)->update(['status' => $data['status']]);
+
+      $launch = $launch->toArray();
+
+      //atualiza lançamento no banco de dados filial
+      $launch_filial = $this->repository->update($launch[0], $id);
       //altera a conexão para base matriz
       $this->ConnectDbController->connectMatriz();
-      //Ataliza campo status na base matriz
-      TbLaunch::where('id', $id_mtz)->update(['status' => $data['status']]);
+      unset($launch[0]['id_mtz']);
+      $launch[0]['id'] = $id_mtz;
+      $launch[0]['id_filial'] = $id;
+      //destivando registro de log para as replicações
+      activity()->disableLogging();
+      //Atualiza campo status na base matriz
+      $launch = $this->repository->update($launch[0], $id_mtz);
+      //ativando registro de log
+      activity()->enableLogging();
       //altera a conexão para base Local
       $this->ConnectDbController->connectBase();
 

@@ -8,6 +8,7 @@ use App\Entities\TbClosing;
 use App\Services\TbLaunchService;
 use PDF;
 
+
 class PdfController extends Controller
 {
 
@@ -17,6 +18,8 @@ class PdfController extends Controller
     {
         
         $this->serviceLaunch  = $serviceLaunch;
+
+        $this->middleware('role:Admin|Edit|launche-approver|launch-manager', ['only' => ['closing_pdf']]);
     }
 
     //coletar dados para gerar  pdf de fechamentos

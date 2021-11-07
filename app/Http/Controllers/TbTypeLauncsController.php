@@ -12,40 +12,21 @@ use App\Http\Requests\TbTypeLauncUpdateRequest;
 use App\Repositories\TbTypeLauncRepository;
 use App\Validators\TbTypeLauncValidator;
 
-/**
- * Class TbTypeLauncsController.
- *
- * @package namespace App\Http\Controllers;
- */
+
 class TbTypeLauncsController extends Controller
 {
-    /**
-     * @var TbTypeLauncRepository
-     */
+   
     protected $repository;
-
-    /**
-     * @var TbTypeLauncValidator
-     */
     protected $validator;
 
-    /**
-     * TbTypeLauncsController constructor.
-     *
-     * @param TbTypeLauncRepository $repository
-     * @param TbTypeLauncValidator $validator
-     */
     public function __construct(TbTypeLauncRepository $repository, TbTypeLauncValidator $validator)
     {
+        $this->middleware('role:Admin', ['only' => ['index', 'store', 'show', 'edit', 'update', 'destroy']]);
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
@@ -61,15 +42,7 @@ class TbTypeLauncsController extends Controller
         return view('tbTypeLauncs.index', compact('tbTypeLauncs'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  TbTypeLauncCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+    
     public function store(TbTypeLauncCreateRequest $request)
     {
         try {
@@ -101,13 +74,7 @@ class TbTypeLauncsController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         $tbTypeLaunc = $this->repository->find($id);
@@ -122,13 +89,7 @@ class TbTypeLauncsController extends Controller
         return view('tbTypeLauncs.show', compact('tbTypeLaunc'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id)
     {
         $tbTypeLaunc = $this->repository->find($id);
@@ -136,16 +97,7 @@ class TbTypeLauncsController extends Controller
         return view('tbTypeLauncs.edit', compact('tbTypeLaunc'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  TbTypeLauncUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+    
     public function update(TbTypeLauncUpdateRequest $request, $id)
     {
         try {
@@ -180,13 +132,6 @@ class TbTypeLauncsController extends Controller
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $deleted = $this->repository->delete($id);

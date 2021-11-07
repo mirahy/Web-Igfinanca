@@ -6,19 +6,42 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 
 class TbLaunch extends Model implements Transformable
 {
     use TransformableTrait;
     use SoftDeletes;
+    use LogsActivity;
     
 
    
      public     $timestamps   = true;
      protected  $table        = 'tb_launch';
-     protected  $fillable     = ['id','id_user','id_filial','id_mtz', 'description', 'value','operation_date','idtb_operation','status','idtb_type_launch', 'idtb_payment_type', 'idtb_caixa','idtb_base', 'idtb_closing', 'status', 'created_at', 'updated_at'];
-     
+     protected  $fillable     = ['id','id_user','id_filial','id_mtz', 'description', 'value','operation_date','idtb_operation',
+                                 'idtb_type_launch', 'idtb_payment_type', 'idtb_caixa','idtb_base', 'idtb_closing', 'status',
+                                 'created_at', 'updated_at'];
+     //Alterando nome do evento 
+    protected static $logName                      = 'TbLaunch';
+    //vevntos que acionan o log
+    protected static $recordEvents                 = ['created', 'updated', 'deleted'];
+    //Atributos que sera registrada a alteração
+    protected static $logAttributes                = ['id','user.name','id_mtz', 'description', 'value','operation_date',
+                                                      'operation.name', 'type_launch.name', 'payment_type.name', 'caixa.name',
+                                                      'base.name', 'closing.MonthYear', 'status'];
+    //Atributo que sera ignorado a alteração        
+    protected static $ignoreChangedAttributes      = [];
+    //Registrando log apenas de atributos alterados
+    protected static $logOnlyDirty                 = true;
+    //impedir registro de log vazio ao alterar atributos não listados no 'logAttributes'
+    protected static $submitEmptyLogs              = false;
+    
+    //função para descrição do log
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "This model has been {$eventName}";
+    }
 
      public function user(){
        return $this->belongsTo(TbCadUser::class, 'id_user', 'id');

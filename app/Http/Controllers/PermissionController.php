@@ -14,10 +14,8 @@ class PermissionController extends Controller
 
     function __construct(PermissionService $service)
     {
-        // $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','keep', 'query_DataTables' ]]);
-        // $this->middleware('permission:role-create', ['only' => ['query_DataTables','keep']]);
-        // $this->middleware('permission:role-edit', ['only' => ['show_roles','keep', 'query_DataTables']]);
-        // $this->middleware('permission:role-delete', ['only' => ['destroy', 'query_DataTables']]);
+        
+        $this->middleware('role:Admin', ['only' => ['index', 'query_DataTables', 'keep', 'show_PermissionController', 'destroy']]);
         $this->service  = $service;
     }
 

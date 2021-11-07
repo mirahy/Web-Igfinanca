@@ -7,6 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use App\Services\TbLaunchService;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Class TbClosing.
@@ -17,11 +18,30 @@ class TbClosing extends Model implements Transformable
 {
    use SoftDeletes;
    use TransformableTrait;
+   use LogsActivity;
 
 
    public     $timestamps   = true;
    protected  $table        = 'tb_closing';
    protected  $fillable     = ['id', 'month', 'year', 'status'];
+   //Alterando nome do evento 
+   protected static $logName                      = 'TbClosing';
+   //vevntos que acionan o log
+   protected static $recordEvents                 = ['created', 'updated', 'deleted'];
+   //Atributos que sera registrada a alteração
+   protected static $logAttributes                = ['id', 'month', 'year', 'status'];
+   //Atributo que sera ignorado a alteração        
+   protected static $ignoreChangedAttributes      = [];
+   //Registrando log apenas de atributos alterados
+   protected static $logOnlyDirty                 = true;
+   //impedir registro de log vazio ao alterar atributos não listados no 'logAttributes'
+   protected static $submitEmptyLogs              = false;
+   
+   //função para descrição do log
+   public function getDescriptionForEvent(string $eventName): string
+   {
+       return "This model has been {$eventName}";
+   }
 
 
    public function Launch()

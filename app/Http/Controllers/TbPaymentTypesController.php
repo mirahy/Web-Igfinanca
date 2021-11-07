@@ -12,40 +12,20 @@ use App\Http\Requests\TbPaymentTypeUpdateRequest;
 use App\Repositories\TbPaymentTypeRepository;
 use App\Validators\TbPaymentTypeValidator;
 
-/**
- * Class TbPaymentTypesController.
- *
- * @package namespace App\Http\Controllers;
- */
+
 class TbPaymentTypesController extends Controller
 {
-    /**
-     * @var TbPaymentTypeRepository
-     */
     protected $repository;
-
-    /**
-     * @var TbPaymentTypeValidator
-     */
     protected $validator;
 
-    /**
-     * TbPaymentTypesController constructor.
-     *
-     * @param TbPaymentTypeRepository $repository
-     * @param TbPaymentTypeValidator $validator
-     */
     public function __construct(TbPaymentTypeRepository $repository, TbPaymentTypeValidator $validator)
     {
+        $this->middleware('role:Admin', ['only' => ['index', 'store', 'show', 'edit', 'update', 'destroy']]);
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
@@ -61,15 +41,7 @@ class TbPaymentTypesController extends Controller
         return view('tbPaymentTypes.index', compact('tbPaymentTypes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  TbPaymentTypeCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+    
     public function store(TbPaymentTypeCreateRequest $request)
     {
         try {
@@ -101,13 +73,7 @@ class TbPaymentTypesController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
         $tbPaymentType = $this->repository->find($id);
@@ -122,13 +88,7 @@ class TbPaymentTypesController extends Controller
         return view('tbPaymentTypes.show', compact('tbPaymentType'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit($id)
     {
         $tbPaymentType = $this->repository->find($id);
@@ -136,16 +96,7 @@ class TbPaymentTypesController extends Controller
         return view('tbPaymentTypes.edit', compact('tbPaymentType'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  TbPaymentTypeUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+
     public function update(TbPaymentTypeUpdateRequest $request, $id)
     {
         try {
@@ -180,13 +131,6 @@ class TbPaymentTypesController extends Controller
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $deleted = $this->repository->delete($id);

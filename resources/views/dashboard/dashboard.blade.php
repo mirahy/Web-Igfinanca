@@ -86,6 +86,7 @@
         </div>
 
         <!-- Saldo Caixa dízimo -->
+        @role('Admin|Edit|launche-approver|launch-manager')
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-info shadow h-100 py-2">
             <div class="card-body">
@@ -94,7 +95,7 @@
                   <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Saldo</div>
                   <div class="row no-gutters align-items-center">
                     <div class="col-auto">
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="balance">R$ <?=$balance?></div>
+                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="balance">R$ <?=$balance?></div> 
                     </div>
                   </div>
                 </div>
@@ -105,6 +106,7 @@
             </div>
           </div>
         </div>
+        @endrole
 
         <!-- Earnings (Monthly) Card Example
         <div class="col-xl-3 col-md-6 mb-4">
@@ -133,6 +135,7 @@
         </div> -->
 
         <!-- Pendencias de lançamentos no caixa de dízimos -->
+        @role('Admin|Edit|launche-approver|launch-manager')
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-warning shadow h-100 py-2">
             <a class="collapse-item link-none-line" href="{{ asset('/apr-l')}}">
@@ -150,6 +153,7 @@
             </a>
           </div>
         </div>
+        @endrole
       </div>
 
       <!-- /Content Row -->
@@ -204,6 +208,7 @@
         </div>
 
         <!-- Slado ofertas -->
+        @role('Admin|Edit|launche-approver|launch-manager')
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-info shadow h-100 py-2">
             <div class="card-body">
@@ -223,6 +228,7 @@
             </div>
           </div>
         </div>
+        @endrole
 
         <!-- Earnings (Monthly) Card Example
         <div class="col-xl-3 col-md-6 mb-4">
@@ -251,6 +257,7 @@
         </div> -->
 
         <!-- Pendencias de lançamentos no caixa de ofertas -->
+        @role('Admin|Edit|launche-approver|launch-manager')
         <div class="col-xl-3 col-md-6 mb-4">
           <div class="card border-left-warning shadow h-100 py-2">
             <a class="collapse-item link-none-line" href="{{ asset('/apr-l')}}">
@@ -268,6 +275,7 @@
             </div>
           </a>
         </div>
+        @endrole
       </div>
 
       <!-- /Content Row -->

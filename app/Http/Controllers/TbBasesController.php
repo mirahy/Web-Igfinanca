@@ -12,40 +12,20 @@ use App\Http\Requests\TbBaseUpdateRequest;
 use App\Repositories\TbBaseRepository;
 use App\Validators\TbBaseValidator;
 
-/**
- * Class TbBasesController.
- *
- * @package namespace App\Http\Controllers;
- */
+
 class TbBasesController extends Controller
 {
-    /**
-     * @var TbBaseRepository
-     */
-    protected $repository;
-
-    /**
-     * @var TbBaseValidator
-     */
+   
     protected $validator;
 
-    /**
-     * TbBasesController constructor.
-     *
-     * @param TbBaseRepository $repository
-     * @param TbBaseValidator $validator
-     */
     public function __construct(TbBaseRepository $repository, TbBaseValidator $validator)
     {
+        $this->middleware('role:Admin', ['only' => ['index', 'store', 'show', 'edit', 'update', 'destroy']]);
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         
@@ -53,15 +33,7 @@ class TbBasesController extends Controller
         return view('launch.launchs', compact('tbBases'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  TbBaseCreateRequest $request
-     *
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+
     public function store(TbBaseCreateRequest $request)
     {
         try {
@@ -93,13 +65,7 @@ class TbBasesController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $tbBase = $this->repository->find($id);
@@ -114,13 +80,6 @@ class TbBasesController extends Controller
         return view('tbBases.show', compact('tbBase'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $tbBase = $this->repository->find($id);
@@ -128,16 +87,7 @@ class TbBasesController extends Controller
         return view('tbBases.edit', compact('tbBase'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  TbBaseUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
+    
     public function update(TbBaseUpdateRequest $request, $id)
     {
         try {
@@ -172,13 +122,6 @@ class TbBasesController extends Controller
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $deleted = $this->repository->delete($id);
