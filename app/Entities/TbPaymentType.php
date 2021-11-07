@@ -5,11 +5,13 @@ namespace App\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 
 class TbPaymentType extends Model implements Transformable
 {
     use TransformableTrait;
+    use LogsActivity;
 
   
     public     $timestamps   = true;

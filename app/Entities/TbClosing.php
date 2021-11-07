@@ -7,6 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use App\Services\TbLaunchService;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Class TbClosing.
@@ -17,6 +18,7 @@ class TbClosing extends Model implements Transformable
 {
    use SoftDeletes;
    use TransformableTrait;
+   use LogsActivity;
 
 
    public     $timestamps   = true;

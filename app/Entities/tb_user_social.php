@@ -5,11 +5,13 @@ namespace App\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class tb_user_social extends Model
 {
   use SoftDeletes;
   use Notifiable;
+  use LogsActivity;
 
   /**
    * The attributes that are mass assignable.

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Class TbProfile.
@@ -16,6 +17,7 @@ class TbProfile extends Model implements Transformable
 {
     use SoftDeletes;
     use TransformableTrait;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
