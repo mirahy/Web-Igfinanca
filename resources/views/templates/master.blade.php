@@ -159,6 +159,8 @@
 
 
       <!-- Nav Item - Aproved -->
+      <!-- retirar este If apos implementa aprovação de fechamentos -->
+      @if (session()->get('db') != 'MTZ')
       @role('Admin|launche-approver')
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true" aria-controls="collapsePages2">
@@ -174,13 +176,14 @@
             @endif
             <!-- acesso somente logado na base matriz -->
             @if (session()->get('db') == 'MTZ')
-            <a class="collapse-item" href="#">Fechamentos</a>
+            <a class="collapse-item d-none" href="#">Fechamentos</a>
             <!--"{{ asset('/apr-f')}}" -->
             @endif
           </div>
         </div>
       </li>
       @endrole
+      @endif
 
       <!-- Nav Item - Charts -->
       <!-- acesso somente logado na base matriz -->
@@ -203,9 +206,9 @@
         <div id="collapsePages3" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Gerar Realatórios:</h6>
-            <a class="collapse-item" href="#">Dízimos</a>
-            <a class="collapse-item" href="#">Ofertas</a>
-            <a class="collapse-item" href="#">Saídas</a>
+            <a class="collapse-item d-none" href="#">Dízimos</a>
+            <a class="collapse-item d-none" href="#">Ofertas</a>
+            <a class="collapse-item d-none" href="#">Saídas</a>
             @role('Admin|Edit|launche-approver|launch-manager')
             <a class="collapse-item" href="{{ asset('/reports-f')}}">Fechamentos</a>
             @endrole
