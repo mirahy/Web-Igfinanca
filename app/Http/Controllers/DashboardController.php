@@ -11,6 +11,7 @@ use App\Services\TbLaunchService;
 use Exception;
 use Auth;
 use App\Entities\TbCadUser;
+use App\Entities\TbClosing;
 
 class DashboardController extends Controller
 {
@@ -111,6 +112,7 @@ class DashboardController extends Controller
   public function index()
   {
 
+    $periodo = TbClosing::where('status', 1)->get();
     
     return view('dashboard.dashboard', [
                 'pend'      => 'Atualizando...',
@@ -121,6 +123,7 @@ class DashboardController extends Controller
                 'entries_o' => 'Calculando...',
                 'exits_o'   => 'Calculando...',
                 'balance_o' => 'Calculando...',
+                'periodo'   => $periodo,
       
     ]);
 
