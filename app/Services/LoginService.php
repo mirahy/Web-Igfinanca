@@ -81,7 +81,6 @@ class LoginService
             {
               $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
               
-
               if(!$user)
               return [
                 'success'     => false,
@@ -93,7 +92,8 @@ class LoginService
                 'id_base'     => $id_base,       
               ];
 
-              if (!Auth::attempt($data, $remember))
+
+              if (!Hash::check($request->get('password'), $user->password))
               return [
                 'success'     => false,
                 'messages'    => ["Email e/ou senha inválidos"],
