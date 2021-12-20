@@ -21,7 +21,7 @@ class TbLaunchValidator extends LaravelValidator
 
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-          'name'              => 'bail|required|min:10',
+          'name'              => 'bail|required|min:3',
           'value'             => 'bail|required|numeric|min:0|not_in:0',
           'idtb_closing'      => 'bail|required|not_in:0',
           'operation_date'    => 'bail|required|date',
@@ -30,7 +30,7 @@ class TbLaunchValidator extends LaravelValidator
 
         
         ValidatorInterface::RULE_UPDATE => [
-            'name'             => 'bail|required|min:10',
+            'name'             => 'bail|required|min:3',
             'value'            => 'bail|required|numeric|min:0|not_in:0',
             'idtb_closing'     => 'bail|required|not_in:0',
             'operation_date'   => 'bail|required|date',
