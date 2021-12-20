@@ -59,7 +59,7 @@ $(function () {
         // setar valor de saldo dos dízimos
             $.ajax({
                 type: "GET",
-                url: "balance?status=1&caixa=1&closing_status=1&initDate=1&finalDate=1",
+                url: "balance?status=1&caixa=1&closing_status=1&initDate=1&finalDate=1&closing_id=1",
                 dataType: "json",
                 success: function (response) {  
                     $("#balance").html('R$' + number_format(response,2,',','.'));   
@@ -79,7 +79,7 @@ $(function () {
                     
                     $.ajax({
                         type: "GET",
-                        url: "balance?status=1&caixa=2&closing_status=1&initDate=1&finalDate=1",
+                        url: "balance?status=1&caixa=2&closing_status=1&initDate=1&finalDate=1&closing_id=1",
                         dataType: "json",
                         success: function (response) { 
                             value = response2.responseJSON;
