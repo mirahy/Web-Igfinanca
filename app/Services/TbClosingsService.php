@@ -42,12 +42,18 @@ class TbClosingsService
     try {
       // validando campos
       $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
-      // validando se período ja existe
 
+      // validando se período ja existe
       $v = $this->validator->validaPeriodo($data);
       if (!$v['success']) {
         return $v;
       }
+
+      //verifica se o campo valida periodo esta false
+      if(!isset($data['period_valid'])){
+        $data['period_valid'] = '0';
+      }
+
 
       // registra no banco de dados matriz
       $closing = $this->repository->create($data);
@@ -89,12 +95,20 @@ class TbClosingsService
       $id = $data['id'];
       // validando campos
       $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+
       // validando se período ja existe
       $v = $this->validator->validaPeriodo($data);
       if (!$v['success']) {
         return $v;
       }
 
+       //verifica se o campo valida periodo esta false
+       if(!isset($data['period_valid'])){
+        $data['period_valid'] = '0';
+      }
+
+     
+      
       // atualiza no banco de dados matriz
       $closing = $this->repository->update($data, $id);
 
@@ -113,8 +127,9 @@ class TbClosingsService
         'type'        => [""],
       ];
     } catch (Exception $e) {
-
+      dd($e);
       switch (get_class($e)) {
+       
         case QueryException::class:
           return ['success' => false, 'messages' => 'Não foi possivel cadastar o período!', 'type'  => $e->getMessage()];
         case ValidatorException::class:

@@ -2,6 +2,7 @@ FECHAMENTO_FECHADO = 0;
 FECHAMENTO_ABERTO = 1;
 FECHAMENTO_PRE_FECHAMENTO = 2;
 
+
 $(function () {
 
     // botao adicionar período
@@ -98,6 +99,16 @@ $(function () {
         "columns": [
             { data: 'month', name: 'month' },
             { data: 'year', name: 'year' },
+            {
+                "data": "period_valid",
+                "render": function (data, type, row, meta) {
+                    return data == 1 ? "<span class='badge badge-success'>Sim</span>" : "<span class='badge badge-danger'>Não</span>";
+                },
+                columnDefs: [
+                    { targets: "no-sort", orderable: false },
+                    { targets: "dt-center", ClassName: "dt-center" }
+                ]
+            },
             {
                 "data": "status",
                 "render": function (data, type, row, meta) {

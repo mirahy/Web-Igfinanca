@@ -50,6 +50,7 @@
                             <tr>
                                 <th>Mês</th>
                                 <th>Ano</th>
+                                <th>Valida Período</th>
                                 <th>Status</th>
                                 <th>Data lançamento</th>
                                 <th>Data Ataulização</th>
@@ -96,6 +97,10 @@
                     @include('templates.forms.select',['select' => 'Ano', 'label' => 'Ano', 'data' => $year
                     ,'attributes' => ['placeholder' => 'Ano', 'class' => 'form-control form-control-user', 'id' =>
                     'year', 'name' => 'year']])
+
+                    @include('templates.forms.checkbox',['label' => 'Valida Período', 'name' => 'period_valid',
+                    'value' => '1', 'checked' => 'true', 'attributes' => ['class' => 'form-control-user', 'id' =>
+                    'period_valid', 'name' => 'period_valid']])
 
                     @include('templates.forms.select',['select' => 'status', 'label' => 'Status', 'data' => [ '1' =>
                     'Aberto', '2' => 'Pre-Fechamento', '0' => 'Fechado']
