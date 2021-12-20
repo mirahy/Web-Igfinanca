@@ -26,6 +26,7 @@ class CreateTbClosingTable extends Migration
             $table->string('month', 20);
             $table->string('year', 4);
             $table->integer('status')->default('0');
+            $table->integer('period_valid')->default('1');
             $table->softDeletes();
             $table->nullableTimestamps();
         });

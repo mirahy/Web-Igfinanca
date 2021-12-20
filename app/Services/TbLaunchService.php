@@ -28,11 +28,12 @@ class TbLaunchService
   private $serviceUser;
   private $ConnectDbController;
 
-  public function __construct(TbLaunchRepository $repository,
-                              TbLaunchValidator $validator,
-                              TbCadUserService $serviceUser,
-                              ConnectDbController $ConnectDbController)
-  {
+  public function __construct(
+    TbLaunchRepository $repository,
+    TbLaunchValidator $validator,
+    TbCadUserService $serviceUser,
+    ConnectDbController $ConnectDbController
+  ) {
     $this->repository           = $repository;
     $this->validator            = $validator;
     $this->serviceUser          = $serviceUser;
@@ -60,11 +61,14 @@ class TbLaunchService
         ];
       }
 
-      //verifica se lançamento esta dentro do peíodo
-      $v = $this->validator->validaDataPeriodo($closing, $data);
-      if (!$v['success']) {
-        return $v;
+      //verifica se é para validar o período e se lançamento esta dentro do peíodo
+      if ($closing[0]['period_valid']) {
+        $v = $this->validator->validaDataPeriodo($closing, $data);
+        if (!$v['success']) {
+          return $v;
+        }
       }
+
 
 
       // registra lançamento no banco de dados filial
@@ -87,7 +91,7 @@ class TbLaunchService
       $this->ConnectDbController->connectBase();
       // atualiza a coluna id_mtz na base filial
       $this->repository->update($data, $launch['id']);
-      
+
 
       $msg = $launch['value'];
 
@@ -116,7 +120,7 @@ class TbLaunchService
   public function update($data)
   {
     try {
-      
+
 
       $id = $data['id'];
       // validando campos
@@ -134,22 +138,24 @@ class TbLaunchService
         ];
       }
 
-      //verifica se lançamento esta dentro do peíodo
-      $v = $this->validator->validaDataPeriodo($closing, $data);
-      if (!$v['success']) {
-        return $v;
+      //verifica se é para validar o período e se lançamento esta dentro do peíodo
+      if ($closing[0]['period_valid']) {
+        $v = $this->validator->validaDataPeriodo($closing, $data);
+        if (!$v['success']) {
+          return $v;
+        }
       }
 
 
       //atualiza lançamento no banco de dados filial
       $launch = $this->repository->update($data, $id);
       //recupera id_mtz
-      $data['id']= $launch['id_mtz'];
+      $data['id'] = $launch['id_mtz'];
       $id_mtz = $launch['id_mtz'];
       //altera a conexão para base matriz
       $this->ConnectDbController->connectMatriz();
-       //destivando registro de log para as replicações
-       activity()->disableLogging();
+      //destivando registro de log para as replicações
+      activity()->disableLogging();
       // atualiza lançamento no banco de dados matriz
       $launch = $this->repository->update($data, $id_mtz);
       //ativando registro de log
@@ -195,15 +201,15 @@ class TbLaunchService
       $launch = $this->repository->delete($id);
       //altera a conexão para base matriz
       $this->ConnectDbController->connectMatriz();
-       //destivando registro de log para as replicações
-       activity()->disableLogging();
+      //destivando registro de log para as replicações
+      activity()->disableLogging();
       //exclui o registro da base matriz
       $launch_mtz = $this->repository->delete($data['id_mtz']);
       //ativando registro de log
       activity()->enableLogging();
       //altera a conexão para base Local
       $this->ConnectDbController->connectBase();
-      
+
       $msg = $data['value'];
 
       return [
@@ -278,10 +284,10 @@ class TbLaunchService
       $launch[0]['status'] = $data['status'];
       $launch[0]['name'] = DB::table('tb_cad_user')->where('id', $launch[0]['id_user'])->get('name')->toArray();
       $launch[0]['name'] = $launch[0]['name'][0]->name;
-      
-      
-     
-      
+
+
+
+
       $closing = $this->repository->with('closing')->find($id)->toArray();
 
       if ($closing['closing']['status'] == 0) {
@@ -333,7 +339,6 @@ class TbLaunchService
         default:
           return ['success' => false, 'messages' => 'Não foi possível aprovar!', 'type'  => $e->getMessage()];
       }
-
     }
   }
 
