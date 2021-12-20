@@ -547,15 +547,26 @@ class TbLaunchService
     if (!$closing) {
       return 0;
     } else {
-      // se passado o parametro refence_month, pega o fechaento referente se não pegar o fechamento em aberto
+      // se passado o parametro refence_month, pega o fechamento referente se não pega o fechamento em aberto
       $closing = $request->only('reference_month') ? TbClosing::Where('id', $request->only('reference_month'))->get() : TbClosing::Where('status', 1)->get();
       // parametro refence_month removido par não influenciar no resultado
       $request->request->remove('reference_month');
       $initPeriod = new \DateTime($closing[0]['InitPeriod']);
       $initPeriod->modify('-1 day');
-      // se passado os parametros init e finalDate pegae o saldo do fechamento senão pega o saldo anterior ao fechamento
-      $initDate = $request->query('initDate') ? new \DateTime($closing[0]['InitPeriod']) : new \DateTime('2021/01/01');
-      $finalDate = $request->query('finalDate') ? new \DateTime($closing[0]['FinalPeriod']) : $initPeriod->format('Y-m-d');
+
+      if ($request->only('closing_id')) {
+        // se passado o valor closig_id, sera retornado o saldo referente ao periodo em aberto sem validar a data
+        $request->request->add(['reference_month' => $closing[0]['id']]);
+        // se passado os parametros init e finalDate pega o saldo do fechamento senão pega o saldo anterior ao fechamento
+        $initDate =  new \DateTime('2021/01/01');
+        $finalDate = $request->query('finalDate') ? new \DateTime($closing[0]['FinalPeriod']) : $initPeriod->format('Y-m-d');
+      } else {
+        // se passado os parametros init e finalDate pega o saldo do fechamento senão pega o saldo anterior ao fechamento
+        $initDate = $request->query('initDate') ? new \DateTime($closing[0]['InitPeriod']) : new \DateTime('2021/01/01');
+        $finalDate = $request->query('finalDate') ? new \DateTime($closing[0]['FinalPeriod']) : $initPeriod->format('Y-m-d');
+      }
+
+      //dd($request);
 
       $def = '%';
 
