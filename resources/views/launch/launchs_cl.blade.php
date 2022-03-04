@@ -52,9 +52,7 @@
                                         <th>Tp Pagamento<br/></th>
                                         <th>Coleta<br/></th>
                                         <th>Status<br/></th>
-                                        @if (session()->get('db') == 'MTZ')
                                         <th>Base</th>
-                                        @endif
                                         <th data-orderable="false" >Período<br/></th>
                                         <th>Status Período<br/></th>
                                         <th>Data lançamento<br/></th>

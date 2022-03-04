@@ -7,6 +7,7 @@ use App\Entities\TbTypeLaunch;
 use App\Entities\TbClosing;
 use App\Services\TbLaunchService;
 use PDF;
+use SnappyPDF;
 
 
 class PdfController extends Controller
@@ -48,10 +49,16 @@ class PdfController extends Controller
 
         $balance    = $entries - $exits;
 
-        // return View('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
-        $pdf = PDF::loadView('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
+        //retorna a view
+        //return View('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
 
-        return $pdf->setPaper('a4')->stream($nomeArq.'.pdf');
+        //DomPDF
+        // $pdf = PDF::loadView('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
+        // return $pdf->setPaper('a4')->stream($nomeArq.'.pdf');
+
+        //Snappy PDF
+        $pdf = SnappyPDF::loadView('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
+        return $pdf->inline($nomeArq.'.pdf');
 
         
     }
