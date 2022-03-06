@@ -129,7 +129,7 @@
                 <td>
                   @php($e = 1)
                   @if($dados2->count() <> 0)
-                    <h6 class="m-2">Este relatório contem os seguintes anexos:</h6>
+                    <h6 class="m-2">Este relatório contem o(s) seguinte(s) anexo(s):</h6>
                     @foreach($dados2 as $item1)
                       <h6 class="m-2"> {{'Anexo '.$e.' - '.$item1->payment_type->name}} </h6>
                       @php($e++)
@@ -170,7 +170,7 @@
               <tbody class="tb-size">
 
                 @foreach ($dados as $item)
-                @if($item->idtb_payment_type == $item1->payment_type->id)
+                @if($item->idtb_payment_type == $item1->payment_type->id && $item->idtb_operation == 1)
                 <tr style="font-size: 0.7rem !important">
                   <th scope="row">{{ $item->type_launch->name }}</th>
                   <th>{{ $item->user->name }}</th>
