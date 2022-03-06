@@ -31,8 +31,9 @@
                   <!-- Entrada  -->
                   <div class="p-2">
                     <div class="text-xs font-weight-bold text-success text-uppercase">Entradas </div>
-                    <div class=" font-weight-bold text-gray-800" id="entries">R$ {{ number_format($entries, 2, ',', '.') }}</div>
+                    <div class=" font-weight-bold text-gray-800" id="entries">Total: R$ {{ number_format($entries, 2, ',', '.') }}</div>
                     <div style="font-size: 0.6rem !important">
+                    <div>Saldo Anterior: R$ {{number_format( $startBalance, 2, ',', '.')}}</div>
                       @foreach ($dados2 as $item)
                       <div>{{$item->payment_type->name}} : R$ {{number_format( $item->total, 2, ',', '.')}}</div>
                       @endforeach

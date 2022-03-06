@@ -156,7 +156,7 @@ class TbLaunchController extends Controller
     //função para cadastar e atualizar
     public function keep(Request $request)
     {
-
+        
 
         $json  = array();
         $json["status"] = 1;
@@ -164,13 +164,13 @@ class TbLaunchController extends Controller
         $json["success"] = array();
         
         $user = $this->service->find_User_name($request['name'])->toArray();
-       
+        
         if($user && count($user) == 1){
             $request['id_user'] = $user[0]['id'];
 
         }else{
             $json["status"] = 0;
-            $json["error_list"]["#name"] = "Usuário não cadastrado";
+            $json["error_list"]["#name"] = "Usuário não cadastrado ou duplicado";
 
             echo json_encode($json);
             return;
