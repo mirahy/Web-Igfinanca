@@ -85,3 +85,6 @@ tfoot {
 tr {
     page-break-inside: avoid;
 }
+.page-break{
+    page-break-after: always;
+ }
