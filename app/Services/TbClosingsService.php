@@ -52,6 +52,8 @@ class TbClosingsService
       //verifica se o campo valida periodo esta false
       if(!isset($data['period_valid'])){
         $data['period_valid'] = '0';
+      }else{
+        $data['period_valid'] = '1';
       }
 
 
@@ -92,6 +94,7 @@ class TbClosingsService
   {
     try {
 
+
       $id = $data['id'];
       // validando campos
       $this->validator->with($data)->setId($id)->passesOrFail(ValidatorInterface::RULE_UPDATE);
@@ -105,6 +108,8 @@ class TbClosingsService
        //verifica se o campo valida periodo esta false
        if(!isset($data['period_valid'])){
         $data['period_valid'] = '0';
+      }else{
+        $data['period_valid'] = '1';
       }
 
      

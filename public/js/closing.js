@@ -33,8 +33,23 @@ $(function () {
                     $("#status").show();
                     $("#status").parent().siblings(".control-label").show();
                     $("#closing_form")[0].reset();
-                    $.each(response["imput"], function (id, value) {
-                        $("#" + id ).val(value);
+                    $.each(response["imput"], function (id, value) {  
+                        if(id === 'period_valid'){
+                            
+                            if(value == 0){
+                                $("#" + id ).prop('checked', false);
+                                $("#" + id ).val(value);
+
+                            }else{
+                                $("#" + id ).prop('checked', true);
+                                $("#" + id ).val(value);
+
+                            }     
+
+                        }else{
+                            $("#" + id ).val(value);
+
+                        }   
                     });
                     $("#modal_closing").modal();
                 }
