@@ -54,14 +54,15 @@ class PdfController extends Controller
 
 
         //retorna a view
-        // return View('reports.closingPDF', compact('dados', 'dados2', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
+        // return View('reports.closingPDF', compact('dados', 'dados2', 'period', 'entries', 'exits', 'balance', 'tpCaixa', 'startBalance'));
 
         //DomPDF
-        // $pdf = PDF::loadView('reports.closingPDF', compact('dados', 'period', 'entries', 'exits', 'balance', 'tpCaixa'));
+        // $pdf = PDF::loadView('reports.closingPDF', compact('dados', 'dados2', 'period', 'entries', 'exits', 'balance', 'tpCaixa', 'startBalance'));
         // return $pdf->setPaper('a4')->stream($nomeArq.'.pdf');
 
         //SnappyPDF
-        $pdf = SnappyPDF::loadView('reports.closingPDF', compact('dados', 'dados2', 'period', 'entries', 'exits', 'balance', 'tpCaixa'))
+        
+        $pdf = SnappyPDF::loadView('reports.closingPDF', compact('dados', 'dados2', 'period', 'entries', 'exits', 'balance', 'tpCaixa', 'startBalance'))
                             ->setPaper('a4')->setOption('footer-right', 'Página [page] de [topage]')->setOption('footer-left', '[date] - [time]')
                             ->setOption('header-left', $base);
         return $pdf->inline($nomeArq.'.pdf');
