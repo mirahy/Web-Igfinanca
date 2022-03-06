@@ -49,7 +49,8 @@ class DashboardController extends Controller
        'user'           =>  $request['data'],
        'base'           =>  $request['base'],
        'db'             =>  $request['db'],
-       'id_base'        =>  $request['id_base']
+       'id_base'        =>  $request['id_base'],
+       'name_base'      => $request['name_base'],
     ]);
     
 

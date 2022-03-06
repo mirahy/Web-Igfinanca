@@ -47,9 +47,10 @@ class LoginService
 
       
       //recuperando sigla, name e id selecionada no login
-      $base    = TbBase::Where('id', $data['base'])->get('sigla')->ToArray();
+      $base    = TbBase::Where('id', $data['base'])->get()->ToArray();
       $db      =   strtoupper(substr($base[0]['sigla'],-3));
       $id_base = $data['base'];
+      $name_base = $base[0]['name'];
       $sigla = $base[0]['sigla'];
 
 
@@ -89,7 +90,8 @@ class LoginService
                 'type'        => ["email","password"],
                 'base'        => $base, 
                 'db'          => $db,
-                'id_base'     => $id_base,       
+                'id_base'     => $id_base,
+                'name_base'   => $name_base,     
               ];
 
 
@@ -101,7 +103,8 @@ class LoginService
                 'type'        => ["email","password"],
                 'base'        => $base, 
                 'db'          => $db,
-                'id_base'     => $id_base,                 
+                'id_base'     => $id_base,
+                'name_base'   => $name_base,                
               ];
 
               Auth::attempt($data, $remember);
@@ -117,7 +120,8 @@ class LoginService
                     'type'        => ["email","password"],
                     'base'        => $base, 
                     'db'          => $db,
-                    'id_base'     => $id_base, 
+                    'id_base'     => $id_base,
+                    'name_base'   => $name_base, 
                                      
                   ];
 
@@ -129,7 +133,8 @@ class LoginService
                     'type'        => ["email","password"],
                     'base'        => $base, 
                     'db'          => $db,
-                    'id_base'     => $id_base,  
+                    'id_base'     => $id_base,
+                    'name_base'   => $name_base,  
                   ];
                   
                   
@@ -147,17 +152,18 @@ class LoginService
                   'type'        => [null],
                   'base'        => $base, 
                   'db'          => $db,
-                  'id_base'     => $id_base, 
+                  'id_base'     => $id_base,
+                  'name_base'   => $name_base, 
                 ];
 
         }
         catch (Exception $e)
         {
           switch (get_class($e)) {
-            case QueryException::class      : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => ''];
-            case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys(), 'data'   => '', 'base' => '', 'db' => '', 'id_base' => ''];
-            case Exception::class           : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => ''];
-            default                         : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => ''];
+            case QueryException::class      : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => ''];
+            case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys(), 'data'   => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => ''];
+            case Exception::class           : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => ''];
+            default                         : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => ''];
           }
         }
 

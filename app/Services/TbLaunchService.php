@@ -608,6 +608,7 @@ class TbLaunchService
 
 
         return floatval($entradas - $saidas);
+
       } elseif ($request->isMethod('post')) {
         $entradas = TbLaunch::query()
           ->whereHas('closing', function ($q) use ($request, $def) {
@@ -645,5 +646,58 @@ class TbLaunchService
         return floatval($entradas - $saidas);
       }
     }
+  }
+  //retorna o saldo agrupado por tipo de pagamento, tpOperacao por default 1-entrada
+  function saldoTipoPagamento($request, $tpOperacao = 1)
+  {
+
+    $def = '%';
+
+      if ($request->isMethod('get')) 
+      {
+
+        return TbLaunch::query()
+        ->with('payment_type')
+          ->whereHas('closing', function ($q) use ($request, $def) {
+            $q->where([
+              ['status', 'like',  $request->query('closing_status', $def)],
+              ['id', 'like',  $request->query('reference_month', $def)]
+            ]);
+          })
+          ->where([
+            ['idtb_type_launch', 'LIKE', $request->query('launch', $def)],
+            ['status', 'LIKE', $request->query('status', $def)],
+            ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
+            ['idtb_operation', 'LIKE', $tpOperacao],
+          ])
+          ->select('idtb_payment_type', DB::raw('SUM(value) as total'))
+          ->groupBy('idtb_payment_type')
+          ->get();
+
+
+      } 
+      elseif ($request->isMethod('post')) 
+      {
+
+        return  TbLaunch::query()
+        ->with('payment_type')
+          ->whereHas('closing', function ($q) use ($request, $def) {
+            $q->where([
+              ['status', 'like',  $request->has('closing_status') ? $request['closing_status'] : $def],
+              ['id', 'like',  $request->has('reference_month') ? $request['reference_month'] : $def]
+            ]);
+          })
+          ->where([
+            ['idtb_type_launch', 'LIKE', $request->input('launch', $def)],
+            ['status', 'LIKE', $request->input('status', $def)],
+            ['idtb_caixa', 'LIKE', $request->input('caixa', $def)],
+            ['idtb_operation', 'LIKE', $tpOperacao],
+          ])
+          ->select('idtb_payment_type', DB::raw('SUM(value) as total'))
+          ->groupBy('idtb_payment_type')
+          ->get();
+
+      }
+
   }
 }
