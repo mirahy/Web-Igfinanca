@@ -135,7 +135,7 @@ class TbClosingsController extends Controller
         $json["imput"]['month'] = array_search( $closing['month'], MONTH );
         $json["imput"]['year'] = $closing['year'];
         $json["imput"]['status'] = $closing['status'];
-
+        $json["imput"]['period_valid'] = $closing['period_valid'];
         echo json_encode($json);
 
     }
