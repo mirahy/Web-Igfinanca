@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://adbnfinanca.com/'),
+    'url' => env('APP_URL', 'http://127.0.0.1:8000/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -170,6 +170,9 @@ return [
         //DomPDF
         Barryvdh\DomPDF\ServiceProvider::class,
 
+        //SnappyPDF
+        Barryvdh\Snappy\ServiceProvider::class,
+
         //valida período ja existe
         App\Providers\UniquePeriodServiceProvider::class,
 
@@ -235,6 +238,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'SnappyPDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
 
     ],
 
