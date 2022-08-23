@@ -8,6 +8,7 @@ use App\Entities\TbCadUser;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 use DB;
 
 
@@ -253,6 +254,11 @@ class ReplicaDbService
         }
          //ativando registro de log
          activity()->enableLogging();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class tb_user_social extends Model
 {
@@ -40,4 +41,9 @@ class tb_user_social extends Model
    {
        return "This model has been {$eventName}";
    }
+
+   public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 }

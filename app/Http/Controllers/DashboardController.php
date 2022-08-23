@@ -40,7 +40,7 @@ class DashboardController extends Controller
     $json["status"] = 1;
     $json["error_list"] = array();
  
-   
+  
     $request = $this->service->auth($request);
   
     session([
@@ -53,7 +53,6 @@ class DashboardController extends Controller
        'name_base'      => $request['name_base'],
     ]);
     
-
     if(!$request['success']){
       $json["status"] = 0;
         foreach($request['messages'] as $msg){

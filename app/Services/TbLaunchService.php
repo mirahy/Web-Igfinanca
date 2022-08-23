@@ -16,6 +16,7 @@ use DB;
 use App\Http\Controllers\ConnectDbController;
 use Illuminate\Support\Arr;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 
 
@@ -700,4 +701,9 @@ class TbLaunchService
       }
 
   }
+
+  public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 }

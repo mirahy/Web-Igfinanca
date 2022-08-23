@@ -8,6 +8,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 use App\Services\TbLaunchService;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 /**
  * Class TbClosing.
@@ -42,6 +43,11 @@ class TbClosing extends Model implements Transformable
    {
        return "This model has been {$eventName}";
    }
+
+   public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
 
    public function Launch()
