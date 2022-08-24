@@ -194,6 +194,24 @@ class ReplicaDbService
         activity()->enableLogging();
     }
 
+    public function deleteUser($id, $repository)
+    {
+        //destivando registro de log para as replicações
+        activity()->disableLogging();
+        foreach ($this->bases as $base) {
+            $base = $base['sigla'];
+            if ($base != 'adb_mtz') {
+                //connecta banco
+                $this->ConnectDbController->connectBases($base);
+                // deleta no banco de dados das filiais
+                $repository->delete($id);
+                DB::table('model_has_roles')->where('model_id',$id)->delete();
+            }
+        }
+         //ativando registro de log
+         activity()->enableLogging();
+    }
+
 
      /*
     |--------------------------------------------------------------------------

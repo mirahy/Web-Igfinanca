@@ -146,9 +146,10 @@ class TbCadUserService
       $name = explode(" ", $user[0]['name']);
 
       $this->repository->delete($id);
-
+      DB::table('model_has_roles')->where('model_id',$id)->delete();
+      
       // registra no banco de dados das filiais
-      $this->ReplicaDbService->delete($id, $this->repository);
+      $this->ReplicaDbService->deleteUser($id, $this->repository);
 
       //altera a conexão para base matriz
       $this->ConnectDbController->connectBase();
