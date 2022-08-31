@@ -23,7 +23,7 @@ function getBaseUrl() {
         baseUrl = "http://" + hostName;
     }*/
 
-    baseUrl = "https://" + hostName + "/";
+    baseUrl = "http://" + hostName + ":8000/";
 
     return baseUrl;
 }
