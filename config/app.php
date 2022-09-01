@@ -186,6 +186,9 @@ return [
 
         Spatie\Activitylog\ActivitylogServiceProvider::class,
 
+        //Swagger
+        L5Swagger\L5SwaggerServiceProvider::class,
+
     ],
 
     /*
