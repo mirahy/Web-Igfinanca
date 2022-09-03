@@ -14,6 +14,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * Class TbCadUser.
@@ -22,10 +23,7 @@ use Spatie\Activitylog\LogOptions;
  */
 class TbCadUser extends Authenticatable
 {
-    use SoftDeletes;
-    use Notifiable;
-    use HasRoles;
-    use LogsActivity;
+    use SoftDeletes, Notifiable, HasRoles, LogsActivity, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.

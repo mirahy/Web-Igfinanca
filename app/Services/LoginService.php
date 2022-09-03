@@ -43,6 +43,8 @@ class LoginService
 
   public function auth(Request $request)
   {
+
+    
       $data = $request->all();
 
       
@@ -82,7 +84,7 @@ class LoginService
             {
               $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
               
-              if(!$user)
+              if(!$user || !Hash::check($request->get('password'), $user->password))
               return [
                 'success'     => false,
                 'messages'    => ["Email e/ou senha inválidos"],
@@ -94,25 +96,12 @@ class LoginService
                 'name_base'   => $name_base,     
               ];
 
-
-              if (!Hash::check($request->get('password'), $user->password))
-              return [
-                'success'     => false,
-                'messages'    => ["Email e/ou senha inválidos"],
-                'data'        => $user,
-                'type'        => ["email","password"],
-                'base'        => $base, 
-                'db'          => $db,
-                'id_base'     => $id_base,
-                'name_base'   => $name_base,                
-              ];
-
               Auth::attempt($data, $remember);
 
             }else{
               $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
               
-              if(!$user)
+              if(!$user || $user->password != $request->get('password'))
               return [
                     'success'     => false,
                     'messages'    => ["Email e/ou senha inválidos"],
@@ -124,26 +113,13 @@ class LoginService
                     'name_base'   => $name_base, 
                                      
                   ];
-
-              if($user->password != $request->get('password'))
-                return [
-                    'success'     => false,
-                    'messages'    => ["Email e/ou senha inválidos"],
-                    'data'        => $user,
-                    'type'        => ["email","password"],
-                    'base'        => $base, 
-                    'db'          => $db,
-                    'id_base'     => $id_base,
-                    'name_base'   => $name_base,  
-                  ];
-                  
                   
                   Auth::login($user);
 
             }
 
             $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
-            
+            $token = $user->createToken($request->get('email'));
 
                 return [
                   'success'     => true,
@@ -153,7 +129,8 @@ class LoginService
                   'base'        => $base, 
                   'db'          => $db,
                   'id_base'     => $id_base,
-                  'name_base'   => $name_base, 
+                  'name_base'   => $name_base,
+                  'token'       => $token
                 ];
 
         }

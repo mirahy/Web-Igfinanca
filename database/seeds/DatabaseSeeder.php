@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\Entities\TbCadUser;
 use App\Entities\TbBase;
@@ -147,11 +149,11 @@ class DatabaseSeeder extends Seeder
         
               ]);
               TbCadUser::create([
-                'name'          => 'Mirahy Fonseca',
+                'name'          => 'Admin Root',
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
-                'birth'         => '1989-12-06',
-                'email'         => 'mirahy@vla.com.br',
+                'birth'         => '2030-01-01',
+                'email'         => 'admin.root@vla.com.br',
                 'password'      =>  env("PASSWORD_HASH") ? bcrypt('adbvla123') : 'adbvla123',
                 'status'        => '1',
                 'permission'    => '2'

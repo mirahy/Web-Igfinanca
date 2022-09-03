@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Validators\TbCadUserValidator;
@@ -12,8 +12,9 @@ use Exception;
 use Auth;
 use App\Entities\TbCadUser;
 use App\Entities\TbClosing;
+Use App\Http\Controllers\Controller;
 
-class DashboardController extends Controller
+class Login extends Controller
 {
 
   Private $repository;
@@ -36,10 +37,11 @@ class DashboardController extends Controller
   public function auth(Request $request)
   {
 
+    //dd($request);
+
     $json  = array();
     $json["status"] = 1;
     $json["error_list"] = array();
- 
   
     $request = $this->service->auth($request);
   
@@ -62,11 +64,13 @@ class DashboardController extends Controller
             $json["error_list"]["#email"] = "";
           
             $json["error_list"]["#password"] = ""; 
-      }      
-
-      
+      } else{
+        $json["data"] = $request;
+      }     
+  
       return json_encode($json);
   }
+
 
   // função para logout do usuário
   public function logout(Request $request)
@@ -75,63 +79,17 @@ class DashboardController extends Controller
     if(Auth::check())
     {
       Auth::logout();
+      // Revoke all tokens...
+      auth()->user()->tokens()->delete();
       $request->session()->flush();
+
+      return json_encode("Saiu!!!");
 
     }
 
-      return redirect()->route('user.login');
-  }
-
-  //funcçao de retorno de valores dos laçamentos para a view dashboard
-  public function sum(Request $request)
-  {
-    $value = $this->serviceLaunch->sum($request);
-
-    echo json_encode($value);
-
-  }
-
-   //funçao de retorno de valores para saldo inicial do período(para datas anteriores a 01/08/2021 retorna zero)
-   public function saldo(Request $request)
-   {
-     $value = $this->serviceLaunch->saldo($request);
+    return json_encode("!!!");
     
-     echo json_encode($value);
+  }
+
  
-   }
-
-  //funcçao de retorno de pendencias dos laçamentos para a view dashboard
-  public function pend(Request $request)
-  {
-    $value = $this->serviceLaunch->pend($request);
-
-    echo json_encode($value);
-
-  }
-
-  //função redirecionamento para a view dashboard
-  public function index()
-  {
-
-    $periodo = TbClosing::where('status', 1)->get();
-    
-    return view('dashboard.dashboard', [
-                'pend'      => 'Atualizando...',
-                'entries'   => 'Calculando...',
-                'exits'     => 'Calculando...',
-                'balance'   => 'Calculando...',
-                'pend_o'    => 'Atualizando...',
-                'entries_o' => 'Calculando...',
-                'exits_o'   => 'Calculando...',
-                'balance_o' => 'Calculando...',
-                'periodo'   => $periodo,
-      
-    ]);
-
-  }
-
-
-
-
-
 }

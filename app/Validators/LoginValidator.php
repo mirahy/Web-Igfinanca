@@ -22,7 +22,7 @@ class LoginValidator extends LaravelValidator
         ValidatorInterface::RULE_CREATE => [
           'email'                      => 'bail|required|min:10|email',
           'password'                   => 'bail|required|min:5',
-          'g-recaptcha-response'       => 'required',
+          //'g-recaptcha-response'       => 'required',
 
         ],
         ValidatorInterface::RULE_UPDATE => [],
