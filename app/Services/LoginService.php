@@ -62,7 +62,7 @@ class LoginService
             //validando campos
             $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
             //setando email e password em suas variaveis
-            
+           
             $data=[
               'email'      => $request->get('email'),
               'password'   => $request->get('password')
@@ -76,8 +76,7 @@ class LoginService
             }else{
               $remember     = 'false';
             }
-
-
+            
             
             //estrutura do login
             if( env("PASSWORD_HASH"))
@@ -114,9 +113,11 @@ class LoginService
                                      
                   ];
                   
+                  
                   Auth::login($user);
 
             }
+            
 
             $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
             $token = $user->createToken($request->get('email'));
@@ -137,10 +138,10 @@ class LoginService
         catch (Exception $e)
         {
           switch (get_class($e)) {
-            case QueryException::class      : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => ''];
-            case ValidatorException::class  : return['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys(), 'data'   => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => ''];
-            case Exception::class           : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => ''];
-            default                         : return['success' => false, 'messages' => 'Preencher campos!', 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => ''];
+            case QueryException::class      : return['success' => false, 'messages' => [$e->errorInfo], 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => '', 'token'   => ''];
+            case ValidatorException::class  : return['success' => false, 'messages' => [$e->getMessageBag()->all()], 'type'  => $e->getMessageBag()->keys(), 'data'   => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => '', 'token'   => ''];
+            case Exception::class           : return['success' => false, 'messages' => [$e], 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => '', 'token'   => ''];
+            default                         : return['success' => false, 'messages' => [$e], 'data'   => '', 'type' => '', 'base' => '', 'db' => '', 'id_base' => '', 'name_base'   => '', 'token'   => ''];
           }
         }
 
