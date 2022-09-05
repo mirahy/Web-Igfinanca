@@ -494,41 +494,41 @@ class TbLaunchService
   static public function number_month($string)
   {
 
-    switch ($string) {
-      case "Janeiro":
+    switch (strtolower($string)) {
+      case "janeiro":
         $mes = '01';
         break;
-      case "Fevereiro":
+      case "fevereiro":
         $mes = '02';
         break;
-      case "Março":
+      case "março":
         $mes = '03';
         break;
-      case "Abril":
+      case "abril":
         $mes = '04';
         break;
-      case "Maio":
+      case "maio":
         $mes = '05';
         break;
-      case "Junho":
+      case "junho":
         $mes = '06';
         break;
-      case "Julho":
+      case "julho":
         $mes = '07';
         break;
-      case "Agosto":
+      case "agosto":
         $mes = '08';
         break;
-      case "Setembro":
+      case "setembro":
         $mes = '09';
         break;
-      case "Outubro":
+      case "outubro":
         $mes = '10';
         break;
-      case "Novembro":
+      case "novembro":
         $mes = '11';
         break;
-      case "Dezembro":
+      case "dezembro":
         $mes = '12';
         break;
       default:
