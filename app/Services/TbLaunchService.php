@@ -480,14 +480,28 @@ class TbLaunchService
 
     $def = '%';
 
-    return (TbLaunch::query()
-      ->where([
-        ['idtb_type_launch', 'LIKE', $request->query('launch', $def)],
-        ['status', 'LIKE', $request->query('status', $def)],
-        ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
-        ['idtb_operation', 'LIKE', $request->query('operation', $def)]
-      ]))
-      ->count();
+    if($request->isMethod('get')){
+
+      return (TbLaunch::query()
+        ->where([
+          ['idtb_type_launch', 'LIKE', $request->query('launch', $def)],
+          ['status', 'LIKE', $request->query('status', $def)],
+          ['idtb_caixa', 'LIKE', $request->query('caixa', $def)],
+          ['idtb_operation', 'LIKE', $request->query('operation', $def)]
+        ]))
+        ->count();
+    }elseif($request->isMethod('post')){
+
+      return (TbLaunch::query()
+        ->where([
+          ['idtb_type_launch', 'LIKE', $request->has('launch') ? $request['launch'] : $def],
+          ['status', 'LIKE', $request->has('status') ? $request['status'] : $def],
+          ['idtb_caixa', 'LIKE', $request->has('caixa') ? $request['caixa'] : $def],
+          ['idtb_operation', 'LIKE', $request->has('operation') ? $request['operation'] : $def]
+        ]))
+        ->count();
+    }
+
   }
 
   //retorna numero do mes

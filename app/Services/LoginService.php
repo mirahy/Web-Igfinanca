@@ -119,7 +119,7 @@ class LoginService
             }
 
             $user = $this->repository->FindWhere(['email' => $request->get('email')])->first();
-            $token = $user->createToken($request->get('email'));
+            
 
                 return [
                   'success'     => true,
@@ -130,7 +130,6 @@ class LoginService
                   'db'          => $db,
                   'id_base'     => $id_base,
                   'name_base'   => $name_base,
-                  'token'       => $token
                 ];
 
         }

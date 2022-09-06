@@ -17,8 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/login', ['as' => 'user.login', 'uses' => 'Login@auth']);
-Route::get('/logout', ['as' => 'user.logout', 'uses' => 'Login@logout']);
 
-Route::middleware(['auth.unique.user', 'auth', 'auth_session','auth:sanctum', 'reconnect'])->group(function () {
-    Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', ['as' => 'user.logout', 'uses' => 'Login@logout']);
+
+    //Dashboard routes
+    Route::post('/dashboard-sum', ['as' => 'dashboard', 'uses' => 'DashboardController@sum']);
+    Route::post('/dashboard-saldo', ['as' => 'dashboard', 'uses' => 'DashboardController@saldo']);
+    Route::post('/dashboard-pend', ['as' => 'dashboard', 'uses' => 'DashboardController@pend']);
+
+    //Launches routes
+    Route::get('/launches-param', ['as' => 'launchs-e', 'uses' => 'TbLaunchController@index'])->middleware('accesses_filial');
+    
+    Route::get('/query', ['as' => 'query', 'uses' => 'TbLaunchController@query_DataTables']);
 });
