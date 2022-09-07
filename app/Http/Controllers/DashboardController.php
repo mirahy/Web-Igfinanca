@@ -40,9 +40,10 @@ class DashboardController extends Controller
     $json["status"] = 1;
     $json["error_list"] = array();
  
-  
+    
     $request = $this->service->auth($request);
-  
+    
+    if($request['success'])
     session([
        'success'        =>  $request['success'],
        'messages'       =>  $request['messages'],
@@ -109,11 +110,10 @@ class DashboardController extends Controller
   }
 
   //função redirecionamento para a view dashboard
-  public function index()
+  public function index(Request $request)
   {
-
-    $periodo = TbClosing::where('status', 1)->get();
     
+    $periodo = TbClosing::where('status', 1)->get();
     return view('dashboard.dashboard', [
                 'pend'      => 'Atualizando...',
                 'entries'   => 'Calculando...',
