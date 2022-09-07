@@ -10,6 +10,7 @@ use App\Entities\TbCaixa;
 use App\Entities\TbPaymentType;
 use App\Entities\TbOperation;
 use App\Entities\TbTypeLaunc;
+use App\Entities\TbClosing;
 
 class DatabaseSeeder extends Seeder
 {
@@ -40,136 +41,133 @@ class DatabaseSeeder extends Seeder
                 'name'       => 'Vila Alta',
                 'sigla'      => 'adb_vla',
                 'descripion' => 'Base Vila Alta'
-        
               ]);
 
               TbBase::create([
                 'name'       => 'Matriz',
                 'sigla'      => 'adb_mtz',
                 'descripion' => 'Base Matriz'
-              
               ]);
 
               TbCaixa::create(
                 ['name'       => 'Dízimo',
-                'description' => 'Dízimo']
-                );
+                'description' => 'Dízimo'
+              ]);
                 
                TbCaixa::create(
                ['name'       => 'Oferta',
-               'description' => 'Oferta']
-               );
+               'description' => 'Oferta'
+              ]);
       
-        
               TbProfile::create([
                 'name'        => 'Desenvolvedor',
-                'description' => 'Perfil DEV_OP']
-              );
-              TbProfile::create(
-              [
+                'description' => 'Perfil DEV_OP'
+              ]);
+
+              TbProfile::create([
                 'name'        => 'Básico',
                 'description' => 'Usuario acesso basico'     
-                ]);
+              ]);
+
               TbPaymentType::create([
                   'name'        => 'Dinheiro',
                   'descripion' => ''
-          
-                ]);
+              ]);
+
               TbPaymentType::create([
                 'name'        => 'Cartão Debito',
                 'descripion' => ''
-        
               ]);
               
               TbPaymentType::create([
                 'name'        => 'Cheque',
                 'descripion' => ''
-        
               ]);
               
               TbPaymentType::create([
                 'name'        => 'PIX',
                 'descripion' => ''
-        
               ]);
 
               TbPaymentType::create([
                 'name'        => 'DOC',
                 'descripion' => ''
-        
               ]);
 
               TbPaymentType::create([
                 'name'        => 'TED',
                 'descripion' => ''
-        
               ]);
 
               TbPaymentType::create([
                 'name'        => 'Cartão Crédito',
                 'descripion' => ''
-        
               ]);
-
 
               TbOperation::create([
                 'name'        => 'Entrada',
                 'descripion' => ''
-        
               ]);
+
               TbOperation::create([
                 'name'        => 'Saída',
                 'descripion' => ''
-        
               ]);
+
               TbTypeLaunc::create([
                 'name'        => 'Dízimo',
                 'descripion' => 'Dízimo'
-        
               ]);
               
               TbTypeLaunc::create([
                 'name'        => 'Oferta',
                 'descripion' => 'Oferta'
-        
               ]);
+
               TbTypeLaunc::create([
                 'name'        => 'Compra',
                 'descripion' => 'Compra'
-        
               ]);
+
               TbTypeLaunc::create([
                 'name'        => 'Serviço',
                 'descripion' => 'Serviço'
-        
               ]);
+
               TbTypeLaunc::create([
                 'name'        => 'Entrada',
                 'descripion' => 'Entradas gerais'
-        
               ]);
+
+              TbClosing::insert([
+                'month'  => 'Janeiro',
+                'year'   => date('Y'),
+                'status' => 1
+              ]);
+
               TbCadUser::create([
                 'name'          => 'Admin Root',
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
-                'birth'         => '2030-01-01',
-                'email'         => 'admin.root@vla.com.br',
-                'password'      =>  env("PASSWORD_HASH") ? bcrypt('adbvla123') : 'adbvla123',
+                'birth'         => '1900-01-01',
+                'email'         => 'admin.root@igf.com.br',
+                'password'      =>  env("PASSWORD_HASH") ? bcrypt('igfin123') : 'igfin123',
                 'status'        => '1',
                 'permission'    => '2'
-            
               ]);
 
               TbCadUser::create([
-                'name'          => 'Oferta Local',
+                'name'         => 'Oferta Local',
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
                 'birth'         => '1900-01-01',
-                'status'        => 1,
-            
+                'email'         => '',
+                'password'      =>  '',
+                'status'        => '1',
+                'permission'    => '2' 
               ]);
 
-              $this->command->info('Admin mirahy@vla.com.br user created, password adbvla123');
+              $$this->command->info('Admin admin.root@igf.com.br user created, password igfin123');
         }
 
           // private function createUsers()
@@ -194,11 +192,5 @@ class DatabaseSeeder extends Seeder
           //         'permission'    => '2'
           //     ]);
           // }
-        
-
-
     
-}
-    
-  
-
+}   
