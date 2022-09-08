@@ -156,7 +156,6 @@ class TbLaunchController extends Controller
     //função para cadastar e atualizar
     public function keep(Request $request)
     {
-        
 
         $json  = array();
         $json["status"] = 1;
@@ -182,7 +181,6 @@ class TbLaunchController extends Controller
             
             $request = $this->service->store($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;
-           
             
              if(!$request['success']){
                 $i=0;

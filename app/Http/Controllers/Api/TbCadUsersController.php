@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\TbBaseRepository;
 use App\Repositories\TbProfileRepository;
 use Spatie\Permission\Models\Role;
+Use App\Http\Controllers\Controller;
 
 
 class TbCadUsersController extends Controller
@@ -42,48 +43,28 @@ class TbCadUsersController extends Controller
 
     }
 
-    //redireciona para a view edit-user
-    public function index()
-    {
-        return redirect('/edit-users');
-    }
-
-    //redireciona para a view register
-    public function register()
-    {
-        return view('user.register');
-    }
-
-    //redireciona para a view forgot-password
-    public function forgotPassword()
-    {
-        return view('user.forgot-password');
-    }
-    
-
-    //retorna dados para as tabelas do framework datatables
-    Public function query_DataTables(Request $request)
-    {
-
-        if(request()->ajax()){
-           
-            return $this->service->find_DataTables($request);
-        }
-
-        //dd($this->service->find_DataTables($request));
+    //retornar parametros para formulario
+    Public function param(){
 
         $roles        = Role::pluck('name','id')->all();
         $perfil_list  = $this->TbProfileRepository->selectBoxList();
         $base_list    = $this->TbBaseRepository->selectBoxList();
 
-        return view('user.edit-users',[
-            'perfil_list'  => $perfil_list,
-            'base_list'    => $base_list,
-            'roles'        =>$roles,
-            'userRole'     =>"",
-        ]);
+        return json_encode([
+                'perfil_list'  => $perfil_list,
+                'base_list'    => $base_list,
+                'roles'        =>$roles,
+                'userRole'     =>"",
+              ]);
 
     }
+
+    //retorna dados dos uusários
+    Public function query(Request $request)
+    {
+        return json_encode($this->service->find_DataTables($request));
+    }
+
 
     
     //função para cadastar e atualizar
@@ -94,6 +75,7 @@ class TbCadUsersController extends Controller
         $json["status"] = 1;
         $json["error_list"] = array();
         $json["success"] = array();
+        
         
 
         if(!$request["id"]){

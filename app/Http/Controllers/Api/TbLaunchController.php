@@ -58,7 +58,7 @@ class TbLaunchController extends Controller
     }
 
     //redireciona para a view launchs_e e retorna dados para o form da view
-    public function index()
+    public function param()
     {  
         
         $caixa_list              = $this->TbCaixaRepository->selectBoxList();
@@ -106,7 +106,7 @@ class TbLaunchController extends Controller
     //função para cadastar e atualizar
     public function keep(Request $request)
     {
-        
+    
 
         $json  = array();
         $json["status"] = 1;
@@ -114,7 +114,7 @@ class TbLaunchController extends Controller
         $json["success"] = array();
         
         $user = $this->service->find_User_name($request['name'])->toArray();
-        
+       
         if($user && count($user) == 1){
             $request['id_user'] = $user[0]['id'];
 
@@ -127,7 +127,7 @@ class TbLaunchController extends Controller
 
         }
 
-
+        
         if(!$request["id"]){
             
             $request = $this->service->store($request->all()); 

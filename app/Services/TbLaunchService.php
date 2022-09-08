@@ -92,7 +92,7 @@ class TbLaunchService
       $this->ConnectDbController->connectBase();
       // atualiza a coluna id_mtz na base filial
       $this->repository->update($data, $launch['id']);
-
+      
 
       $msg = $launch['value'];
 
@@ -103,7 +103,7 @@ class TbLaunchService
         'type'        => ["id"],
       ];
     } catch (Exception $e) {
-
+      
       switch (get_class($e)) {
         case QueryException::class:
           return ['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
@@ -557,7 +557,7 @@ class TbLaunchService
 
     $closing = TbClosing::Where('status', 1)->count();
 
-    //dd($request);
+   
 
     if (!$closing) {
       return 0;
@@ -574,14 +574,13 @@ class TbLaunchService
         $request->request->add(['reference_month' => $closing[0]['id']]);
         // se passado os parametros init e finalDate pega o saldo do fechamento senão pega o saldo anterior ao fechamento
         $initDate =  new \DateTime('2021/01/01');
-        $finalDate = $request->query('finalDate') ? new \DateTime($closing[0]['FinalPeriod']) : $initPeriod->format('Y-m-d');
+        $finalDate = $request->has('finalDate') ? new \DateTime($closing[0]['FinalPeriod']) : $initPeriod->format('Y-m-d');
       } else {
         // se passado os parametros init e finalDate pega o saldo do fechamento senão pega o saldo anterior ao fechamento
-        $initDate = $request->query('initDate') ? new \DateTime($closing[0]['InitPeriod']) : new \DateTime('2021/01/01');
-        $finalDate = $request->query('finalDate') ? new \DateTime($closing[0]['FinalPeriod']) : $initPeriod->format('Y-m-d');
+        $initDate = $request->has('initDate') ? new \DateTime($closing[0]['InitPeriod']) : new \DateTime('2021/01/01');
+        $finalDate = $request->has('finalDate') ? new \DateTime($closing[0]['FinalPeriod']) : $initPeriod->format('Y-m-d');
       }
 
-      //dd($request);
 
       $def = '%';
 
@@ -633,9 +632,9 @@ class TbLaunchService
             ]);
           })
           ->where([
-            ['idtb_type_launch', 'LIKE', $request->input('launch', $def)],
-            ['status', 'LIKE', $request->input('status', $def)],
-            ['idtb_caixa', 'LIKE', $request->input('caixa', $def)],
+            ['idtb_type_launch', 'LIKE', $request->has('launch') ? $request['launch'] : $def],
+            ['status', 'LIKE', $request->has('status') ? $request['status'] : $def],
+            ['idtb_caixa', 'LIKE', $request->has('caixa') ? $request['caixa'] : $def],
             ['idtb_operation', 'LIKE', 1],
             ['operation_date', '>=', $initDate],
             ['operation_date', '<=', $finalDate]
@@ -649,9 +648,9 @@ class TbLaunchService
             ]);
           })
           ->where([
-            ['idtb_type_launch', 'LIKE', $request->input('launch', $def)],
-            ['status', 'LIKE', $request->input('status', $def)],
-            ['idtb_caixa', 'LIKE', $request->input('caixa', $def)],
+            ['idtb_type_launch', 'LIKE', $request->has('launch') ? $request['launch'] : $def],
+            ['status', 'LIKE', $request->has('status') ? $request['status'] : $def],
+            ['idtb_caixa', 'LIKE', $request->has('caixa') ? $request['caixa'] : $def],
             ['idtb_operation', 'LIKE', 2],
             ['operation_date', '>=', $initDate],
             ['operation_date', '<=', $finalDate]

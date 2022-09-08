@@ -75,7 +75,7 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
         Route::post('/destroy-closing', ['as' => 'destroy-closing', 'uses' => 'TbClosingsController@destroy'])->middleware('accesses_matriz');
 
         /**approvals*/
-        Route::get('/apr-f', ['as' => 'apr-f', 'uses' => 'TbLaunchController@apr_f'])->middleware('accesses_matriz');
+        //Route::get('/apr-f', ['as' => 'apr-f', 'uses' => 'TbLaunchController@apr_f'])->middleware('accesses_matriz');
 
 
         /**
