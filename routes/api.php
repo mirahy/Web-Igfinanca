@@ -18,7 +18,7 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
 
     Route::post('/login', ['as' => 'user.login', 'uses' => 'Login@auth']);
 
-    Route::middleware(['auth.unique.user', 'auth', 'auth_session', 'auth:sanctum'])->group(function () {
+    Route::middleware(['auth_unique_user_api', 'auth', 'auth_session', 'auth:sanctum'])->group(function () {
         Route::post('/logout', ['as' => 'user.logout', 'uses' => 'Login@logout']);
 
         /**

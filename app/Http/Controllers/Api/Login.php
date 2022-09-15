@@ -28,6 +28,10 @@ class Login extends Controller
     $request = $this->service->auth($request);
     //gerando token
     if($request['success']){
+
+     //gerar token
+      $token = auth()->user()->createToken($email);
+
       //inserir dados na seção
       session([
         'success'        =>  $request['success'],
@@ -37,10 +41,8 @@ class Login extends Controller
         'db'             =>  $request['db'],
         'id_base'        =>  $request['id_base'],
         'name_base'      =>  $request['name_base'],
+        'plainTextToken' =>  $token->plainTextToken
      ]);
-
-     //gerar token
-      $token = auth()->user()->createToken($email);
 
     }else{
       return json_encode(['data' =>["Email e/ou senha inválidos"]]);
