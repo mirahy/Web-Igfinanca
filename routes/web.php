@@ -46,7 +46,7 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
 
 
     //Init group unique users route and user authenticated
-    Route::middleware(['auth.unique.user', 'auth', 'auth_session'])->group(function () {
+    Route::middleware(['auth_unique_user', 'auth', 'auth_session'])->group(function () {
 
         /**
          * Routes to dashboard nav users
@@ -118,7 +118,7 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
 
 
 //Init group unique users route, user autenticated and reconnect data base seletion on login
-Route::middleware(['auth.unique.user', 'auth', 'auth_session', 'reconnect'])->group(function () {
+Route::middleware(['auth_unique_user', 'auth', 'auth_session', 'reconnect'])->group(function () {
     Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
 
     /**

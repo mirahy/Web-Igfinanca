@@ -51,7 +51,7 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
 
 
 //Init group unique users route, user autenticated and reconnect data base seletion on login
-Route::middleware(['auth.unique.user', 'auth', 'auth_session', 'reconnect', 'auth:sanctum'])->group(function () {
+Route::middleware(['auth_unique_user_api', 'auth:sanctum', 'reconnect'])->group(function () {
 
     //Dashboard routes
     Route::post('/dashboard-sum', ['as' => 'dashboard', 'uses' => 'DashboardController@sum']);
