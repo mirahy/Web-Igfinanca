@@ -31,9 +31,11 @@ class LoginSuccessful
     {
         $event->subject = 'login';
         $event->description = 'Login successful';
+        $email = $event->user->email;
+        $base = DB::connection()->getDatabaseName();
         
         activity($event->subject)
-            ->withProperties(['Email' => $event->user->email])
+            ->withProperties(['Email' => $email])
             ->by($event->user)
             ->log($event->description);
             

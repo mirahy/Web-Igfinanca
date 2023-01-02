@@ -36,30 +36,24 @@ class TbCadUser extends Authenticatable
                                                         'status', 'permission', 'token_access', 'created_at', 'updated_at'];
     protected  $hidden                             = ['password', 'rememberToken'];
     protected  $appends                            = ['Role', 'RolePermission'];
-    //Alterando nome do evento 
-    protected static $logName                      = 'User';
-    //vevntos que acionan o log
-    protected static $recordEvents                 = ['created', 'updated', 'deleted'];
-    //Atributos que sera registrada a alteração
-    protected static $logAttributes                = ['name', 'profile.name', 'base.name', 'birth', 'email', 'status', 'permission'];
-    //Atributo que sera ignorado a alteração        
-    protected static $ignoreChangedAttributes      = ['password', 'rememberToken', 'token_access'];
-    //Registrando log apenas de atributos alterados
-    protected static $logOnlyDirty                 = true;
-    //impedir registro de log vazio ao alterar atributos não listados no 'logAttributes'
-    protected static $submitEmptyLogs              = false;
-    
-    //função para descrição do log
-    public function getDescriptionForEvent(string $eventName): string
-    {
-        return "This model has been {$eventName}";
-    }
 
+    
+    //eventos que acionan o log
+    protected static $recordEvents                 = ['created', 'updated', 'deleted'];
+   
+    // Função para registara log
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults();
-    }
+        return LogOptions::defaults()
+        ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
+        ->useLogName('User')
+        ->logOnly(['id', 'name', 'profile.name', 'base.name', 'birth', 'email', 
+                        'status', 'permission'])
+        ->dontLogIfAttributesChangedOnly(['password', 'rememberToken', 'token_access', 'updated_at'])
+        ->logOnlyDirty()
+        ->dontSubmitEmptyLogs();
 
+    }
 
 
     //  public function setPasswordAttribute($value){
