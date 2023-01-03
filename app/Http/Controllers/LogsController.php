@@ -4,24 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
+use Yajra\Datatables\Datatables;
 use DB;
 
 
 class LogsController extends Controller
 {
 
-    public function index()
-    {
-        $activies = DB::table('activity_log')->paginate(10);
-        
-        $Length = $activies->count();
-        for ($i = 0; $i < $Length; $i++) {  
-            $name = DB::table('tb_cad_user')
-                ->where('id', $activies[$i]->causer_id)
-                ->get('name')->toArray();
-            $activies[$i]->causer_id = $name[0]->name;
-        }
+   
+        public function index(){ 
 
-        return view('reports.logs', compact('activies'));
-    }
+            return view('reports.logs');
+    
+        }
+    
+        public function query_DataTables(){
+    
+            $activies =  Datatables::of(DB::table('activity_log')
+                                ->join('tb_cad_user', 'causer_id', '=', 'tb_cad_user.id')
+                                ->select('activity_log.*', 'tb_cad_user.name'))
+                                ->blacklist(['action'])
+                                ->make(true);
+           
+            return $activies;
+        }
 }

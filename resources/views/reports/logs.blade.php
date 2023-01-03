@@ -10,6 +10,12 @@
 @section('js-view')
 <script src="js/bootstrap.js"></script>
 <script src="js/util.js"></script>
+<script src="js/sweetalert2.all.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/dataTables.bootstrap4.min.js"></script>
+<script src="js/logs.js"></script>
+<script src="js/jquery-ui.js"></script>
 @endsection
 
 @section('conteudo-view')
@@ -43,19 +49,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($activies as $activie)
-                        <tr>
-                            <th>{{$activie->log_name}}</th>
-                            <th>{{$activie->description}}</th>
-                            <th>{{$activie->subject_id}}</th>
-                            <th>{{$activie->properties}}</th>
-                            <th>{{$activie->causer_id}}</th>
-                            <th>{{$activie->created_at}}</th>
-                        </tr>
-                        @endforeach
+
                     </tbody>
                 </table>
-                {{$activies->links()}}
+                <tfoot>
+                    
+                </tfoot>
             </div>
         </div>
 

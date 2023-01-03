@@ -107,10 +107,11 @@ Route::middleware(['reconnectdbdefault'])->group(function () {
         Route::post('/destroy-permission', ['as' => 'destroy-permission', 'uses' => 'PermissionController@destroy'])->middleware('accesses_matriz');
 
         /**
-         * Routes to user forgot-password
+         * Routes to logs
          *========================================================================
          */
         Route::get('/log', ['uses' => 'LogsController@index'])->middleware('accesses_matriz');
+        Route::get('/query-log', ['uses' => 'LogsController@query_DataTables'])->middleware('accesses_matriz');
     });
     /**Finish group route base matriz authenticated */
 });
