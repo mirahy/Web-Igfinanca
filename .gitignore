@@ -8,8 +8,6 @@
 /.vagrant
 /.docker
 /html
-/Dockerfile
-/docker-compose.yaml
 Homestead.json
 Homestead.yaml
 npm-debug.log
