@@ -38,10 +38,16 @@
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Gerar Relatório</a>
       </div>
       <div class="d-sm-flex align-items-center justify-content-between ">
-        <h1 class="h5 mb-0 text-gray-800">{{$periodo[0]->MonthYear}}</h1>
+        <h2 class="h6 mb-0 text-gray-800">
+          @if(isset($periodo[0]))
+              {{$periodo[0]->MonthYear}}
+          @else
+           <div class='alert alert-danger fade show' role='alert'>Não há períodos em aberto para lançamentos!</div>
+          @endif
+          </h2>
       </div>
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-      <small>Período: {{date( 'd/m/Y' , strtotime($periodo[0]->InitPeriod))}} a {{date( 'd/m/Y' , strtotime($periodo[0]->FinalPeriod))}}</small>
+      <small>{{isset($periodo[0]) ? "Período: " .date( 'd/m/Y' , strtotime($periodo[0]->InitPeriod))." a ".date( 'd/m/Y' , strtotime($periodo[0]->FinalPeriod))  : ""}}</small>
       </div>
 
       <!--Painel Dízimos-->

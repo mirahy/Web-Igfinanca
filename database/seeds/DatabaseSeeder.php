@@ -169,7 +169,7 @@ class DatabaseSeeder extends Seeder
             
               ]);
 
-              $this->command->info('Admin mirahy@vla.com.br user created, password adbvla123');
+              $this->command->info('Admin admin.root@vla.com.br user created, password adbvla123');
         }
 
           // private function createUsers()
