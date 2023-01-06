@@ -10,6 +10,7 @@ use App\Entities\TbCaixa;
 use App\Entities\TbPaymentType;
 use App\Entities\TbOperation;
 use App\Entities\TbTypeLaunc;
+use DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,8 +20,8 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
         public function run()
-        {
-          
+        
+        { 
           // Apaga toda a tabela de usuários
           //DB::table('Tb_Cad_User')->truncate();
 
@@ -168,8 +169,11 @@ class DatabaseSeeder extends Seeder
                 'status'        => 1,
             
               ]);
-
               $this->command->info('Admin admin.root@vla.com.br user created, password adbvla123');
+
+              $path = 'database/seeds/permissoes.sql';
+              DB::unprepared(file_get_contents($path));
+              $this->command->info('Roles and permissions by user created in Data base!');
         }
 
           // private function createUsers()
