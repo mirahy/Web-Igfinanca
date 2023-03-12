@@ -25,7 +25,7 @@ class CreateTbLaunchTable extends Migration
             $table->increments('id');
 
             $table->unsignedInteger('id_mtz')->nullable()->default(null);
-            $table->unsignedInteger('id_filial');
+            $table->unsignedInteger('id_filial')->nullable()->default(null);
 
             $table->unsignedInteger('id_user');
             $table->text('description')->nullable()->default(null);
