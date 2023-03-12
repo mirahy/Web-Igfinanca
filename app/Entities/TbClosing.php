@@ -9,6 +9,7 @@ use App\Services\TbLaunchService;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use DateTimeInterface;
 
 /**
  * Class TbClosing.
@@ -37,17 +38,17 @@ class TbClosing extends Model implements Transformable
    protected static $logOnlyDirty                 = true;
    //impedir registro de log vazio ao alterar atributos não listados no 'logAttributes'
    protected static $submitEmptyLogs              = false;
-   
+
    //função para descrição do log
    public function getDescriptionForEvent(string $eventName): string
    {
-       return "This model has been {$eventName}";
+      return "This model has been {$eventName}";
    }
 
    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
-    }
+   {
+      return LogOptions::defaults();
+   }
 
 
    public function Launch()
@@ -86,5 +87,16 @@ class TbClosing extends Model implements Transformable
       $data = $year . '-' . $month;
       $data = new \DateTime($data);
       return $data->format('Y-m-t');
+   }
+
+   /**
+    * Prepare a date for array / JSON serialization.
+    *
+    * @param  \DateTimeInterface  $date
+    * @return string
+    */
+   protected function serializeDate(DateTimeInterface $date)
+   {
+      return $date->format('Y-m-d H:i:s');
    }
 }

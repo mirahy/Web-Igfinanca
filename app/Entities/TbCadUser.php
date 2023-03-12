@@ -15,6 +15,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Laravel\Sanctum\HasApiTokens;
+use DateTimeInterface;
 
 /**
  * Class TbCadUser.
@@ -32,27 +33,30 @@ class TbCadUser extends Authenticatable
      */
     public     $timestamps                         = true;
     protected  $table                              = 'tb_cad_user';
-    protected  $fillable                           = ['id', 'name', 'idtb_profile', 'idtb_base', 'birth', 'email', 'password', 
-                                                        'status', 'permission', 'token_access', 'created_at', 'updated_at'];
+    protected  $fillable                           = [
+        'id', 'name', 'idtb_profile', 'idtb_base', 'birth', 'email', 'password',
+        'status', 'permission', 'token_access', 'created_at', 'updated_at'
+    ];
     protected  $hidden                             = ['password', 'rememberToken'];
     protected  $appends                            = ['Role', 'RolePermission'];
 
-    
+
     //eventos que acionan o log
     protected static $recordEvents                 = ['created', 'updated', 'deleted'];
-   
+
     // Função para registara log
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
-        ->useLogName('User')
-        ->logOnly(['id', 'name', 'profile.name', 'base.name', 'birth', 'email', 
-                        'status', 'permission'])
-        ->dontLogIfAttributesChangedOnly(['password', 'rememberToken', 'token_access', 'updated_at'])
-        ->logOnlyDirty()
-        ->dontSubmitEmptyLogs();
-
+            ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
+            ->useLogName('User')
+            ->logOnly([
+                'id', 'name', 'profile.name', 'base.name', 'birth', 'email',
+                'status', 'permission'
+            ])
+            ->dontLogIfAttributesChangedOnly(['password', 'rememberToken', 'token_access', 'updated_at'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
 
@@ -93,7 +97,7 @@ class TbCadUser extends Authenticatable
             'user_id'   => $this->id,
             'datetime'  => date('YmdHis'),
         ]);
-    } 
+    }
 
     // Retorna nome da função
     public function getRoleAttribute()
@@ -131,8 +135,8 @@ class TbCadUser extends Authenticatable
 
         //dd($rolePermissions);
         if ($rolePermissions) {
-            foreach($rolePermissions as $name){
-               
+            foreach ($rolePermissions as $name) {
+
                 array_push($rolePermissionsName, $name->name);
             }
 
@@ -142,5 +146,14 @@ class TbCadUser extends Authenticatable
         }
     }
 
-
+    /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param  \DateTimeInterface  $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }
