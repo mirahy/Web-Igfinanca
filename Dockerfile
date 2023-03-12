@@ -2,12 +2,14 @@ FROM wyveo/nginx-php-fpm:latest
 WORKDIR /usr/share/nginx/
 RUN rm -rf html
 COPY . /usr/share/nginx
-RUN git pull
+# RUN git pull
 RUN chmod -R 777 /usr/share/nginx/storage/*
-RUN ln -s public html
-RUN composer update
+# RUN ln -s public html
+# RUN composer update
 RUN rm /etc/nginx/conf.d/default.conf
-RUN cp  /usr/share/nginx/default.conf  /etc/nginx/conf.d/
+RUN cp  ./default.conf  /etc/nginx/conf.d/
+RUN apt update && apt install -y \
+    xvfb wkhtmltopdf
 # COPY ./.docker/app/run.sh /tmp 
 # RUN chmod -R 777 /tmp/run.sh  
 # CMD ["/tmp/run.sh"]
