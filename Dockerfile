@@ -10,6 +10,11 @@ RUN rm /etc/nginx/conf.d/default.conf
 RUN cp  ./default.conf  /etc/nginx/conf.d/
 RUN apt update && apt install -y \
     xvfb wkhtmltopdf
+
+RUN rm -rf /etc/localtime \
+    && ln -s /usr/share/zoneinfo/America/Campo_Grande /etc/localtime \
+    &&  dpkg-reconfigure -f noninteractive tzdata
+    
 # COPY ./.docker/app/run.sh /tmp 
 # RUN chmod -R 777 /tmp/run.sh  
 # CMD ["/tmp/run.sh"]
