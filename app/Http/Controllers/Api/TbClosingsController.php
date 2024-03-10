@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
@@ -12,7 +12,7 @@ use App\Http\Requests\TbClosingUpdateRequest;
 use App\Repositories\TbClosingRepository;
 use App\Validators\TbClosingValidator;
 use App\Services\TbClosingsService;
-
+Use App\Http\Controllers\Controller;
 
 const MONTH = ['Mês', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
@@ -34,39 +34,36 @@ class TbClosingsController extends Controller
     }
 
     //retorna view closing
-    public function index()
+    public function param()
     {
 
         $year = [date("Y")-1 => date("Y")-1,
                  date("Y")+0 => date("Y")+0,
                  date("Y")+1 => date("Y")+1];
 
-        return view('launch.closing',[
+        return json_encode([
             'month'        => MONTH,
             'year'         => $year,
         ]);
     }
 
-     //retorna dados para as tabelas do framework datatables
-     Public function query_DataTables(Request $request){
-        
-        if(request()->ajax()){
+     //retorna dados
+    Public function query(Request $request)
+    {
+        return json_encode($this->service->find_DataTables($request));
+    }        
 
-            return  $this->service->find_DataTables($request);
-        }        
-
-    }
 
     
      //função para cadastar e atualizar
      public function keep(Request $request)
      {
-
+        
          $json  = array();
          $json["status"] = 1;
          $json["error_list"] = array();
          $json["success"] = array();
-         
+
          $request['month'] = $request['month'] ? MONTH[$request['month']]: null;
          if(!$request["id"]){
            

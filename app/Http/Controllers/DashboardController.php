@@ -52,7 +52,6 @@ class DashboardController extends Controller
        'db'             =>  $request['db'],
        'id_base'        =>  $request['id_base'],
        'name_base'      =>  $request['name_base'],
-       'token'          =>  $request['token'],
     ]);
     
     if(!$request['success']){

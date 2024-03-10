@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
@@ -17,6 +17,7 @@ use App\Repositories\TbPaymentTypeRepository;
 use App\Validators\TbLaunchValidator;
 use Yajra\Datatables\Datatables;
 use App\Services\TbLaunchService;
+Use App\Http\Controllers\Controller;
 
 
 /**
@@ -57,14 +58,14 @@ class TbLaunchController extends Controller
     }
 
     //redireciona para a view launchs_e e retorna dados para o form da view
-    public function index()
+    public function param()
     {  
         
         $caixa_list              = $this->TbCaixaRepository->selectBoxList();
         $closing_list_month      = $this->TbClosingRepository->selectBoxList_month();
         $TbPaymentTypeRepository = $this->TbPaymentTypeRepository->selectBoxList();
         
-        return view('launch.launchs_e', [
+        return json_encode([
             'operation'    => 0,
             'type_launch'  => 0,
             'base'         => session()->get('id_base'),
@@ -77,54 +78,6 @@ class TbLaunchController extends Controller
         ]);
     }
 
-    //redireciona para a view launchs_s e retorna dados para o form da view
-    public function index_s()
-    {
-
-        $caixa_list  = $this->TbCaixaRepository->selectBoxList();
-        $closing_list_month  = $this->TbClosingRepository->selectBoxList_month();
-        $TbPaymentTypeRepository = $this->TbPaymentTypeRepository->selectBoxList();
-        
-        return view('launch.launchs_s', [
-            'operation'    => 0,
-            'type_launch'  => 0,
-            'base'         => session()->get('id_base'),
-            'closing'      => 0,
-            'status'       => 0,
-            'caixa_list'   => $caixa_list,
-            'id_user'      => 0,
-            'month'        => $closing_list_month,
-            'payment_type' => $TbPaymentTypeRepository,
-        ]);
-    }
-
-      //redireciona para a view launchs_cl
-    public function index_cl()
-    {
-     
-        return view('launch.launchs_cl');
-    }
-
-
-    //redireciona para a view launchs_apr e retorna dados para o form da view
-    public function index_l()
-    {
-        $caixa_list  = $this->TbCaixaRepository->selectBoxList();
-        $closing_list_month  = $this->TbClosingRepository->selectBoxList_month();
-        $TbPaymentTypeRepository = $this->TbPaymentTypeRepository->selectBoxList();
-        
-        return view('launch.launchs_apr', [
-            'operation'    => 0,
-            'type_launch'  => 0,
-            'base'         => session()->get('id_base'),
-            'closing'      => 0,
-            'status'       => 0,
-            'caixa_list'   => $caixa_list,
-            'id_user'      => 0,
-            'month'        => $closing_list_month,
-            'payment_type' => $TbPaymentTypeRepository,
-        ]);
-    }
 
     //redireciona para a view closings e retorna dados para os imputs da view
     public function index_reports()
@@ -145,10 +98,7 @@ class TbLaunchController extends Controller
     //retorna dados para as tabelas do framework datatables
     Public function query_DataTables(Request $request){
         
-        if(request()->ajax()){
-
-            return  $this->service->find_DataTables($request);
-        }        
+            return  json_encode($this->service->find_DataTables($request));     
 
     }
 
@@ -156,6 +106,7 @@ class TbLaunchController extends Controller
     //função para cadastar e atualizar
     public function keep(Request $request)
     {
+    
 
         $json  = array();
         $json["status"] = 1;
@@ -163,7 +114,7 @@ class TbLaunchController extends Controller
         $json["success"] = array();
         
         $user = $this->service->find_User_name($request['name'])->toArray();
-        
+       
         if($user && count($user) == 1){
             $request['id_user'] = $user[0]['id'];
 
@@ -176,11 +127,12 @@ class TbLaunchController extends Controller
 
         }
 
-
+        
         if(!$request["id"]){
             
             $request = $this->service->store($request->all()); 
             $launch = $request['success'] ? $request['data'] : null;
+           
             
              if(!$request['success']){
                 $i=0;

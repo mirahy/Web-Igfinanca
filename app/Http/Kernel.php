@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            'throttle:api',
+            'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -65,7 +65,8 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'auth.unique.user' => \App\Http\Middleware\CheckUserUniqueAuth::class,
+        'auth_unique_user' => \App\Http\Middleware\CheckUserUniqueAuth::class,
+        'auth_unique_user_api' => \App\Http\Middleware\CheckUserUniqueAuthAPI::class,
         'reconnect' => \App\Http\Middleware\Reconnect::class,
         'reconnectdbdefault' => \App\Http\Middleware\ReconnectDbDefault::class,
         'reconnectbeforelogin' => \App\Http\Middleware\ReconnectBeforeLogin::class,
