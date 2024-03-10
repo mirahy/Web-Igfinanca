@@ -12,7 +12,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
   <title>System Finance</title>
-  <link rel="shortcut icon" href="img/logo-ico 48x48.ico">
+  <link rel="shortcut icon" href="img/logo.png" width="48" height="48">
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <!-- <link href="css/font-awesome.min.css" rel="stylesheet" > -->
@@ -38,7 +38,7 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ asset('/dashboard')}}">
         <div class="sidebar-brand-icon ">
-          <img src="img/logo-ico.ico" alt="Smiley face" height="60" width="60">
+          <img src="img/logo.png" width="60" height="60" alt="Dashboard">
         </div>
         <div class="sidebar-brand-text " id="page-top">Sistema Tesouraria</div>
       </a>
@@ -388,7 +388,7 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ 'Olá '.Auth::user()->name}}<br>{{ 'Base: '.session()->get('db')}}</span>
-                <img class="img-profile rounded-circle" src="img/logo-ico.ico">
+                <img class="img-profile rounded-circle" src="img/logo.png">
               </a>
 
 

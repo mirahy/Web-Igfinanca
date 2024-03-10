@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Session;
 use Spatie\Activitylog\Models\Activity;
+use DB;
 
 class LoginSuccessful
 {
@@ -31,9 +32,11 @@ class LoginSuccessful
     {
         $event->subject = 'login';
         $event->description = 'Login successful';
+        $email = $event->user->email;
+        $base = DB::connection()->getDatabaseName();
         
         activity($event->subject)
-            ->withProperties(['Email' => $event->user->email])
+            ->withProperties(['Email' => $email])
             ->by($event->user)
             ->log($event->description);
             

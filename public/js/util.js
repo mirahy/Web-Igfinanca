@@ -1,6 +1,16 @@
 // Base url do site
 baseUrl = getBaseUrl();
 
+//Parâmetros para foramatação de datas
+const option = {
+  day: 'numeric',
+  month: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric'
+}
+
 
 // Traduçõa para portugues do DataTable
 const DATATABLE_PTBR = {
@@ -58,13 +68,22 @@ function loadingImg(message=""){
     return "<i class='fa fa-circle-notch fa-spin'></i>&nbsp;" + message
 }
 
-// formatar data/hora de "mm-dd-aaaa 00:00:00" para "dd-mm-aaaa 00:00:00"
+// formatar data/hora de "mm-dd-aaaa 00:00:00" para "dd-mm-aaaa 00:00:00" que estão no formato UTC
 function FormatData(data){
     var dateSplit = data.split('-');
-    var dateSplit2 = dateSplit[2].split(' ');
-    return dateSplit2[1] == null ? dateSplit2[0] +'-'+ dateSplit[1] +'-'+ dateSplit[0] : 
-    dateSplit2[0] +'-'+ dateSplit[1] +'-'+ dateSplit[0] + ' '+ dateSplit2[1];
+    var dateSplit2 = dateSplit[2].split('T');
+    data = new Date(data);
+    return dateSplit2[1] == null ? dateSplit2[0] +'-'+ dateSplit[1] +'-'+ dateSplit[0] :
+    data.toLocaleDateString('pt-br', option);
 
+}
+
+// formatar data/hora de "mm-dd-aaaa 00:00:00" para "dd-mm-aaaa 00:00:00" que não estão no formato UTC
+function FormatDataGMT(data){
+  var dateSplit = data.split('-');
+  var dateSplit2 = dateSplit[2].split(' ');
+  return dateSplit2[1] == null ? dateSplit2[0] +'-'+ dateSplit[1] +'-'+ dateSplit[0] : 
+  dateSplit2[0] +'-'+ dateSplit[1] +'-'+ dateSplit[0] + ' '+ dateSplit2[1];
 }
 
 //formatar numeros

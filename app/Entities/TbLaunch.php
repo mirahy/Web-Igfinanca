@@ -8,87 +8,93 @@ use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-
+use DateTimeInterface;
 
 class TbLaunch extends Model implements Transformable
 {
-    use TransformableTrait;
-    use SoftDeletes;
-    use LogsActivity;
-    
+   use TransformableTrait;
+   use SoftDeletes;
+   use LogsActivity;
 
-   
-     public     $timestamps   = true;
-     protected  $table        = 'tb_launch';
-     protected  $fillable     = ['id','id_user','id_filial','id_mtz', 'description', 'value','operation_date','idtb_operation',
-                                 'idtb_type_launch', 'idtb_payment_type', 'idtb_caixa','idtb_base', 'idtb_closing', 'status',
-                                 'created_at', 'updated_at'];
-     //Alterando nome do evento 
-    protected static $logName                      = 'TbLaunch';
-    //vevntos que acionan o log
-    protected static $recordEvents                 = ['created', 'updated', 'deleted'];
-    //Atributos que sera registrada a alteração
-    protected static $logAttributes                = ['id','user.name','id_mtz', 'description', 'value','operation_date',
-                                                      'operation.name', 'type_launch.name', 'payment_type.name', 'caixa.name',
-                                                      'base.name', 'closing.MonthYear', 'status'];
-    //Atributo que sera ignorado a alteração        
-    protected static $ignoreChangedAttributes      = [];
-    //Registrando log apenas de atributos alterados
-    protected static $logOnlyDirty                 = true;
-    //impedir registro de log vazio ao alterar atributos não listados no 'logAttributes'
-    protected static $submitEmptyLogs              = false;
-    
-    //função para descrição do log
-    public function getDescriptionForEvent(string $eventName): string
-    {
-        return "This model has been {$eventName}";
-    }
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
-    }
 
-     public function user(){
-       return $this->belongsTo(TbCadUser::class, 'id_user', 'id');
 
-     }
+   public     $timestamps   = true;
+   protected  $table        = 'tb_launch';
+   protected  $fillable     = [
+      'id', 'id_user', 'id_filial', 'id_mtz', 'description', 'value', 'operation_date', 'idtb_operation',
+      'idtb_type_launch', 'idtb_payment_type', 'idtb_caixa', 'idtb_base', 'idtb_closing', 'status',
+      'created_at', 'updated_at'
+   ];
+   //eventos que acionan o log
+   protected static $recordEvents                 = ['created', 'updated', 'deleted'];
 
-     public function type_launch(){
-       return $this->belongsTo(TbTypeLaunch::class, 'idtb_type_launch', 'id');
-        
-    }
+   // Função para registara log
+   public function getActivitylogOptions(): LogOptions
+   {
+      return LogOptions::defaults()
+         ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
+         ->useLogName('TbLaunch')
+         ->logOnly([
+            'id', 'user.name', 'id_mtz', 'description', 'value', 'operation_date',
+            'operation.name', 'type_launch.name', 'payment_type.name', 'caixa.name',
+            'base.name', 'closing.MonthYear', 'status'
+         ])
+         ->dontLogIfAttributesChangedOnly(['password', 'rememberToken', 'token_access', 'updated_at'])
+         ->logOnlyDirty()
+         ->dontSubmitEmptyLogs();
+   }
 
-    public function operation(){
-       return $this->belongsTo(TbOperation::class, 'idtb_operation', 'id');
-   
-    }
+   public function user()
+   {
+      return $this->belongsTo(TbCadUser::class, 'id_user', 'id');
+   }
 
-    public function base(){
-       return $this->belongsTo(TbBase::class, 'idtb_base', 'id');
-   
-    }
+   public function type_launch()
+   {
+      return $this->belongsTo(TbTypeLaunch::class, 'idtb_type_launch', 'id');
+   }
 
-    public function caixa(){
+   public function operation()
+   {
+      return $this->belongsTo(TbOperation::class, 'idtb_operation', 'id');
+   }
+
+   public function base()
+   {
+      return $this->belongsTo(TbBase::class, 'idtb_base', 'id');
+   }
+
+   public function caixa()
+   {
       return $this->belongsTo(TbCaixa::class, 'idtb_caixa', 'id');
-  
    }
 
-   public function closing(){
+   public function closing()
+   {
       return $this->belongsTo(TbClosing::class, 'idtb_closing', 'id');
-  
    }
 
-   public function payment_type(){
+   public function payment_type()
+   {
       return $this->belongsTo(TbPaymentType::class, 'idtb_payment_type', 'id');
-  
    }
 
    //data formatada d-m-Y
    protected $appends = ['dataOperation'];
    public function getDataOperationAttribute()
    {
-       return date('d-m-Y', strtotime($this->attributes['operation_date']));
+      return date('d-m-Y', strtotime($this->attributes['operation_date']));
    }
 
+   // /**
+   //  * Prepare a date for array / JSON serialization.
+   //  *
+   //  * @param  \DateTimeInterface  $date
+   //  * @return string
+   //  */
+   // protected function serializeDate(DateTimeInterface $date)
+   // {
+   //    return $date->format('m-d-Y H:i:s');
+   // }
 }

@@ -28,9 +28,12 @@ class LogoutSuccessful
     {
         $event->subject = 'logout';
         $event->description = 'Logout successful';
+        $base = session()->get('base');
+        $base = $base[0]['sigla'];
+        $email = $event->user->email;
         
         activity($event->subject)
-            ->withProperties(['Email' => $event->user->email])
+            ->withProperties(['Email' => $email, 'Base' => $base])
             ->by($event->user)
             ->log($event->description);
     }
