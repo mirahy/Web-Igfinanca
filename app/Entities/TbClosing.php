@@ -89,14 +89,14 @@ class TbClosing extends Model implements Transformable
       return $data->format('Y-m-t');
    }
 
-   // /**
-   //  * Prepare a date for array / JSON serialization.
-   //  *
-   //  * @param  \DateTimeInterface  $date
-   //  * @return string
-   //  */
-   // protected function serializeDate(DateTimeInterface $date)
-   // {
-   //    return $date->format('Y-m-d H:i:s');
-   // }
+   /**
+    * Prepare a date for array / JSON serialization.
+    *
+    * @param  \DateTimeInterface  $date
+    * @return string
+    */
+   protected function serializeDate(DateTimeInterface $date)
+   {
+      return $date->format('Y-m-d H:i:s');
+   }
 }
