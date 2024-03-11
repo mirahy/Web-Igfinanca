@@ -4,12 +4,17 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
-use Spatie\Permission\Models\Permission;
+use App\Entities\Permissions;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Services\ReplicaDbService;
 use App\Http\Controllers\ConnectDbController;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use Exception;
+use Illuminate\Database\QueryException;
+use PhpParser\Node\Stmt\TryCatch;
+use Prettus\Validator\Exceptions\ValidatorException;
+use Spatie\Permission\Models\Permission;
 
 class PermissionService
 {
@@ -42,7 +47,7 @@ class PermissionService
 
 
             // registra no banco de dados matriz
-            $permission = Permission::create(['name' => $data->input('name')]);
+            $permission = Permissions::create(['name' => $data->input('name')]);
 
             // registra no banco de dados das filiais
             $this->ReplicaDbService->createPermission($data);
@@ -64,11 +69,11 @@ class PermissionService
                 case QueryException::class:
                     return ['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
                 case ValidatorException::class:
-                    return ['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
+                    return ['success' => false, 'messages' => $e->getMessage(), 'type'  => $e->getMessage()];
                 case Exception::class:
-                    return ['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
+                    return ['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
                 default:
-                    return ['success' => false, 'messages' => $e->getMessage()->all(), 'type'  => ["id"]];
+                    return ['success' => false, 'messages' => $e->getMessage(), 'type'  => ["id"]];
             }
         }
     }
@@ -94,7 +99,7 @@ class PermissionService
             }
 
             // atualiza no banco de dados matriz
-            $permission = Permission::find($id);
+            $permission = Permissions::find($id);
             $permission->name = $data->input('name');
             $permission->save();
 
@@ -133,7 +138,7 @@ class PermissionService
 
         try {
 
-            $permission = Permission::find($id);
+            $permission = Permissions::find($id);
     
             return [
                 'success'     => true,
@@ -164,7 +169,8 @@ class PermissionService
 
         $def = '%';
 
-        return  Datatables::of(Permission::query()
+        try {
+            return  Datatables::of(Permissions::query()
             ->where([
                 ['id', 'LIKE', $request->query('id', $def)],
                 ['name', 'LIKE', $request->query('name', $def)],
@@ -172,6 +178,12 @@ class PermissionService
             ->orderByRaw('id'))
             ->blacklist(['action'])
             ->make(true);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            return $th->getMessage();
+        }
+
+        
     }
 
     //função deletar lançamento
@@ -202,7 +214,7 @@ class PermissionService
           return ['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
         case ValidatorException::class:
           return ['success' => false, 'messages' => $e->getMessageBag()->all(), 'type'  => $e->getMessageBag()->keys()];
-        case Exception::class:
+        case \Exception::class:
           return ['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];
         default:
           return ['success' => false, 'messages' => 'Não foi possivel cadastar o usuário!', 'type'  => $e->getMessage()];

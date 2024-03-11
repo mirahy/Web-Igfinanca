@@ -2,20 +2,20 @@
 
 namespace App\Entities;
 
+use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use DateTimeInterface;
 
-class Access extends Model
+class Permissions extends Permission
 {
-    protected $fillable = ['user_id', 'datetime'];
-    //Alterando nome do evento 
-    protected static $logName                      = 'Access';
+   
+    protected static $logName                      = 'Permission';
     //vevntos que acionan o log
     protected static $recordEvents                 = ['created', 'updated', 'deleted'];
     //Atributos que sera registrada a alteração
-    protected static $logAttributes                = ['user_id', 'datetime'];
+    protected static $logAttributes                = ['name'];
     //Atributo que sera ignorado a alteração        
     protected static $ignoreChangedAttributes      = [];
     //Registrando log apenas de atributos alterados
