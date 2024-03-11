@@ -147,12 +147,12 @@ class DatabaseSeeder extends Seeder
               ]);
 
               TbCadUser::create([
-                'name'          => 'Admin Root',
+                'name'          => 'Admin',
                 'idtb_profile'  => 1,
                 'idtb_base'     => 1,
                 'birth'         => '1900-01-01',
-                'email'         => 'admin.root@igf.com.br',
-                'password'      =>  env("PASSWORD_HASH") ? bcrypt('igfin123') : 'igfin123',
+                'email'         => 'admin@vla.com.br',
+                'password'      =>  env("PASSWORD_HASH") ? bcrypt('adbvla123') : 'adbvla123',
                 'status'        => '1',
                 'permission'    => '2'
               ]);
@@ -167,7 +167,7 @@ class DatabaseSeeder extends Seeder
                 'status'        => '1',
                 'permission'    => '2' 
               ]);
-              $this->command->info('Admin admin.root@vla.com.br user created, password adbvla123');
+              $this->command->info('Admin admin@vla.com.br user created, password adbvla123');
 
               $path = 'database/seeds/permissoes.sql';
               DB::unprepared(file_get_contents($path));
