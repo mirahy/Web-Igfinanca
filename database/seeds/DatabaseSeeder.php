@@ -11,7 +11,7 @@ use App\Entities\TbPaymentType;
 use App\Entities\TbOperation;
 use App\Entities\TbTypeLaunc;
 use App\Entities\TbClosing;
-use DB;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -143,7 +143,9 @@ class DatabaseSeeder extends Seeder
               TbClosing::insert([
                 'month'  => 'Janeiro',
                 'year'   => date('Y'),
-                'status' => 1
+                'status' => 1,
+                'created_at' => '1900-01-01',
+                'updated_at' => '1900-01-01'
               ]);
 
               TbCadUser::create([
@@ -170,7 +172,7 @@ class DatabaseSeeder extends Seeder
               $this->command->info('Admin admin@vla.com.br user created, password adbvla123');
 
               $path = 'database/seeds/permissoes.sql';
-              DB::unprepared(file_get_contents($path));
+              FacadesDB::unprepared(file_get_contents($path));
               $this->command->info('Roles and permissions by user created in Data base!');
         }
 
