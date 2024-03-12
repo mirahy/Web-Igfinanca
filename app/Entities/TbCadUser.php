@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Laravel\Sanctum\HasApiTokens;
 use DateTimeInterface;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 /**
  * Class TbCadUser.
@@ -103,13 +104,13 @@ class TbCadUser extends Authenticatable
     public function getRoleAttribute()
     {
 
-        $roleId = DB::table('model_has_roles')
+        $roleId = FacadesDB::table('model_has_roles')
             ->where('model_id', $this->id)
             ->get('role_id');
 
 
         if (count($roleId) != 0) {
-            $roleName = DB::table('roles')
+            $roleName = FacadesDB::table('roles')
                 ->where('id', $roleId[0]->role_id)
                 ->get('name')->toArray();
             return $roleName[0]->name;
@@ -123,7 +124,7 @@ class TbCadUser extends Authenticatable
     {
         $rolePermissions = '';
         $rolePermissionsName = array();
-        $roleId = DB::table('model_has_roles')
+        $roleId = FacadesDB::table('model_has_roles')
             ->where('model_id', $this->id)
             ->get('role_id');
 
@@ -146,14 +147,14 @@ class TbCadUser extends Authenticatable
         }
     }
 
-    /**
-     * Prepare a date for array / JSON serialization.
-     *
-     * @param  \DateTimeInterface  $date
-     * @return string
-     */
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
+    // /**
+    //  * Prepare a date for array / JSON serialization.
+    //  *
+    //  * @param  \DateTimeInterface  $date
+    //  * @return string
+    //  */
+    // protected function serializeDate(DateTimeInterface $date)
+    // {
+    //     return $date->format('Y-m-d H:i:s');
+    // }
 }

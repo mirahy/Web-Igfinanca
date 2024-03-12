@@ -87,14 +87,14 @@ class TbLaunch extends Model implements Transformable
       return date('d-m-Y', strtotime($this->attributes['operation_date']));
    }
 
-   /**
-    * Prepare a date for array / JSON serialization.
-    *
-    * @param  \DateTimeInterface  $date
-    * @return string
-    */
-   protected function serializeDate(DateTimeInterface $date)
-   {
-      return $date->format('m-d-Y H:i:s');
-   }
+   // /**
+   //  * Prepare a date for array / JSON serialization.
+   //  *
+   //  * @param  \DateTimeInterface  $date
+   //  * @return string
+   //  */
+   // protected function serializeDate(DateTimeInterface $date)
+   // {
+   //    return $date->format('m-d-Y H:i:s');
+   // }
 }

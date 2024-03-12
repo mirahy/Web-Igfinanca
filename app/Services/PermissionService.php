@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Validator;
 use DB;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB as FacadesDB;
 use PhpParser\Node\Stmt\TryCatch;
 use Prettus\Validator\Exceptions\ValidatorException;
-use Spatie\Permission\Models\Permission;
 
 class PermissionService
 {
@@ -193,7 +193,7 @@ class PermissionService
     try {
 
       // deleta no banco de dados matriz
-      DB::table("permissions")->where('id',$id)->delete();
+      FacadesDB::table("permissions")->where('id',$id)->delete();
 
       // deleta no banco de dados das filiais
       $this->ReplicaDbService->deletePermission($id);

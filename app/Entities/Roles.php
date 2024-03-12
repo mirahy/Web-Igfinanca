@@ -2,16 +2,16 @@
 
 namespace App\Entities;
 
-use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use DateTimeInterface;
 
-class Permissions extends Permission
+class Roles extends Role
 {
    
-    protected static $logName                      = 'Permission';
+    protected static $logName                      = 'Role';
     //vevntos que acionan o log
     protected static $recordEvents                 = ['created', 'updated', 'deleted'];
     //Atributos que sera registrada a alteração
@@ -26,7 +26,7 @@ class Permissions extends Permission
     //função para descrição do log
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "This model has been {$eventName}";
+        return "This model has been {$eventName}";  
     }
 
     public function getActivitylogOptions(): LogOptions

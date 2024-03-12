@@ -119,21 +119,8 @@ $(function () {
         "columns": [
             { data: 'id', name: 'id' },
             { data: 'name', name: 'name' },
-            {data: 'created_at',name: 'created_at'},
-            // {
-            //     data: 'created_at',
-            //     render: function (data, type, row) {
-            //         return type === "display" || type === "filter" ? Dataformat = FormatDataGMT(data) :
-            //             data;
-            //     }
-            // },
-            {
-                data: 'updated_at',
-                render: function (data, type, row) {
-                    return type === "display" || type === "filter" ? Dataformat = FormatData(data) :
-                        data;
-                }
-            },
+            {data: 'created_at', name: 'created_at'},
+            {data: 'updated_at', name:'updated_at'},
             {
                 "data": "action",
                 "render": function (data, type, row, meta) {
