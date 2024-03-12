@@ -4,13 +4,19 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
-use Spatie\Permission\Models\Role;
+use App\Entities\Roles;
 use Spatie\Permission\Models\Permission;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use App\Services\ReplicaDbService;
 use App\Http\Controllers\ConnectDbController;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use Exception;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB as FacadesDB;
+use Prettus\Validator\Exceptions\ValidatorException;
+
+
 
 class RoleService
 {
@@ -46,7 +52,7 @@ class RoleService
 
 
             // registra no banco de dados matriz
-            $role = Role::create(['name' => $data->input('name')]);
+            $role = Roles::create(['name' => $data->input('name')]);
             $role->syncPermissions($data->input('permission'));
 
             // registra no banco de dados das filiais
@@ -102,7 +108,7 @@ class RoleService
             }
 
             // atualiza no banco de dados matriz
-            $role = Role::find($id);
+            $role = Roles::find($id);
             $role->name = $data->input('name');
             $role->save();
 
@@ -144,7 +150,7 @@ class RoleService
 
         try {
 
-            $role = Role::find($id);
+            $role = Roles::find($id);
             $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
                 ->where("role_has_permissions.role_id",$id)
                 ->select('id', 'name')->get();
@@ -180,7 +186,7 @@ class RoleService
 
         $def = '%';
 
-        return  Datatables::of(Role::query()
+        return  Datatables::of(Roles::query()
             ->where([
                 ['id', 'LIKE', $request->query('id', $def)],
                 ['name', 'LIKE', $request->query('name', $def)],
@@ -197,7 +203,7 @@ class RoleService
     try {
 
       // deleta no banco de dados matriz
-      DB::table("roles")->where('id',$id)->delete();
+      FacadesDB::table("roles")->where('id',$id)->delete();
 
       // deleta no banco de dados das filiais
       $this->ReplicaDbService->deleteRole($id);
