@@ -7,32 +7,38 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Roles extends Role
 {
-   
-    protected static $logName                      = 'Role';
-    //vevntos que acionan o log
-    protected static $recordEvents                 = ['created', 'updated', 'deleted'];
-    //Atributos que sera registrada a alteração
-    protected static $logAttributes                = ['name', 'guard_name'];
-    //Atributo que sera ignorado a alteração        
-    protected static $ignoreChangedAttributes      = [];
-    //Registrando log apenas de atributos alterados
-    protected static $logOnlyDirty                 = true;
-    //impedir registro de log vazio ao alterar atributos não listados no 'logAttributes'
-    protected static $submitEmptyLogs              = false;
 
-    //função para descrição do log
-    public function getDescriptionForEvent(string $eventName): string
-    {
-        return "This model has been {$eventName}";  
-    }
+    use LogsActivity;
 
+    protected $fillable = ['name', 'guard_name'];
+
+    //eventos que acionan o log
+    protected static $recordEvents  = ['created', 'updated', 'deleted'];
+
+    // Função para registara log
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults();
+        return LogOptions::defaults()
+            ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
+            ->useLogName('Role')
+            ->logOnly(['name', 'guard_name'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
+
+
+    /**
+     * The Permissions that belong to the user.
+     */
+    public function permisionsToany(): BelongsToMany
+    {
+        return $this->belongsToMany(RoleHasPermissions::class);
+    }
+
 
     /**
      * Prepare a date for array / JSON serialization.
