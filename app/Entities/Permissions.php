@@ -10,29 +10,24 @@ use DateTimeInterface;
 
 class Permissions extends Permission
 {
-   
-    protected static $logName                      = 'Permission';
-    //vevntos que acionan o log
-    protected static $recordEvents                 = ['created', 'updated', 'deleted'];
-    //Atributos que sera registrada a alteração
-    protected static $logAttributes                = ['name', 'guard_name'];
-    //Atributo que sera ignorado a alteração        
-    protected static $ignoreChangedAttributes      = [];
-    //Registrando log apenas de atributos alterados
-    protected static $logOnlyDirty                 = true;
-    //impedir registro de log vazio ao alterar atributos não listados no 'logAttributes'
-    protected static $submitEmptyLogs              = false;
+    use LogsActivity;
 
-    //função para descrição do log
-    public function getDescriptionForEvent(string $eventName): string
-    {
-        return "This model has been {$eventName}";
-    }
+    protected $fillable = ['name', 'guard_name'];
 
+    //eventos que acionan o log
+    protected static $recordEvents  = ['created', 'updated', 'deleted'];
+
+    // Função para registara log
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults();
+        return LogOptions::defaults()
+            ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
+            ->useLogName('Permission')
+            ->logOnly(['name', 'guard_name'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
+
 
     /**
      * Prepare a date for array / JSON serialization.
