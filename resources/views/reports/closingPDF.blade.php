@@ -8,9 +8,9 @@
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
   <!-- Custom styles for this template-->
-  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-  
+  <link href="{{ public_path() . '/css/bootstrap.min.css' }}" rel="stylesheet">
+  <link href="{{ public_path() . '/css/style.css' }}" rel="stylesheet">
+
 
 </head>
 
