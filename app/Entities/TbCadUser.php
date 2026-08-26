@@ -17,13 +17,15 @@ use Spatie\Activitylog\LogOptions;
 use Laravel\Sanctum\HasApiTokens;
 use DateTimeInterface;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
 /**
  * Class TbCadUser.
  *
  * @package namespace App\Entities;
  */
-class TbCadUser extends Authenticatable
+class TbCadUser extends Authenticatable implements FilamentUser
 {
     use SoftDeletes, Notifiable, HasRoles, LogsActivity, HasApiTokens;
 
@@ -82,6 +84,11 @@ class TbCadUser extends Authenticatable
     {
 
         return $this->belongsTo(Tblaunch::class, 'id_user', 'id');
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasRole('Admin');
     }
 
     public function accesses()
