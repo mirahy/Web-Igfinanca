@@ -88,6 +88,66 @@ class ReplicaDbService
 
     /*
     |--------------------------------------------------------------------------
+    | Replicadores com rastreamento por id_mtz (TbPaymentType, TbCaixa,
+    | TbTypeLaunch, TbBase, TbOperation — Resources "lookup" do Filament)
+    |--------------------------------------------------------------------------
+    |
+    | Diferente dos replicadores genéricos acima (create/update/delete), que
+    | resolvem o registro na filial pela própria chave primária — o que só
+    | funciona quando os autoincrementos de matriz e filial andam em
+    | lockstep — estes usam a coluna id_mtz pra localizar o registro
+    | correspondente na filial de forma confiável, já que cada banco tem
+    | autoincremento independente.
+    */
+
+    public function createWithMtzTracking(array $data, $repository, int $mtzId): void
+    {
+        activity()->disableLogging();
+        foreach ($this->bases as $base) {
+            $base = $base['sigla'];
+            if ($base != 'adb_mtz') {
+                $this->ConnectDbController->connectBases($base);
+                $repository->create(array_merge($data, ['id_mtz' => $mtzId]));
+            }
+        }
+        activity()->enableLogging();
+    }
+
+    public function updateWithMtzTracking(array $data, int $mtzId, $repository): void
+    {
+        activity()->disableLogging();
+        foreach ($this->bases as $base) {
+            $base = $base['sigla'];
+            if ($base != 'adb_mtz') {
+                $this->ConnectDbController->connectBases($base);
+                $record = $repository->findWhere(['id_mtz' => $mtzId])->first();
+                if ($record) {
+                    $repository->update($data, $record->id);
+                }
+            }
+        }
+        activity()->enableLogging();
+    }
+
+    public function deleteWithMtzTracking(int $mtzId, $repository): void
+    {
+        activity()->disableLogging();
+        foreach ($this->bases as $base) {
+            $base = $base['sigla'];
+            if ($base != 'adb_mtz') {
+                $this->ConnectDbController->connectBases($base);
+                $record = $repository->findWhere(['id_mtz' => $mtzId])->first();
+                if ($record) {
+                    $repository->delete($record->id);
+                }
+            }
+        }
+        activity()->enableLogging();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Replicadores para a classe roles
     |--------------------------------------------------------------------------
     */

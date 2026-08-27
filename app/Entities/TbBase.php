@@ -29,7 +29,7 @@ class TbBase extends Model implements Transformable
      */
     public     $timestamps   = true;
     protected  $table        = 'tb_base';
-    protected $fillable = ['id', 'name', 'sigla', 'descripion'];
+    protected $fillable = ['id', 'name', 'sigla', 'descripion', 'id_mtz'];
     //Alterando nome do evento 
     protected static $logName                      = 'TbBase';
     //vevntos que acionan o log

@@ -5,12 +5,16 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TbBaseResource\Pages;
 use App\Filament\Resources\TbBaseResource\RelationManagers;
 use App\Entities\TbBase;
+use App\Filament\Support\LookupReplication;
+use App\Repositories\TbBaseRepository;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TbBaseResource extends Resource
@@ -87,7 +91,10 @@ class TbBaseResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->before(function (Collection $records) {
+                            $records->each(fn (Model $record) => LookupReplication::beforeDelete($record, TbBaseRepository::class));
+                        }),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),

@@ -19,7 +19,7 @@ class TbPaymentType extends Model implements Transformable
 
     public     $timestamps   = true;
     protected  $table        = 'tb_payment_type';
-    protected  $fillable     = ['id', 'name', 'descripion', 'created_at', 'updated_at'];
+    protected  $fillable     = ['id', 'name', 'descripion', 'id_mtz', 'created_at', 'updated_at'];
     //Alterando nome do evento 
     protected static $logName                      = 'TbPaymentType';
     //vevntos que acionan o log

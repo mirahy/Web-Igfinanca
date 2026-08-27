@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -18,10 +19,11 @@ class TbCaixa extends Model implements Transformable
 {
     use TransformableTrait;
     use LogsActivity;
+    use SoftDeletes;
 
     public     $timestamps   = true;
     protected  $table        = 'tb_caixa';
-    protected  $fillable     = ['id', 'name', 'description'];
+    protected  $fillable     = ['id', 'name', 'description', 'id_mtz'];
     //Alterando nome do evento 
     protected static $logName                      = 'TbCaixa';
     //vevntos que acionan o log

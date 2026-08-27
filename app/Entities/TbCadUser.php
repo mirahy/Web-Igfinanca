@@ -74,6 +74,14 @@ class TbCadUser extends Authenticatable implements FilamentUser
         return $this->belongsTo(TbBase::class, 'idtb_base', 'id');
     }
 
+    // Bases (filiais) que este usuário está autorizado a selecionar no painel Filament,
+    // além da sua base principal (idtb_base). Não confundir com base(): aquela é a
+    // filial "de casa" do usuário; esta é a lista de filiais que ele pode acessar.
+    public function bases()
+    {
+        return $this->belongsToMany(TbBase::class, 'user_has_base', 'user_id', 'idtb_base');
+    }
+
     public function profile()
     {
 

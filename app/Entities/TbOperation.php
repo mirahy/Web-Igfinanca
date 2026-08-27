@@ -18,13 +18,13 @@ class TbOperation extends Model implements Transformable
 
     public     $timestamps   = true;
     protected  $table        = 'tb_operation';
-    protected  $fillable     = ['id', 'name', 'description'];
-    //Alterando nome do evento 
+    protected  $fillable     = ['id', 'name', 'descripion', 'id_mtz'];
+    //Alterando nome do evento
     protected static $logName                      = 'TbOperation';
     //vevntos que acionan o log
     protected static $recordEvents                 = ['created', 'updated', 'deleted'];
     //Atributos que sera registrada a alteração
-    protected static $logAttributes                = ['id', 'name', 'description'];
+    protected static $logAttributes                = ['id', 'name', 'descripion'];
     //Atributo que sera ignorado a alteração        
     protected static $ignoreChangedAttributes      = [];
     //Registrando log apenas de atributos alterados
