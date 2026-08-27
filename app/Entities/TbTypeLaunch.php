@@ -18,7 +18,7 @@ class TbTypeLaunch extends Model implements Transformable
 
     public     $timestamps   = true;
     protected  $table        = 'tb_type_launch';
-    protected  $fillable     = ['id', 'name', 'value', 'descripion', 'created_at', 'updated_at'];
+    protected  $fillable     = ['id', 'name', 'descripion', 'id_mtz', 'created_at', 'updated_at'];
     //Alterando nome do evento 
     protected static $logName                      = 'TbTypeLaunch';
     //vevntos que acionan o log

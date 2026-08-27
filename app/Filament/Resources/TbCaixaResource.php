@@ -5,12 +5,16 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TbCaixaResource\Pages;
 use App\Filament\Resources\TbCaixaResource\RelationManagers;
 use App\Entities\TbCaixa;
+use App\Filament\Support\LookupReplication;
+use App\Repositories\TbCaixaRepository;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TbCaixaResource extends Resource
@@ -74,14 +78,19 @@ class TbCaixaResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->before(function (Collection $records) {
+                            $records->each(fn (Model $record) => LookupReplication::beforeDelete($record, TbCaixaRepository::class));
+                        }),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -100,5 +109,13 @@ class TbCaixaResource extends Resource
             'create' => Pages\CreateTbCaixa::route('/create'),
             'edit' => Pages\EditTbCaixa::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

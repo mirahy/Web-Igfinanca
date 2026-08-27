@@ -53,12 +53,20 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 // As rotas do Filament não passam por routes/web.php, então os
                 // middlewares de troca de base (reconnect, accesses_filial) não se
-                // aplicam aqui automaticamente. As entidades geridas neste painel
-                // hoje só existem na base matriz, então basta forçar a conexão
-                // matriz a cada request. Uma tela por filial (Caixa/Lançamentos)
-                // vai exigir um seletor de base dentro do próprio painel.
+                // aplicam aqui automaticamente. Os Resources de configuração
+                // (TbPaymentType, TbCaixa, TbOperation, TbTypeLaunch, TbBase,
+                // Roles, Permissions) são geridos só contra a matriz, então basta
+                // forçar essa conexão a cada request. TbLaunchResource é por
+                // filial — usa o seletor de base próprio do painel
+                // (App\Filament\Pages\SelectFilial) e reafirma a conexão
+                // explicitamente em cada hook que toca o banco (ver
+                // App\Filament\Support\ResolvesFilialConnection), já que nem
+                // middleware persistente garante reexecução nas ações do Livewire.
                 \App\Http\Middleware\ReconnectDbDefault::class,
             ])
+            ->middleware([
+                \App\Http\Middleware\Filament\EnsureFilialSelected::class,
+            ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ]);
