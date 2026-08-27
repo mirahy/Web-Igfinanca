@@ -17,9 +17,9 @@ class TbOperationResource extends Resource
 {
     protected static ?string $model = TbOperation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrows-right-left';
 
-    protected static ?string $navigationGroup = 'Configurações';
+    protected static ?string $navigationGroup = 'Configurações Financeiras';
 
     protected static ?string $navigationLabel = 'Operações';
 
@@ -36,11 +36,16 @@ class TbOperationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),
-                Forms\Components\Textarea::make('descripion')
-                    ->label('Descrição')
+                Forms\Components\Section::make('Dados da Operação')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nome')
+                            ->required(),
+                        Forms\Components\Textarea::make('descripion')
+                            ->label('Descrição')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2)
                     ->columnSpanFull(),
             ]);
     }

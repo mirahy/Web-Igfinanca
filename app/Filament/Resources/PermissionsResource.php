@@ -17,9 +17,9 @@ class PermissionsResource extends Resource
 {
     protected static ?string $model = Permissions::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-key';
 
-    protected static ?string $navigationGroup = 'Configurações';
+    protected static ?string $navigationGroup = 'Segurança';
 
     protected static ?string $navigationLabel = 'Permissões';
 
@@ -36,12 +36,17 @@ class PermissionsResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),
-                Forms\Components\TextInput::make('guard_name')
-                    ->label('Guard')
-                    ->required(),
+                Forms\Components\Section::make('Dados da Permissão')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nome')
+                            ->required(),
+                        Forms\Components\TextInput::make('guard_name')
+                            ->label('Guard')
+                            ->required(),
+                    ])
+                    ->columns(2)
+                    ->columnSpanFull(),
             ]);
     }
 

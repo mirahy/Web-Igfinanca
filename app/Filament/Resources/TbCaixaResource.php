@@ -17,9 +17,9 @@ class TbCaixaResource extends Resource
 {
     protected static ?string $model = TbCaixa::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
 
-    protected static ?string $navigationGroup = 'Configurações';
+    protected static ?string $navigationGroup = 'Configurações Financeiras';
 
     protected static ?string $navigationLabel = 'Caixas';
 
@@ -36,11 +36,16 @@ class TbCaixaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),
-                Forms\Components\Textarea::make('description')
-                    ->label('Descrição')
+                Forms\Components\Section::make('Dados da Caixa')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nome')
+                            ->required(),
+                        Forms\Components\Textarea::make('description')
+                            ->label('Descrição')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2)
                     ->columnSpanFull(),
             ]);
     }

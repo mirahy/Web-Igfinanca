@@ -17,9 +17,9 @@ class RolesResource extends Resource
 {
     protected static ?string $model = Roles::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
 
-    protected static ?string $navigationGroup = 'Configurações';
+    protected static ?string $navigationGroup = 'Segurança';
 
     protected static ?string $navigationLabel = 'Perfis de Acesso';
 
@@ -36,12 +36,17 @@ class RolesResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),
-                Forms\Components\TextInput::make('guard_name')
-                    ->label('Guard')
-                    ->required(),
+                Forms\Components\Section::make('Dados do Perfil de Acesso')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nome')
+                            ->required(),
+                        Forms\Components\TextInput::make('guard_name')
+                            ->label('Guard')
+                            ->required(),
+                    ])
+                    ->columns(2)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -87,7 +92,7 @@ class RolesResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\PermissionsRelationManager::class,
         ];
     }
 

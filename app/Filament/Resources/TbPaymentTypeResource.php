@@ -17,9 +17,9 @@ class TbPaymentTypeResource extends Resource
 {
     protected static ?string $model = TbPaymentType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
-    protected static ?string $navigationGroup = 'Configurações';
+    protected static ?string $navigationGroup = 'Configurações Financeiras';
 
     protected static ?string $navigationLabel = 'Tipos de Pagamento';
 
@@ -36,11 +36,16 @@ class TbPaymentTypeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),
-                Forms\Components\Textarea::make('descripion')
-                    ->label('Descrição')
+                Forms\Components\Section::make('Dados do Tipo de Pagamento')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nome')
+                            ->required(),
+                        Forms\Components\Textarea::make('descripion')
+                            ->label('Descrição')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2)
                     ->columnSpanFull(),
             ]);
     }
