@@ -17,9 +17,9 @@ class TbBaseResource extends Resource
 {
     protected static ?string $model = TbBase::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
-    protected static ?string $navigationGroup = 'Configurações';
+    protected static ?string $navigationGroup = 'Estrutura Organizacional';
 
     protected static ?string $navigationLabel = 'Bases';
 
@@ -36,14 +36,19 @@ class TbBaseResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),
-                Forms\Components\TextInput::make('sigla')
-                    ->label('Sigla')
-                    ->required(),
-                Forms\Components\Textarea::make('descripion')
-                    ->label('Descrição')
+                Forms\Components\Section::make('Dados da Base')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nome')
+                            ->required(),
+                        Forms\Components\TextInput::make('sigla')
+                            ->label('Sigla')
+                            ->required(),
+                        Forms\Components\Textarea::make('descripion')
+                            ->label('Descrição')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2)
                     ->columnSpanFull(),
             ]);
     }
