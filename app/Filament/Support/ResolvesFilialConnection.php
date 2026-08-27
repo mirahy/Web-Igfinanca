@@ -87,4 +87,41 @@ class ResolvesFilialConnection
 
         return $user->bases()->orderBy('name')->get();
     }
+
+    /**
+     * App\Services\TbLaunchService::store() termina revertendo a conexão pra
+     * filial através de ConnectDbController::connectBase(), que lê
+     * session('base') — a chave do sistema legado, não a nossa
+     * ('filament.base'). Numa sessão que só passou pelo painel Filament essa
+     * chave nunca existe, então connectBase() vira um no-op e o passo do
+     * store() que atualiza id_mtz na filial acaba rodando na conexão errada
+     * (matriz), correndo o risco de sobrescrever um registro de outra
+     * filial/matriz que por acaso tenha o mesmo id.
+     *
+     * Em vez de reimplementar TbLaunchService (mantido intocado de propósito
+     * — já testado em produção), preenchemos session('base') no formato que
+     * ConnectDbController espera só durante a chamada, e desfazemos logo
+     * depois — a sessão é persistida no fim do request, então nada disso
+     * escapa pra uma aba aberta no sistema legado.
+     */
+    public static function withLegacyBaseSessionBridge(callable $callback): mixed
+    {
+        $base = static::currentBase();
+        $hadPrevious = session()->has('base');
+        $previous = session('base');
+
+        session(['base' => [['sigla' => $base['sigla']]]]);
+
+        try {
+            return $callback();
+        } finally {
+            if ($hadPrevious) {
+                session(['base' => $previous]);
+            } else {
+                session()->forget('base');
+            }
+
+            static::assertConnected();
+        }
+    }
 }

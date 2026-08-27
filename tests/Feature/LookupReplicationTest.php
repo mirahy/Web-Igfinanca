@@ -85,11 +85,20 @@ class LookupReplicationTest extends TestCase
     {
         Role::findOrCreate('Admin', 'web');
 
-        TbBase::query()->delete();
-        TbBase::create(['name' => 'Matriz', 'sigla' => 'adb_mtz']);
-        TbBase::create(['name' => 'Filial Vila', 'sigla' => 'adb_vla']);
-        TbBase::create(['name' => 'Filial Sede', 'sigla' => 'adb_sed']);
-        $matriz = TbBase::where('sigla', 'adb_mtz')->first();
+        // firstOrCreate (não delete+recreate) porque tests/Feature/TbLaunchResourceTest.php
+        // compartilha a mesma matriz sqlite e as mesmas siglas adb_mtz/adb_vla/adb_sed —
+        // recriar aqui trocaria os ids e quebraria o outro teste na mesma suíte.
+        $matriz = TbBase::firstOrCreate(['sigla' => 'adb_mtz'], ['name' => 'Matriz']);
+        TbBase::firstOrCreate(['sigla' => 'adb_vla'], ['name' => 'Filial Vila']);
+        TbBase::firstOrCreate(['sigla' => 'adb_sed'], ['name' => 'Filial Sede']);
+
+        // Outros testes (SelectFilialTest, FilamentSmokeTest, ...) semeiam
+        // tb_base com siglas próprias (MTZ, VLA, ...) na mesma matriz sqlite
+        // compartilhada — ReplicaDbService itera TODAS as siglas de tb_base
+        // pra replicar, então uma sigla sem conexão configurada quebraria a
+        // suíte inteira. Soft-deleta (tb_base já usa SoftDeletes) tudo que
+        // não seja uma das 3 conexões reais antes de disparar replicação.
+        TbBase::whereNotIn('sigla', ['adb_mtz', 'adb_vla', 'adb_sed'])->delete();
 
         $profile = TbProfile::firstOrCreate(['name' => 'Administrador']);
 
@@ -122,7 +131,7 @@ class LookupReplicationTest extends TestCase
             ->assertHasNoFormErrors();
 
         app(ConnectDbController::class)->connectMatriz();
-        $matrizRecord = TbPaymentType::where('name', 'Pix')->firstOrFail();
+        $matrizRecord = TbPaymentType::where('name', 'Pix')->latest('id')->firstOrFail();
 
         foreach (['adb_vla', 'adb_sed'] as $sigla) {
             app(ConnectDbController::class)->connectBases($sigla);
@@ -144,7 +153,7 @@ class LookupReplicationTest extends TestCase
             ->assertHasNoFormErrors();
 
         app(ConnectDbController::class)->connectMatriz();
-        $matrizRecord = TbPaymentType::where('name', 'Boleto')->firstOrFail();
+        $matrizRecord = TbPaymentType::where('name', 'Boleto')->latest('id')->firstOrFail();
 
         Livewire::test(EditTbPaymentType::class, ['record' => $matrizRecord->getKey()])
             ->fillForm(['name' => 'Boleto', 'descripion' => 'atualizado'])
@@ -170,7 +179,7 @@ class LookupReplicationTest extends TestCase
             ->assertHasNoFormErrors();
 
         app(ConnectDbController::class)->connectMatriz();
-        $matrizRecord = TbPaymentType::where('name', 'Cartão')->firstOrFail();
+        $matrizRecord = TbPaymentType::where('name', 'Cartão')->latest('id')->firstOrFail();
         $mtzId = $matrizRecord->id;
 
         Livewire::test(EditTbPaymentType::class, ['record' => $mtzId])
@@ -193,7 +202,7 @@ class LookupReplicationTest extends TestCase
             ->assertHasNoFormErrors();
 
         app(ConnectDbController::class)->connectMatriz();
-        $matrizRecord = TbCaixa::where('name', 'Caixa Principal')->firstOrFail();
+        $matrizRecord = TbCaixa::where('name', 'Caixa Principal')->latest('id')->firstOrFail();
         $mtzId = $matrizRecord->id;
 
         Livewire::test(EditTbCaixa::class, ['record' => $mtzId])
