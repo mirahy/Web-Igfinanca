@@ -148,6 +148,9 @@ class TbLaunchService
       }
 
 
+      //editar um lançamento já aprovado exige nova aprovação
+      $data['status'] = 0;
+
       //atualiza lançamento no banco de dados filial
       $launch = $this->repository->update($data, $id);
       //recupera id_mtz
