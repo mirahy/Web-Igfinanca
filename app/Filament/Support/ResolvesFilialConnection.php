@@ -48,6 +48,16 @@ class ResolvesFilialConnection
     }
 
     /**
+     * A matriz usa sempre a sigla/conexão 'adb_mtz' — mesma convenção já
+     * usada em App\Services\ReplicaDbService e nos middlewares legados de
+     * rota (RouteAccessesMatriz/RouteAccessesFilial).
+     */
+    public static function currentBaseIsMatriz(): bool
+    {
+        return (static::currentBase()['sigla'] ?? null) === 'adb_mtz';
+    }
+
+    /**
      * Se o painel ainda não tem uma filial selecionada nesta sessão, tenta
      * herdar automaticamente a mesma base já escolhida no login do sistema
      * legado (session('id_base'), setada em App\Http\Controllers\Api\Login).

@@ -51,12 +51,38 @@ class TbLaunchResource extends Resource
         return auth()->user()?->hasRole('Admin') ?? false;
     }
 
+    /**
+     * Criar lançamento só faz sentido a partir de uma filial (o lançamento
+     * precisa nascer associado a uma base física) — a matriz só visualiza
+     * (todas as filiais têm sua cópia espelhada lá, ver TbLaunchService).
+     */
+    public static function canCreate(): bool
+    {
+        return ! ResolvesFilialConnection::currentBaseIsMatriz();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Section::make('Dados do Lançamento')
                     ->schema([
+                        // TbLaunchService::update()/aprov_id() partem do
+                        // pressuposto de que a conexão ativa é a filial (usam
+                        // id_mtz do registro pra achar o espelho na matriz) —
+                        // na matriz esse valor não existe no registro em si
+                        // (só id_filial), então editar de lá quebraria com
+                        // "No query results for model". Por isso o form
+                        // inteiro fica somente leitura quando a base ativa é
+                        // a matriz, e mostra a filial de origem em texto.
+                        Forms\Components\TextInput::make('baseName')
+                            ->label('Base')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->visible(fn (string $operation): bool => $operation === 'edit' && ResolvesFilialConnection::currentBaseIsMatriz())
+                            ->afterStateHydrated(function (Forms\Components\TextInput $component, ?TbLaunch $record) {
+                                $component->state($record?->base?->name);
+                            }),
                         Forms\Components\Select::make('id_user')
                             ->label('Lançado por')
                             ->relationship('user', 'name')
@@ -107,7 +133,8 @@ class TbLaunchResource extends Resource
                             ->columnSpanFull(),
                     ])
                     ->columns(2)
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->disabled(fn (string $operation): bool => $operation === 'edit' && ResolvesFilialConnection::currentBaseIsMatriz()),
             ]);
     }
 
@@ -118,6 +145,9 @@ class TbLaunchResource extends Resource
                 Tables\Columns\TextColumn::make('operation_date')
                     ->label('Data')
                     ->date('d/m/Y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('base.name')
+                    ->label('Base')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('operation.name')
                     ->label('Operação')
@@ -163,18 +193,32 @@ class TbLaunchResource extends Resource
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->visible(fn (TbLaunch $record): bool => $record->status != 1 && static::userCanApprove())
+                    ->visible(fn (TbLaunch $record): bool => $record->status != 1 && static::userCanApprove() && ! ResolvesFilialConnection::currentBaseIsMatriz())
                     ->action(fn (TbLaunch $record) => static::approve($record, 1)),
                 Tables\Actions\Action::make('reprovar')
                     ->label('Reprovar')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->visible(fn (TbLaunch $record): bool => $record->status != 2 && static::userCanApprove())
+                    ->visible(fn (TbLaunch $record): bool => $record->status != 2 && static::userCanApprove() && ! ResolvesFilialConnection::currentBaseIsMatriz())
                     ->action(fn (TbLaunch $record) => static::approve($record, 2)),
                 Tables\Actions\DeleteAction::make()
+                    ->visible(fn (): bool => ! ResolvesFilialConnection::currentBaseIsMatriz())
                     ->action(function (TbLaunch $record) {
                         ResolvesFilialConnection::assertConnected();
+
+                        // Reforço além do ->visible(): TbLaunchService::delete()
+                        // também parte do pressuposto de que a conexão ativa é
+                        // a filial (usa id_mtz do registro pra achar o espelho
+                        // na matriz).
+                        if (ResolvesFilialConnection::currentBaseIsMatriz()) {
+                            Notification::make()
+                                ->title('Exclusão só pode ser feita a partir da base filial')
+                                ->danger()
+                                ->send();
+
+                            return;
+                        }
 
                         app(TbLaunchService::class)->delete($record->id);
 
@@ -211,6 +255,19 @@ class TbLaunchResource extends Resource
     protected static function approve(TbLaunch $record, int $status): void
     {
         ResolvesFilialConnection::assertConnected();
+
+        // Reforço além do ->visible() das actions: TbLaunchService::aprov_id()
+        // parte do pressuposto de que a conexão ativa é a filial (usa id_mtz
+        // do registro pra achar o espelho na matriz) — quebraria com "No
+        // query results for model" se chamado com a matriz ativa.
+        if (ResolvesFilialConnection::currentBaseIsMatriz()) {
+            Notification::make()
+                ->title('Aprovação só pode ser feita a partir da base filial')
+                ->danger()
+                ->send();
+
+            return;
+        }
 
         $result = app(TbLaunchService::class)->aprov_id([
             'id' => $record->id,

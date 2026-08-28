@@ -521,4 +521,146 @@ class TbLaunchResourceTest extends TestCase
         // a conexão pra filial ativa da sessão ao terminar.
         $this->assertSame(self::$vlaPath, DB::connection()->getConfig('database'));
     }
+
+    /**
+     * Regressão: TbLaunchService::update()/aprov_id()/delete() partem do
+     * pressuposto de que a conexão ativa é a filial (usam id_mtz do registro
+     * pra achar o espelho na matriz) — chamá-los com a matriz ativa quebrava
+     * com "No query results for model [App\Entities\TbLaunch]." (a cópia da
+     * matriz não tem id_mtz preenchido, só id_filial). Por decisão de
+     * produto, alterar/criar/excluir só é permitido a partir da própria
+     * filial; a matriz só visualiza (todas as filiais já têm cópia
+     * espelhada lá).
+     */
+    public function test_create_action_and_route_are_blocked_when_current_base_is_matriz(): void
+    {
+        $this->seedFilial();
+        $admin = $this->actingAsAdmin();
+        $this->actingAs($admin);
+
+        app(ConnectDbController::class)->connectMatriz();
+        $matriz = TbBase::where('sigla', 'adb_mtz')->firstOrFail();
+        ResolvesFilialConnection::setCurrentBase($matriz);
+
+        $this->assertFalse(\App\Filament\Resources\TbLaunchResource::canCreate());
+        $this->get('/admin/tb-launches/create')->assertForbidden();
+    }
+
+    public function test_editing_a_launch_from_matriz_is_read_only_and_does_not_crash(): void
+    {
+        $this->seedFilial();
+        $admin = $this->actingAsAdmin();
+        $this->actingAs($admin);
+
+        Livewire::test(CreateTbLaunch::class)
+            ->fillForm([
+                'id_user' => $admin->id,
+                'idtb_operation' => 1,
+                'idtb_type_launch' => 1,
+                'idtb_payment_type' => 1,
+                'idtb_caixa' => 1,
+                'idtb_closing' => 1,
+                'operation_date' => '2026-08-15',
+                'value' => 75,
+                'description' => 'visto pela matriz',
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        app(ConnectDbController::class)->connectBases('adb_vla');
+        $filialLaunch = TbLaunch::where('description', 'visto pela matriz')->firstOrFail();
+        app(ConnectDbController::class)->connectMatriz();
+        $matrizLaunch = TbLaunch::where('id_filial', $filialLaunch->id)->firstOrFail();
+        $matriz = TbBase::where('sigla', 'adb_mtz')->firstOrFail();
+        ResolvesFilialConnection::setCurrentBase($matriz);
+
+        Livewire::test(EditTbLaunch::class, ['record' => $matrizLaunch->getKey()])
+            ->assertFormFieldIsVisible('baseName')
+            ->assertFormSet(['baseName' => 'Filial Vila'])
+            ->assertFormFieldIsDisabled('value')
+            ->assertFormFieldIsDisabled('description')
+            ->call('save');
+
+        app(ConnectDbController::class)->connectMatriz();
+        $this->assertSame('visto pela matriz', TbLaunch::find($matrizLaunch->id)->description);
+    }
+
+    public function test_delete_and_approve_actions_are_hidden_and_blocked_when_current_base_is_matriz(): void
+    {
+        $this->seedFilial();
+        $admin = $this->actingAsAdmin();
+        $this->actingAs($admin);
+
+        app(ConnectDbController::class)->connectMatriz();
+        Permission::findOrCreate('launch-approves', 'web');
+        $admin->givePermissionTo('launch-approves');
+        app(ConnectDbController::class)->connectBases('adb_vla');
+
+        Livewire::test(CreateTbLaunch::class)
+            ->fillForm([
+                'id_user' => $admin->id,
+                'idtb_operation' => 1,
+                'idtb_type_launch' => 1,
+                'idtb_payment_type' => 1,
+                'idtb_caixa' => 1,
+                'idtb_closing' => 1,
+                'operation_date' => '2026-08-15',
+                'value' => 30,
+                'description' => 'não mexer pela matriz',
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        app(ConnectDbController::class)->connectBases('adb_vla');
+        $filialLaunch = TbLaunch::where('description', 'não mexer pela matriz')->firstOrFail();
+        app(ConnectDbController::class)->connectMatriz();
+        $matrizLaunch = TbLaunch::where('id_filial', $filialLaunch->id)->firstOrFail();
+        $matriz = TbBase::where('sigla', 'adb_mtz')->firstOrFail();
+        ResolvesFilialConnection::setCurrentBase($matriz);
+
+        $cache = new \ReflectionProperty(\App\Filament\Resources\TbLaunchResource::class, 'canApproveCache');
+        $cache->setAccessible(true);
+        $cache->setValue(null, null);
+
+        // callTableAction() já se recusa a chamar uma action escondida (imita
+        // a UI real, onde o botão nem aparece pra clicar) — então as
+        // asserções de visibilidade abaixo são a própria prova de que
+        // delete/aprovar/reprovar estão bloqueadas pela matriz.
+        Livewire::test(\App\Filament\Resources\TbLaunchResource\Pages\ListTbLaunches::class)
+            ->assertTableActionHidden('delete', $matrizLaunch)
+            ->assertTableActionHidden('aprovar', $matrizLaunch)
+            ->assertTableActionHidden('reprovar', $matrizLaunch);
+
+        app(ConnectDbController::class)->connectMatriz();
+        $this->assertNotNull(TbLaunch::find($matrizLaunch->id), 'Registro da matriz não deveria ter sido excluído');
+
+        app(ConnectDbController::class)->connectBases('adb_vla');
+        $this->assertNotNull(TbLaunch::find($filialLaunch->id), 'Registro da filial não deveria ter sido excluído');
+    }
+
+    public function test_table_shows_the_base_column(): void
+    {
+        $this->seedFilial();
+        $admin = $this->actingAsAdmin();
+        $this->actingAs($admin);
+
+        Livewire::test(CreateTbLaunch::class)
+            ->fillForm([
+                'id_user' => $admin->id,
+                'idtb_operation' => 1,
+                'idtb_type_launch' => 1,
+                'idtb_payment_type' => 1,
+                'idtb_caixa' => 1,
+                'idtb_closing' => 1,
+                'operation_date' => '2026-08-15',
+                'value' => 20,
+                'description' => 'com coluna de base',
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        Livewire::test(\App\Filament\Resources\TbLaunchResource\Pages\ListTbLaunches::class)
+            ->assertTableColumnExists('base.name')
+            ->assertCanSeeTableRecords(TbLaunch::where('description', 'com coluna de base')->get());
+    }
 }
