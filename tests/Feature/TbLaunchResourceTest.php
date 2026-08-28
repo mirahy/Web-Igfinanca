@@ -638,7 +638,7 @@ class TbLaunchResourceTest extends TestCase
         $this->assertNotNull(TbLaunch::find($filialLaunch->id), 'Registro da filial não deveria ter sido excluído');
     }
 
-    public function test_table_shows_the_base_column(): void
+    public function test_table_shows_the_base_column_only_when_viewing_from_the_matriz(): void
     {
         $this->seedFilial();
         $admin = $this->actingAsAdmin();
@@ -660,7 +660,14 @@ class TbLaunchResourceTest extends TestCase
             ->assertHasNoFormErrors();
 
         Livewire::test(\App\Filament\Resources\TbLaunchResource\Pages\ListTbLaunches::class)
-            ->assertTableColumnExists('base.name')
+            ->assertTableColumnHidden('base.name')
             ->assertCanSeeTableRecords(TbLaunch::where('description', 'com coluna de base')->get());
+
+        app(ConnectDbController::class)->connectMatriz();
+        $matriz = TbBase::where('sigla', 'adb_mtz')->firstOrFail();
+        ResolvesFilialConnection::setCurrentBase($matriz);
+
+        Livewire::test(\App\Filament\Resources\TbLaunchResource\Pages\ListTbLaunches::class)
+            ->assertTableColumnVisible('base.name');
     }
 }
