@@ -275,6 +275,121 @@ class TbLaunchResourceTest extends TestCase
         $this->assertSame('atualizado', TbLaunch::find($idMtz)->description);
     }
 
+    /**
+     * Regressão de produção: editar e salvar um Lançamento dava 404 no
+     * POST /livewire/update. Causa raiz: o synthesizer nativo do Livewire
+     * reidrata a propriedade $record (buscando o Model no banco) ANTES de
+     * qualquer código nosso rodar — e como cada requisição HTTP passa de
+     * novo pelo middleware ReconnectDbDefault (que sempre força a conexão
+     * pra matriz), essa busca falha pra um id que só existe na filial,
+     * virando 404 (Laravel converte ModelNotFoundException não capturada
+     * em NotFoundHttpException).
+     *
+     * Livewire::test() não reproduz isso — ele monta o componente
+     * diretamente, sem passar pelo pipeline de middleware HTTP do painel.
+     * Por isso este teste faz uma requisição HTTP de verdade: GET na
+     * página de edição (extraindo o wire:snapshot do HTML, exatamente
+     * como o navegador faz) seguido de um POST real em /livewire/update
+     * simulando o clique em "Salvar alterações", com a conexão
+     * deliberadamente resetada pra matriz entre as duas chamadas — a
+     * mesma condição de cada requisição real em produção.
+     */
+    public function test_editing_a_launch_via_a_real_http_request_does_not_404(): void
+    {
+        $this->seedFilial();
+        $admin = $this->actingAsAdmin();
+        $this->actingAs($admin);
+
+        // O bug só se manifesta quando o id local da filial não existe *de
+        // jeito nenhum* na matriz (aí sim vira ModelNotFoundException/404).
+        // Numa base de teste zerada, criar 1 lançamento faz o id da filial
+        // (autoincrement raso) coincidir com QUALQUER registro de id baixo
+        // que porventura exista na matriz — inclusive um espelho de outro
+        // lançamento — mascarando o bug (a hidratação "erra a conexão" mas
+        // ainda assim acha alguma linha, sem lançar exceção). Inflar o
+        // autoincrement da FILIAL (não da matriz) garante um id local alto
+        // o bastante pra não existir na matriz, reproduzindo de fato a
+        // situação de produção (onde a matriz acumula histórico de todas
+        // as filiais e tem autoincrement muito mais avançado que qualquer
+        // uma isolada — o oposto do que uma base de teste zerada produz).
+        app(ConnectDbController::class)->connectBases('adb_vla');
+        DB::connection('adb_vla')->table('tb_launch')->insert(array_fill(0, 50, [
+            'id_user' => $admin->id, 'description' => 'preenchimento', 'operation_date' => '2026-01-01',
+            'value' => 1, 'idtb_operation' => 1, 'idtb_type_launch' => 1, 'idtb_payment_type' => 1,
+            'idtb_caixa' => 1, 'idtb_base' => 1, 'status' => 0, 'idtb_closing' => 1,
+        ]));
+        app(ConnectDbController::class)->connectMatriz();
+
+        Livewire::test(CreateTbLaunch::class)
+            ->fillForm([
+                'id_user' => $admin->id,
+                'idtb_operation' => 1,
+                'idtb_type_launch' => 1,
+                'idtb_payment_type' => 1,
+                'idtb_caixa' => 1,
+                'idtb_closing' => 1,
+                'operation_date' => '2026-08-15',
+                'value' => 100,
+                'description' => 'http-original',
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        app(ConnectDbController::class)->connectBases('adb_vla');
+        $filialLaunch = TbLaunch::where('description', 'http-original')->firstOrFail();
+        $idMtz = $filialLaunch->id_mtz;
+        app(ConnectDbController::class)->connectMatriz();
+
+        $html = $this->get("/admin/tb-launches/{$filialLaunch->id}/edit")->assertOk()->getContent();
+
+        preg_match_all('/wire:snapshot="([^"]+)"/', $html, $allMatches);
+        $this->assertNotEmpty($allMatches[1] ?? [], 'wire:snapshot não encontrado no HTML da página de edição');
+
+        $matches = null;
+        foreach ($allMatches[1] as $candidate) {
+            if (str_contains($candidate, 'edit-tb-launch')) {
+                $matches = [null, $candidate];
+                break;
+            }
+        }
+        $this->assertNotNull($matches, 'snapshot do componente EditTbLaunch não encontrado (achou ' . count($allMatches[1]) . ' snapshots no total)');
+
+        // O snapshot embutido no HTML fica intacto (igual ao navegador faz)
+        // — o Livewire valida sua integridade via checksum, então mudar de
+        // valor exigiria recalcular esse checksum. Salvar sem alterar nada
+        // já é suficiente pra reproduzir o bug: ele acontece na hidratação
+        // de $record, antes de qualquer campo ser processado.
+        $snapshot = htmlspecialchars_decode($matches[1]);
+
+        // Nova requisição PHP "de verdade": ReconnectDbDefault força a
+        // conexão de volta pra matriz, exatamente como aconteceria numa
+        // requisição HTTP real subsequente. DB::purge() descarta qualquer
+        // PDO já aberto pra filial, pra não mascarar o bug com uma conexão
+        // "presa" que só existe porque tudo roda no mesmo processo PHP do
+        // PHPUnit (em produção cada requisição é um processo à parte, sem
+        // nada em comum entre o GET e o POST além da sessão/banco).
+        DB::purge('adb_vla');
+        DB::purge('adb_mtz');
+        app(ConnectDbController::class)->connectMatriz();
+
+        $response = $this->postJson('/livewire/update', [
+            'components' => [[
+                'snapshot' => $snapshot,
+                'updates' => [],
+                'calls' => [['path' => '', 'method' => 'save', 'params' => []]],
+            ]],
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonMissing(['status' => 404]);
+
+        app(ConnectDbController::class)->connectBases('adb_vla');
+        $this->assertNotNull(TbLaunch::find($filialLaunch->id), 'Lançamento não encontrado na filial após salvar');
+
+        app(ConnectDbController::class)->connectMatriz();
+        $this->assertNotNull(TbLaunch::find($idMtz), 'Espelho na matriz não encontrado após salvar');
+    }
+
     public function test_approving_a_launch_via_the_service_mirrors_the_status_to_the_matriz(): void
     {
         $this->seedFilial();

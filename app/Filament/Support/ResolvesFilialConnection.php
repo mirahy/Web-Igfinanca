@@ -48,6 +48,37 @@ class ResolvesFilialConnection
     }
 
     /**
+     * Se o painel ainda não tem uma filial selecionada nesta sessão, tenta
+     * herdar automaticamente a mesma base já escolhida no login do sistema
+     * legado (session('id_base'), setada em App\Http\Controllers\Api\Login).
+     * Só copia o id — resolve o registro correspondente contra a matriz e
+     * confirma que o usuário tem acesso a essa base antes de aceitar, então
+     * uma sessão legada inválida/de outro usuário nunca é usada às cegas.
+     *
+     * Não sobrescreve uma escolha já feita no painel: depois da primeira
+     * seleção (automática ou manual), o Filament passa a ser independente
+     * do sistema legado, como já documentado na classe.
+     */
+    public static function autoSelectFromLegacySession($user): void
+    {
+        if (static::currentBase()) {
+            return;
+        }
+
+        $legacyBaseId = session('id_base');
+
+        if (! $legacyBaseId) {
+            return;
+        }
+
+        $match = static::availableBasesFor($user)->firstWhere('id', $legacyBaseId);
+
+        if ($match) {
+            static::setCurrentBase($match);
+        }
+    }
+
+    /**
      * Garante que a conexão do banco está na filial selecionada na sessão.
      * Se nenhuma filial foi selecionada ainda, notifica e interrompe a
      * execução (Halt) — o middleware EnsureFilialSelected cuida de
@@ -86,6 +117,48 @@ class ResolvesFilialConnection
         }
 
         return $user->bases()->orderBy('name')->get();
+    }
+
+    /**
+     * Reconecta pra filial ativa antes do Livewire processar uma ação
+     * (POST /livewire/update) que pertence ao TbLaunchResource.
+     *
+     * A rota /livewire/update é global — registrada pelo próprio pacote
+     * Livewire fora do escopo do painel Filament, com só o middleware
+     * 'web' padrão do Laravel (confirmado via `route:list`) — então
+     * nenhum middleware do painel roda nela, nem ReconnectDbDefault nem
+     * EnsureFilialSelected. Sem essa reconexão, o synthesizer nativo de
+     * Model do Livewire reidrata a propriedade $record (buscando o
+     * registro no banco) usando qualquer conexão que tenha sobrado de
+     * antes — e como os ids de tb_launch só existem mesmo na filial, essa
+     * busca falha e vira 404 (Laravel converte ModelNotFoundException não
+     * capturada em NotFoundHttpException). Isso acontece antes até de
+     * handleRecordUpdate() rodar, então precisa ser resolvido aqui.
+     *
+     * Registrado via Livewire::listen('request', ...) em
+     * App\Providers\Filament\AdminPanelProvider::boot() — o hook 'request'
+     * do próprio Livewire roda pra QUALQUER requisição de update
+     * (independente de painel/rota), exatamente o gancho cedo o
+     * suficiente que um middleware HTTP não consegue oferecer aqui.
+     *
+     * @param  array<int, array{snapshot?: string}>  $requestPayload
+     */
+    public static function reconnectForLivewireUpdateIfNeeded(array $requestPayload): void
+    {
+        if (! static::currentBase()) {
+            return;
+        }
+
+        foreach ($requestPayload as $component) {
+            $snapshot = json_decode($component['snapshot'] ?? '', associative: true);
+            $path = $snapshot['memo']['path'] ?? '';
+
+            if (str_contains($path, 'tb-launches')) {
+                static::assertConnected();
+
+                return;
+            }
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Support\ResolvesFilialConnection;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -10,16 +11,31 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Livewire\Livewire;
 
 class AdminPanelProvider extends PanelProvider
 {
+    public function boot(): void
+    {
+        // POST /livewire/update é uma rota global (fora do escopo do
+        // painel, só com o middleware 'web'), então a reconexão pra
+        // filial de TbLaunchResource não pode viver num middleware do
+        // Panel — precisa ser um hook do próprio Livewire. Ver
+        // App\Filament\Support\ResolvesFilialConnection::reconnectForLivewireUpdateIfNeeded().
+        Livewire::listen('request', function (array $requestPayload) {
+            ResolvesFilialConnection::reconnectForLivewireUpdateIfNeeded($requestPayload);
+        });
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -69,6 +85,17 @@ class AdminPanelProvider extends PanelProvider
             ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            // Badge com o nome da filial ativa, antes do menu do usuário na
+            // topbar, e o seletor de troca rápida dentro desse menu — ver
+            // App\Livewire\FilialBadge / FilialSwitcher.
+            ->renderHook(
+                PanelsRenderHook::GLOBAL_SEARCH_AFTER,
+                fn (): string => Blade::render('@livewire(\'filial-badge\')'),
+            )
+            ->renderHook(
+                PanelsRenderHook::USER_MENU_PROFILE_AFTER,
+                fn (): string => Blade::render('@livewire(\'filial-switcher\')'),
+            );
     }
 }

@@ -106,4 +106,49 @@ class SelectFilialTest extends TestCase
 
         $this->assertNull(session('filament.base'));
     }
+
+    public function test_entering_the_panel_auto_selects_the_same_base_as_the_legacy_session(): void
+    {
+        $admin = $this->makeUser('auto-select-admin@example.com', 'Admin');
+        $legacyBase = TbBase::firstOrCreate(['sigla' => 'AUTO1'], ['name' => 'Auto Filial']);
+
+        $this->actingAs($admin);
+        session(['id_base' => $legacyBase->id]);
+
+        $this->get('/admin')->assertSuccessful();
+
+        $this->assertSame($legacyBase->id, session('filament.base')['id'] ?? null);
+    }
+
+    public function test_auto_select_does_not_override_an_already_selected_base(): void
+    {
+        $admin = $this->makeUser('auto-select-admin2@example.com', 'Admin');
+        $manual = TbBase::firstOrCreate(['sigla' => 'AUTO2'], ['name' => 'Escolhida à mão']);
+        $legacyBase = TbBase::firstOrCreate(['sigla' => 'AUTO3'], ['name' => 'Da sessão legada']);
+
+        $this->actingAs($admin);
+        \App\Filament\Support\ResolvesFilialConnection::setCurrentBase($manual);
+        session(['id_base' => $legacyBase->id]);
+
+        $this->get('/admin')->assertSuccessful();
+
+        $this->assertSame($manual->id, session('filament.base')['id'] ?? null);
+    }
+
+    public function test_auto_select_ignores_a_legacy_base_the_user_cannot_access(): void
+    {
+        // Chamado direto (não via HTTP): usuários sem role Admin não
+        // acessam o painel de jeito nenhum hoje (TbCadUser::canAccessPanel()
+        // exige hasRole('Admin')), então esse caso nunca ocorre pelo
+        // navegador — mas a proteção continua valendo por baixo, caso isso
+        // mude no futuro.
+        $user = $this->makeUser('auto-select-nonadmin@example.com', null);
+        $inaccessible = TbBase::firstOrCreate(['sigla' => 'AUTO4'], ['name' => 'Sem acesso']);
+
+        session(['id_base' => $inaccessible->id]);
+
+        \App\Filament\Support\ResolvesFilialConnection::autoSelectFromLegacySession($user->fresh());
+
+        $this->assertNull(session('filament.base'));
+    }
 }
