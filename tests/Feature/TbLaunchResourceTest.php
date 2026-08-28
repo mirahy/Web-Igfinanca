@@ -275,6 +275,61 @@ class TbLaunchResourceTest extends TestCase
         $this->assertSame('atualizado', TbLaunch::find($idMtz)->description);
     }
 
+    public function test_editing_an_approved_launch_reverts_it_to_pending(): void
+    {
+        $this->seedFilial();
+        $admin = $this->actingAsAdmin();
+        $this->actingAs($admin);
+
+        Livewire::test(CreateTbLaunch::class)
+            ->fillForm([
+                'id_user' => $admin->id,
+                'idtb_operation' => 1,
+                'idtb_type_launch' => 1,
+                'idtb_payment_type' => 1,
+                'idtb_caixa' => 1,
+                'idtb_closing' => 1,
+                'operation_date' => '2026-08-15',
+                'value' => 100,
+                'description' => 'a reabrir',
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        app(ConnectDbController::class)->connectBases('adb_vla');
+        $filialLaunch = TbLaunch::where('description', 'a reabrir')->firstOrFail();
+        $idMtz = $filialLaunch->id_mtz;
+
+        $result = app(\App\Services\TbLaunchService::class)->aprov_id([
+            'id' => $filialLaunch->id,
+            'status' => 1,
+        ]);
+        $this->assertTrue($result['success']);
+        $this->assertSame(1, (int) TbLaunch::find($filialLaunch->id)->status);
+        app(ConnectDbController::class)->connectMatriz();
+
+        Livewire::test(EditTbLaunch::class, ['record' => $filialLaunch->getKey()])
+            ->fillForm([
+                'id_user' => $admin->id,
+                'idtb_operation' => 1,
+                'idtb_type_launch' => 1,
+                'idtb_payment_type' => 1,
+                'idtb_caixa' => 1,
+                'idtb_closing' => 1,
+                'operation_date' => '2026-08-15',
+                'value' => 150,
+                'description' => 'reaberto',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        app(ConnectDbController::class)->connectBases('adb_vla');
+        $this->assertSame(0, (int) TbLaunch::find($filialLaunch->id)->status);
+
+        app(ConnectDbController::class)->connectMatriz();
+        $this->assertSame(0, (int) TbLaunch::find($idMtz)->status);
+    }
+
     /**
      * Regressão de produção: editar e salvar um Lançamento dava 404 no
      * POST /livewire/update. Causa raiz: o synthesizer nativo do Livewire
