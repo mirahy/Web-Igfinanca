@@ -20,6 +20,11 @@ class SelectFilial extends Page implements HasForms
 
     protected static ?string $title = 'Selecionar Filial';
 
+    // A troca de filial agora vive no menu do usuário (App\Livewire\FilialSwitcher);
+    // esta página continua existindo só como destino do redirect de
+    // EnsureFilialSelected quando ninguém selecionou uma filial ainda.
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static string $view = 'filament.pages.select-filial';
 
     public ?int $idtb_base = null;

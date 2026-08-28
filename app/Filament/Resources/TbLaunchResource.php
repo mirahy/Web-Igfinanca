@@ -148,7 +148,8 @@ class TbLaunchResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('base.name')
                     ->label('Base')
-                    ->sortable(),
+                    ->sortable()
+                    ->visible(fn (): bool => ResolvesFilialConnection::currentBaseIsMatriz()),
                 Tables\Columns\TextColumn::make('operation.name')
                     ->label('Operação')
                     ->badge()
